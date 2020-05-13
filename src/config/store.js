@@ -8,12 +8,12 @@ import reducers from '../reducers';
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ['authReducer', 'userReducer'],
+    whitelist: ["authReducer","userReducer"],
 };
 
 const persistReducerObj = persistReducer(persistConfig, reducers);
 export default () => {
-    let store = createStore(persistReducerObj, {}, applyMiddleware(thunk));
+    let store = createStore(persistReducerObj,{},applyMiddleware(thunk));
     let persistor = persistStore(store);
     return {store, persistor};
 }
