@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Input} from 'native-base';
-import {Text, View} from 'react-native';
+import {View,TextInput} from 'react-native';
 
 const propTypes = {
     mapElement: PropTypes.func,
@@ -54,10 +54,10 @@ class InputText extends Component<{}> {
         const {placeholder, secureTextEntry, keyboardType, maxLength, value, onChangeText, onSubmitEditing} = this.props;
         return (
             <View>
-                <Input
+                <Input block
                     underlineColorAndroid="rgba(0,0,0,0)"
                     placeholder={placeholder}
-                    placeholderTextColor="rgba(255,255,255,0.8)"
+                    placeholderTextColor="rgba(0,0,0,0.8)"
                     selectionColor="#999999"
                     secureTextEntry={secureTextEntry}
                     keyboardType={keyboardType}

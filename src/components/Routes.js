@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Router, Scene} from 'react-native-router-flux';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
-import Profile from '../pages/Profile';
+import Profile from '../pages/Home';
 
 
 export default class Routes extends Component<{}> {
