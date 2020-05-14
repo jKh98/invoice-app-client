@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import View from 'react-native';
-import {ActionConst, Router, Scene, Tabs} from 'react-native-router-flux';
+import {ActionConst, Router, Scene, Icon} from 'react-native-router-flux';
 import {
     Login,
     SignUp,
@@ -10,7 +10,7 @@ import {
     Settings,
 } from '../pages/index';
 import NavBar from './NavBar';
-import { connect } from "react-redux";
+import {connect} from 'react-redux';
 
 export default class Routes extends Component<{}> {
 
@@ -26,7 +26,7 @@ export default class Routes extends Component<{}> {
                     </Scene>
                     <Scene key={'app'} hideNavBar={true} initial={this.props.isLoggedIn}>
                         <Scene key="home" title="Home" tabs={true} initial type={ActionConst.REPLACE}>
-                            <Scene key="invoices" component={Invoices} title="Invoices" hideNavBar initial/>
+                            <Scene key="invoices" component={Invoices} title="Invoices" hideNavBar  initial/>
                             <Scene key="customers" component={Customers} title="Customers" hideNavBar/>
                             <Scene key="items" component={Items} title="Items" hideNavBar/>
                             <Scene key="settings" component={Settings} title="Settings" hideNavBar/>

@@ -45,7 +45,9 @@ class Invoices extends Component<{}> {
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
-                        onPress={() =>{this.addNewInvoice()}}>
+                        onPress={() => {
+                            this.addNewInvoice();
+                        }}>
                         <Icon name="add"/>
                     </Fab>
                 </View>
@@ -54,7 +56,7 @@ class Invoices extends Component<{}> {
     };
 
     addNewInvoice() {
-        alert("new invoice")
+        alert('new invoice');
     }
 }
 

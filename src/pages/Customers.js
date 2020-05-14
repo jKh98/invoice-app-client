@@ -1,13 +1,36 @@
 import React, {Component} from 'react';
 import {
-    Text,
+    SafeAreaView,
     View,
 } from 'react-native';
-import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon} from 'native-base';
+import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon, List} from 'native-base';
+import ListView from '../components/ListView';
 
+const tempCustomers = [
+    {
+        name: 'jihad',
+        status: 'nothing',
+        total: 20,
+    }, {
+        name: 'jad',
+        status: 'nothing',
+        total: 100,
+    }, {
+        name: 'john',
+        status: 'nothing',
+        total: 0.11,
+    }, {
+        name: 'sarah',
+        status: 'nothing',
+        total: 12000,
+    }, {
+        name: 'none',
+        status: 'nothing',
+        total: 0.120,
+    },
+];
 
 class Customers extends Component<{}> {
-
     render() {
         return (
             <Container>
@@ -19,6 +42,18 @@ class Customers extends Component<{}> {
                     <Right/>
                 </Header>
                 <Content>
+                    <List dataArray={tempCustomers}
+                          renderRow={
+                              (customer) =>
+                                  <ListView
+                                      title={customer.name}
+                                      subtitle={customer.status}
+                                      right={customer.total}
+                                      handleClickEvent={
+                                          this.openCustomerPage
+                                      }/>
+                          }>
+                    </List>
                 </Content>
                 <View style={{flex: 1}}>
                     <Fab
@@ -35,7 +70,11 @@ class Customers extends Component<{}> {
     };
 
     addNewCustomer() {
-        alert("new customer")
+        alert('new customer');
+    }
+
+    openCustomerPage() {
+        alert('i was clicked');
     }
 }
 

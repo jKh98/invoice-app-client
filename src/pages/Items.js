@@ -3,8 +3,32 @@ import {
     Text,
     View,
 } from 'react-native';
-import {Body, Container, Content, Fab, Header, Icon, Left, Right, Title} from 'native-base';
+import {Body, Container, Content, Fab, Header, Footer, Icon, Left, List, Right, Title} from 'native-base';
+import ListView from '../components/ListView';
 
+const tempItems = [
+    {
+        name: 'Item1',
+        description: 'nothing',
+        price: 20,
+    }, {
+        name: 'Item2',
+        description: 'nothing',
+        price: 100,
+    }, {
+        name: 'Item3',
+        description: 'nothing',
+        price: 0.11,
+    }, {
+        name: 'Item4',
+        description: 'nothing',
+        price: 12000,
+    }, {
+        name: 'Item5',
+        description: 'nothing',
+        price: 0.120,
+    },
+];
 
 class Items extends Component<{}> {
 
@@ -19,23 +43,39 @@ class Items extends Component<{}> {
                     <Right/>
                 </Header>
                 <Content>
+                    <List dataArray={tempItems}
+                          renderRow={
+                              (item) =>
+                                  <ListView
+                                      title={item.name}
+                                      subtitle={item.description}
+                                      right={item.price}
+                                      handleClickEvent={
+                                          this.openItemPage
+                                      }/>
+                          }>
+                    </List>
+                    <View style={{flex: 1}}>
+                        <Fab
+                            style={{backgroundColor: '#5067FF'}}
+                            position="bottomRight"
+                            onPress={() => {
+                                this.addNewItem();
+                            }}>
+                            <Icon name="add"/>
+                        </Fab>
+                    </View>
                 </Content>
-                <View style={{flex: 1}}>
-                    <Fab
-                        style={{backgroundColor: '#5067FF'}}
-                        position="bottomRight"
-                        onPress={() => {
-                            this.addNewItem();
-                        }}>
-                        <Icon name="add"/>
-                    </Fab>
-                </View>
             </Container>
         );
     };
 
     addNewItem() {
-        alert('new item')
+        alert('new item');
+    }
+
+    openItemPage() {
+        alert('opened');
     }
 }
 
