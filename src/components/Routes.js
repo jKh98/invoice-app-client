@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import View from 'react-native';
-import {ActionConst, Router, Scene, Icon} from 'react-native-router-flux';
+import {ActionConst, Router, Scene} from 'react-native-router-flux';
 import {
     Login,
     SignUp,
@@ -8,8 +7,9 @@ import {
     Customers,
     Items,
     Settings,
+    AddCustomer,
+    AddItem,
 } from '../pages/index';
-import NavBar from './NavBar';
 import {connect} from 'react-redux';
 
 export default class Routes extends Component<{}> {
@@ -31,6 +31,9 @@ export default class Routes extends Component<{}> {
                             <Scene key="items" component={Items} title="Items" hideNavBar/>
                             <Scene key="settings" component={Settings} title="Settings" hideNavBar/>
                         </Scene>
+                        <Scene key="addCustomer" component={AddCustomer} title="Customer" hideNavBar/>
+                        <Scene key="addItem" component={AddItem} title="Customer" hideNavBar/>
+
                     </Scene>
                 </Scene>
             </RouterWithRedux>

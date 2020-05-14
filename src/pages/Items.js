@@ -5,8 +5,51 @@ import {
 } from 'react-native';
 import {Body, Container, Content, Fab, Header, Footer, Icon, Left, List, Right, Title} from 'native-base';
 import ListView from '../components/ListView';
+import {Actions} from 'react-native-router-flux';
 
 const tempItems = [
+    {
+        name: 'Item1',
+        description: 'nothing',
+        price: 20,
+    }, {
+        name: 'Item2',
+        description: 'nothing',
+        price: 100,
+    }, {
+        name: 'Item3',
+        description: 'nothing',
+        price: 0.11,
+    }, {
+        name: 'Item4',
+        description: 'nothing',
+        price: 12000,
+    }, {
+        name: 'Item5',
+        description: 'nothing',
+        price: 0.120,
+    },
+    {
+        name: 'Item1',
+        description: 'nothing',
+        price: 20,
+    }, {
+        name: 'Item2',
+        description: 'nothing',
+        price: 100,
+    }, {
+        name: 'Item3',
+        description: 'nothing',
+        price: 0.11,
+    }, {
+        name: 'Item4',
+        description: 'nothing',
+        price: 12000,
+    }, {
+        name: 'Item5',
+        description: 'nothing',
+        price: 0.120,
+    },
     {
         name: 'Item1',
         description: 'nothing',
@@ -42,8 +85,9 @@ class Items extends Component<{}> {
                     </Body>
                     <Right/>
                 </Header>
-                <Content>
-                    <List dataArray={tempItems}
+                <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
+                    <List
+                          dataArray={tempItems}
                           renderRow={
                               (item) =>
                                   <ListView
@@ -71,7 +115,8 @@ class Items extends Component<{}> {
     };
 
     addNewItem() {
-        alert('new item');
+        // alert('new item');
+        Actions.addItem();
     }
 
     openItemPage() {

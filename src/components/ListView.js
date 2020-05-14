@@ -14,7 +14,6 @@ export default class ListView extends Component {
                     <Text>{this.props.right}</Text>
                 </Right>
             </ListItem>
-
         );
     }
 }

@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {
-    TouchableOpacity,
     Text,
-    View,
 } from 'react-native';
-import {Container, Header, Content, Form, Button, Body, Title, Item} from 'native-base';
+import {Container, Content, Button, Body} from 'native-base';
 
 import {Actions} from 'react-native-router-flux';
 import Logo from '../components/Logo';
@@ -14,7 +12,7 @@ import {connect} from 'react-redux';
 import {loginUser} from '../actions/auth.actions';
 import Loader from '../components/Loader';
 import {ErrorUtils} from '../utils/auth.utils';
-import InputText from '../components/InputText';
+import renderTextInput from '../components/RenderTextInput';
 
 class Login extends Component<{}> {
 
@@ -38,23 +36,6 @@ class Login extends Component<{}> {
     onSubmit = (values) => {
         this.loginUser(values);
     };
-    //todo refactor
-    renderTextInput = (field) => {
-        const {meta: {touched, error}, label, secureTextEntry, maxLength, keyboardType, placeholder, input: {onChange, ...restInput}} = field;
-        return (
-            <Item rounded padder>
-                <InputText
-                    onChangeText={onChange}
-                    maxLength={maxLength}
-                    placeholder={placeholder}
-                    keyboardType={keyboardType}
-                    secureTextEntry={secureTextEntry}
-                    label={label}
-                    {...restInput} />
-                {(touched && error) && <Text>{error}</Text>}
-            </Item>
-        );
-    };
 
     render() {
         const {handleSubmit, loginUser} = this.props;
@@ -65,21 +46,21 @@ class Login extends Component<{}> {
                     <Logo/>
                     <Field name={'email'}
                            placeholder={'Email'}
-                           component={this.renderTextInput}/>
-
+                           component={renderTextInput}/>
                     <Field name={'password'}
                            placeholder={'Password'}
                            secureTextEntry={true}
-                           component={this.renderTextInput}/>
-                    <Button padder block rounded primary onPress={handleSubmit(this.onSubmit)}>
+                           component={renderTextInput}/>
+                    <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
                         <Text>Login</Text>
                     </Button>
-                    <View style={{flex: 1}}>
+
+                    <Body>
                         <Text> Don't have an account yet?</Text>
                         <Button transparent light onPress={this.signUp}>
                             <Text>Sign Up</Text>
                         </Button>
-                    </View>
+                    </Body>
                 </Content>
             </Container>
         );

@@ -7,12 +7,12 @@ import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import Logo from '../components/Logo';
-import InputText from '../components/InputText';
 import {Actions} from 'react-native-router-flux';
 import {registerNewUser} from '../actions/auth.actions';
 import Loader from '../components/Loader';
 import {ErrorUtils} from '../utils/auth.utils';
-import {Button, Container, Content, Form, Item} from 'native-base';
+import {Button, Container, Content, Body, Item, Input} from 'native-base';
+import renderTextInput from '../components/RenderTextInput';
 
 
 class SignUp extends Component<{}> {
@@ -38,24 +38,6 @@ class SignUp extends Component<{}> {
         this.registerNewUser(values);
     };
 
-    //todo refactor
-    renderTextInput = (field) => {
-        const {meta: {touched, error}, label, secureTextEntry, maxLength, keyboardType, placeholder, input: {onChange, ...restInput}} = field;
-        return (
-            <Item rounded padder>
-                <InputText
-                    onChangeText={onChange}
-                    maxLength={maxLength}
-                    placeholder={placeholder}
-                    keyboardType={keyboardType}
-                    secureTextEntry={secureTextEntry}
-                    label={label}
-                    {...restInput} />
-                {(touched && error) && <Text>{error}</Text>}
-            </Item>
-        );
-    };
-
     render() {
         const {handleSubmit, registerUser} = this.props;
         return (
@@ -63,27 +45,25 @@ class SignUp extends Component<{}> {
                 {registerUser.isLoading && <Loader/>}
                 <Content padder>
                     <Logo/>
-                    <Form>
-                        <Field name={'name'}
-                               placeholder={'name'}
-                               component={this.renderTextInput}/>
-                        <Field name={'email'}
-                               placeholder={'Email'}
-                               component={this.renderTextInput}/>
-                        <Field name={'password'}
-                               placeholder={'Password'}
-                               secureTextEntry={true}
-                               component={this.renderTextInput}/>
-                        <Button padder block rounded primary onPress={handleSubmit(this.onSubmit)}>
-                            <Text>Sign Up</Text>
-                        </Button>
-                    </Form>
-                    <View style={{flex: 1}}>
+                    <Field name={'name'}
+                           placeholder={'name'}
+                           component={renderTextInput}/>
+                    <Field name={'email'}
+                           placeholder={'Email'}
+                           component={renderTextInput}/>
+                    <Field name={'password'}
+                           placeholder={'Password'}
+                           secureTextEntry={true}
+                           component={renderTextInput}/>
+                    <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
+                        <Text>Sign Up</Text>
+                    </Button>
+                    <Body>
                         <Text> Already have an account?</Text>
                         <Button transparent light onPress={this.goBack}>
                             <Text>Sign In</Text>
                         </Button>
-                    </View>
+                    </Body>
                 </Content>
             </Container>
         );

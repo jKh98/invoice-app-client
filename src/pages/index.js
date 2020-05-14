@@ -5,6 +5,8 @@ import Invoices from './Invoices';
 import Customers from './Customers';
 import Items from './Items';
 import Settings from './Settings';
+import AddItem from './AddItem';
+import AddCustomer from './AddCustomer';
 
 export {
     Login,
@@ -14,4 +16,6 @@ export {
     Customers,
     Items,
     Settings,
+    AddItem,
+    AddCustomer,
 };
