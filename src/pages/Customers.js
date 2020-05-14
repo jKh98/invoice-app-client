@@ -3,7 +3,7 @@ import {
     Text,
     View,
 } from 'react-native';
-import {Container, Content, Header, Title, Right, Left, Body} from 'native-base';
+import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon} from 'native-base';
 
 
 class Customers extends Component<{}> {
@@ -20,9 +20,23 @@ class Customers extends Component<{}> {
                 </Header>
                 <Content>
                 </Content>
+                <View style={{flex: 1}}>
+                    <Fab
+                        style={{backgroundColor: '#5067FF'}}
+                        position="bottomRight"
+                        onPress={() => {
+                            this.addNewCustomer();
+                        }}>
+                        <Icon name="add"/>
+                    </Fab>
+                </View>
             </Container>
         );
     };
+
+    addNewCustomer() {
+        alert("new customer")
+    }
 }
 
 export default Customers;

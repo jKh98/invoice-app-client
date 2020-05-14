@@ -31,7 +31,7 @@ class Login extends Component<{}> {
     };
 
 
-    signup() {
+    signUp() {
         Actions.signup();
     }
 
@@ -63,7 +63,6 @@ class Login extends Component<{}> {
                 {loginUser.isLoading && <Loader/>}
                 <Content padder>
                     <Logo/>
-                    <Form>
                     <Field name={'email'}
                            placeholder={'Email'}
                            component={this.renderTextInput}/>
@@ -75,10 +74,9 @@ class Login extends Component<{}> {
                     <Button padder block rounded primary onPress={handleSubmit(this.onSubmit)}>
                         <Text>Login</Text>
                     </Button>
-                    </Form>
                     <View style={{flex: 1}}>
                         <Text> Don't have an account yet?</Text>
-                        <Button transparent light onPress={this.signup}>
+                        <Button transparent light onPress={this.signUp}>
                             <Text>Sign Up</Text>
                         </Button>
                     </View>

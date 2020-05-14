@@ -53,7 +53,7 @@ class Home extends Component<{}> {
 }
 
 const mapStateToProps = (state) => ({
-    getUser: state.authReducer.getUser,
+    getUser: state.userReducer.getUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
