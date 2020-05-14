@@ -38,6 +38,7 @@ class SignUp extends Component<{}> {
         this.registerNewUser(values);
     };
 
+    //todo refactor
     renderTextInput = (field) => {
         const {meta: {touched, error}, label, secureTextEntry, maxLength, keyboardType, placeholder, input: {onChange, ...restInput}} = field;
         return (
@@ -89,6 +90,7 @@ class SignUp extends Component<{}> {
     };
 }
 
+//todo refactor
 const validate = (values) => {
     const errors = {};
     if (!values.name) {

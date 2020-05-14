@@ -38,7 +38,7 @@ class Login extends Component<{}> {
     onSubmit = (values) => {
         this.loginUser(values);
     };
-
+    //todo refactor
     renderTextInput = (field) => {
         const {meta: {touched, error}, label, secureTextEntry, maxLength, keyboardType, placeholder, input: {onChange, ...restInput}} = field;
         return (
@@ -88,7 +88,7 @@ class Login extends Component<{}> {
     };
 }
 
-
+//todo refactor
 const validate = (values) => {
     const errors = {};
     if (!values.email) {
