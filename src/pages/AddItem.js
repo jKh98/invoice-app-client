@@ -38,17 +38,20 @@ class AddItem extends Component<{}> {
                     <Card>
                         <CardItem>
                             <Field name={'name'}
+                                   keyboardType={'default'}
                                    placeholder={'Item Name'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'description'}
+                                   keyboardType={'default'}
                                    placeholder={'Description'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
-                            <Field name={'cost'}
-                                   placeholder={'Unit Cost'}
+                            <Field name={'price'}
+                                   keyboardType={'decimal-pad'}
+                                   placeholder={'Unit Price'}
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>

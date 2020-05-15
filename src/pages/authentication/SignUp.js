@@ -44,11 +44,14 @@ class SignUp extends Component<{}> {
                     <Logo/>
                     <Field name={'name'}
                            placeholder={'name'}
+                           keyboardType={'default'}
                            component={renderTextInput}/>
                     <Field name={'email'}
                            placeholder={'Email'}
+                           keyboardType={'email-address'}
                            component={renderTextInput}/>
                     <Field name={'password'}
+                           keyboardType={'default'}
                            placeholder={'Password'}
                            secureTextEntry={true}
                            component={renderTextInput}/>
@@ -70,8 +73,8 @@ class SignUp extends Component<{}> {
 const validate = (values) => {
     return {
         email: validateEmailField(values.email),
-        name: validateRequiredField('Name',values.name),
-        password: validateRequiredField('Password',values.password),
+        name: validateRequiredField('Name', values.name),
+        password: validateRequiredField('Password', values.password),
     };
 };
 

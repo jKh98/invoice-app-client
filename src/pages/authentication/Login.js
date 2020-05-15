@@ -43,9 +43,11 @@ class Login extends Component<{}> {
                 <Content padder>
                     <Logo/>
                     <Field name={'email'}
+                           keyboardType={'email-address'}
                            placeholder={'Email'}
                            component={renderTextInput}/>
                     <Field name={'password'}
+                           keyboardType={'default'}
                            placeholder={'Password'}
                            secureTextEntry={true}
                            component={renderTextInput}/>

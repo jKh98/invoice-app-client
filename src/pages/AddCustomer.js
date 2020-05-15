@@ -18,7 +18,7 @@ class AddCustomer extends Component<{}> {
                         </Button>
                     </Left>
                     <Body>
-                        <Title>New Customer</Title>
+                        <Title>Customer</Title>
                     </Body>
                     <Right/>
                 </Header>
@@ -26,41 +26,49 @@ class AddCustomer extends Component<{}> {
                     <Card>
                         <CardItem>
                             <Field name={'name'}
+                                   keyboardType={'default'}
                                    placeholder={'Customer Name'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'company'}
+                                   keyboardType={'default'}
                                    placeholder={'Company'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'email'}
+                                   keyboardType={'email-address'}
                                    placeholder={'Email'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'phone'}
+                                   keyboardType={'phone-pad'}
                                    placeholder={'Phone'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'mobile'}
+                                   keyboardType={'phone-pad'}
                                    placeholder={'Mobile'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'address_1'}
+                                   keyboardType={'default'}
                                    placeholder={'Address 1'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'address_2'}
+                                   keyboardType={'default'}
                                    placeholder={'Address 2'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'address_3'}
+                                   keyboardType={'default'}
                                    placeholder={'Address 3'}
                                    component={renderTextInput}/>
                         </CardItem>
