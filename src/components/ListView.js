@@ -12,6 +12,7 @@ export default class ListView extends Component {
                 </Body>
                 <Right>
                     <Text>{this.props.right}</Text>
+                    {this.props.rightSub && <Text note numberOfLines={1}>{this.props.rightSub}</Text>}
                 </Right>
             </ListItem>
         );

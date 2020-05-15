@@ -84,31 +84,17 @@ class Items extends Component<{}> {
                     </Body>
                     <Right/>
                 </Header>
-                <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
-                    <List
-                          dataArray={tempItems}
-                          renderRow={
-                              (item) =>
-                                  <ListView
-                                      title={item.name}
-                                      subtitle={item.description}
-                                      right={item.price}
-                                      handleClickEvent={
-                                          this.openItemPage
-                                      }/>
-                          }>
-                    </List>
-                    <View style={{flex: 1}}>
-                        <Fab
-                            style={{backgroundColor: '#5067FF'}}
-                            position="bottomRight"
-                            onPress={() => {
-                                this.addNewItem();
-                            }}>
-                            <Icon name="add"/>
-                        </Fab>
-                    </View>
-                </Content>
+                <View style={{flex: 1}}>
+                    {this.renderItemsList()}
+                    <Fab
+                        style={{backgroundColor: '#5067FF'}}
+                        position="bottomRight"
+                        onPress={() => {
+                            this.addNewItem();
+                        }}>
+                        <Icon name="add"/>
+                    </Fab>
+                </View>
             </Container>
         );
     };
@@ -120,6 +106,23 @@ class Items extends Component<{}> {
 
     openItemPage() {
         alert('opened');
+    }
+
+    renderItemsList() {
+        return (<List
+            dataArray={tempItems}
+            renderRow={
+                (item) =>
+                    <ListView
+                        title={item.name}
+                        subtitle={item.description}
+                        right={item.price}
+                        handleClickEvent={
+                            this.openItemPage
+                        }/>
+            }>
+            keyExtractor={(item, index) => index.toString()}>
+        </List>);
     }
 }
 

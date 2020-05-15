@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
-import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon, List, View} from 'native-base';
+import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon, List, View, Text} from 'native-base';
 import ListView from '../../components/ListView';
 
 const tempCustomers = [
@@ -59,31 +59,17 @@ class Customers extends Component<{}> {
                     </Body>
                     <Right/>
                 </Header>
-                <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
-                    <List
-                        dataArray={tempCustomers}
-                        renderRow={
-                            (customer) =>
-                                <ListView
-                                    title={customer.name}
-                                    subtitle={customer.status}
-                                    right={customer.total}
-                                    handleClickEvent={
-                                        this.openCustomerPage
-                                    }/>
-                        }>
-                    </List>
-                    <View style={{flex: 1}}>
-                        <Fab
-                            style={{backgroundColor: '#5067FF'}}
-                            position="bottomRight"
-                            onPress={() => {
-                                this.addNewCustomer();
-                            }}>
-                            <Icon name="add"/>
-                        </Fab>
-                    </View>
-                </Content>
+                <View style={{flex: 1}}>
+                    {this.renderCustomersList()}
+                    <Fab
+                        style={{backgroundColor: '#5067FF'}}
+                        position="bottomRight"
+                        onPress={() => {
+                            this.addNewCustomer();
+                        }}>
+                        <Icon name="add"/>
+                    </Fab>
+                </View>
             </Container>
         );
     };
@@ -95,6 +81,23 @@ class Customers extends Component<{}> {
 
     openCustomerPage() {
         alert('i was clicked');
+    }
+
+    renderCustomersList() {
+        return (<List
+            dataArray={tempCustomers}
+            renderRow={
+                (customer) =>
+                    <ListView
+                        title={customer.name}
+                        subtitle={customer.status}
+                        right={customer.total}
+                        handleClickEvent={
+                            this.openCustomerPage
+                        }/>
+            }
+            keyExtractor={(item, index) => index.toString()}>
+        </List>);
     }
 }
 
