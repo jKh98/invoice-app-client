@@ -2,11 +2,9 @@ import {combineReducers} from 'redux';
 import authReducer from './auth.reducer';
 import userReducer from './user.reducer';
 import {reducer as formReducer} from 'redux-form';
-import sceneReducer from './scene.reducer';
 
 const reducers = {
     authReducer,
-    sceneReducer,
     userReducer,
     form: formReducer,
 };

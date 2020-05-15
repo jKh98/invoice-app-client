@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon, List} from 'native-base';
 import ListView from '../components/ListView';
+import NavBar from '../components/NavBar';
 
 const tempCustomers = [
     {

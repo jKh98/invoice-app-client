@@ -4,6 +4,7 @@ import {
     View,
 } from 'react-native';
 import {Body, Container, Content, Header, Left, Right, Title} from 'native-base';
+import NavBar from '../components/NavBar';
 
 
 class Settings extends Component<{}> {

@@ -8,30 +8,34 @@ import {Actions} from 'react-native-router-flux';
 class NavBar extends Component<{}> {
     render() {
         return (
-            <Container>
-                {/*<Header/>*/}
-                <Content/>
-                <Footer>
-                    <FooterTab>
-                        <Button vertical >
-                            <Icon name="apps"/>
-                            <Text>Apps</Text>
-                        </Button>
-                        <Button vertical>
-                            <Icon name="camera"/>
-                            <Text>Camera</Text>
-                        </Button>
-                        <Button vertical active>
-                            <Icon active name="navigate"/>
-                            <Text>Navigate</Text>
-                        </Button>
-                        <Button vertical>
-                            <Icon name="person"/>
-                            <Text>Contact</Text>
-                        </Button>
-                    </FooterTab>
-                </Footer>
-            </Container>
+            <Footer>
+                <FooterTab>
+                    <Button vertical onPress={() => {
+                        Actions.invoices();
+                    }}>
+                        <Icon name="apps"/>
+                        <Text>Apps</Text>
+                    </Button>
+                    <Button vertical onPress={() => {
+                        Actions.customers();
+                    }}>
+                        <Icon name="camera"/>
+                        <Text>Camera</Text>
+                    </Button>
+                    <Button vertical onPress={() => {
+                        Actions.items();
+                    }}>
+                        <Icon active name="navigate"/>
+                        <Text>Navigate</Text>
+                    </Button>
+                    <Button vertical onPress={() => {
+                        Actions.settings();
+                    }}>
+                        <Icon name="person"/>
+                        <Text>Contact</Text>
+                    </Button>
+                </FooterTab>
+            </Footer>
         );
     };
 }

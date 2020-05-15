@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import {Container, Content, Header, Title, Right, Left, Body, Icon, Button, Tabs, Tab, Fab} from 'native-base';
 import {connect} from 'react-redux';
+import NavBar from '../components/NavBar';
 
 
 class Invoices extends Component<{}> {
