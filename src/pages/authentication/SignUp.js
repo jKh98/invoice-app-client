@@ -7,7 +7,7 @@ import {Actions} from 'react-native-router-flux';
 import {registerNewUser} from '../../actions/auth.actions';
 import Loader from '../../components/Loader';
 import {ErrorUtils} from '../../utils/auth.utils';
-import {Button, Container, Content, Body, Text, Input} from 'native-base';
+import {Button, Container, Content, Body, Text, Input, CardItem, Card} from 'native-base';
 import renderTextInput from '../../components/RenderTextInput';
 import {validateEmailField, validateRequiredField} from '../../utils/form.utils';
 
@@ -40,30 +40,48 @@ class SignUp extends Component<{}> {
         return (
             <Container style={{flex: 1, justifyContent: 'center'}}>
                 {registerUser.isLoading && <Loader/>}
-                <Content padder>
+                <Content padder contentContainerStyle={{display: 'flex', flex: 1, justifyContent: 'center'}}>
                     <Logo/>
-                    <Field name={'name'}
-                           placeholder={'name'}
-                           keyboardType={'default'}
-                           component={renderTextInput}/>
-                    <Field name={'email'}
-                           placeholder={'Email'}
-                           keyboardType={'email-address'}
-                           component={renderTextInput}/>
-                    <Field name={'password'}
-                           keyboardType={'default'}
-                           placeholder={'Password'}
-                           secureTextEntry={true}
-                           component={renderTextInput}/>
-                    <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
-                        <Text>Sign Up</Text>
-                    </Button>
-                    <Body>
-                        <Text> Already have an account?</Text>
-                        <Button transparent light onPress={this.goBack}>
-                            <Text>Sign In</Text>
-                        </Button>
-                    </Body>
+                    <Card transparent>
+                        <CardItem>
+                            <Body>
+                                <Field name={'name'}
+                                       placeholder={'Name'}
+                                       keyboardType={'default'}
+                                       component={renderTextInput}/>
+                            </Body>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                                <Field name={'email'}
+                                       placeholder={'Email'}
+                                       keyboardType={'email-address'}
+                                       component={renderTextInput}/>
+                            </Body>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                                <Field name={'password'}
+                                       keyboardType={'default'}
+                                       placeholder={'Password'}
+                                       secureTextEntry={true}
+                                       component={renderTextInput}/>
+                            </Body>
+                        </CardItem>
+                        <CardItem footer>
+                            <Body>
+                                <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
+                                    <Text>Sign Up</Text>
+                                </Button>
+                            </Body>
+                        </CardItem>
+                        <CardItem>
+                            <Text> Already have an account?</Text>
+                            <Button transparent onPress={this.goBack}>
+                                <Text>Sign In</Text>
+                            </Button>
+                        </CardItem>
+                    </Card>
                 </Content>
             </Container>
         );

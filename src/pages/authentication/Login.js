@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Content, Button, Body, Text} from 'native-base';
+import {Container, Content, Button, Body, Text, CardItem, Card, Header} from 'native-base';
 
 import {Actions} from 'react-native-router-flux';
 import Logo from '../../components/Logo';
@@ -38,38 +38,52 @@ class Login extends Component<{}> {
     render() {
         const {handleSubmit, loginUser} = this.props;
         return (
-            <Container style={{flex: 1, justifyContent: 'center'}}>
+            <Container>
                 {loginUser.isLoading && <Loader/>}
-                <Content padder>
+                <Content padder contentContainerStyle={{display: 'flex', flex: 1, justifyContent: 'center'}}>
                     <Logo/>
-                    <Field name={'email'}
-                           keyboardType={'email-address'}
-                           placeholder={'Email'}
-                           component={renderTextInput}/>
-                    <Field name={'password'}
-                           keyboardType={'default'}
-                           placeholder={'Password'}
-                           secureTextEntry={true}
-                           component={renderTextInput}/>
-                    <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
-                        <Text>Login</Text>
-                    </Button>
-
-                    <Body>
-                        <Text> Don't have an account yet?</Text>
-                        <Button transparent light onPress={this.signUp}>
-                            <Text>Sign Up</Text>
-                        </Button>
-                    </Body>
+                    <Card transparent>
+                        <CardItem>
+                            <Body>
+                                <Field name={'email'}
+                                       keyboardType={'email-address'}
+                                       placeholder={'Email'}
+                                       component={renderTextInput}/>
+                            </Body>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                                <Field name={'password'}
+                                       keyboardType={'default'}
+                                       placeholder={'Password'}
+                                       secureTextEntry={true}
+                                       component={renderTextInput}/>
+                            </Body>
+                        </CardItem>
+                        <CardItem footer>
+                            <Body>
+                                <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
+                                    <Text>Login</Text>
+                                </Button>
+                            </Body>
+                        </CardItem>
+                        <CardItem>
+                                <Text> Don't have an account yet?</Text>
+                                <Button transparent onPress={this.signUp}>
+                                    <Text>Sign Up</Text>
+                                </Button>
+                        </CardItem>
+                    </Card>
                 </Content>
             </Container>
         );
     };
 }
+
 const validate = (values) => {
     return {
         email: validateEmailField(values.email),
-        password: validateRequiredField('Password',values.password),
+        password: validateRequiredField('Password', values.password),
     };
 };
 

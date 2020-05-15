@@ -14,12 +14,13 @@ import {
     Button,
     Text,
 } from 'native-base';
-import renderTextInput from '../components/RenderTextInput';
+import renderTextInput from '../../components/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
+import {validateEmailField, validateRequiredField} from '../../utils/form.utils';
 
-class AddItem extends Component<{}> {
+class ItemForm extends Component<{}> {
     render() {
         return (
             <Container>
@@ -40,18 +41,21 @@ class AddItem extends Component<{}> {
                             <Field name={'name'}
                                    keyboardType={'default'}
                                    placeholder={'Item Name'}
-                                   component={renderTextInput}/>
-                        </CardItem>
-                        <CardItem>
-                            <Field name={'description'}
-                                   keyboardType={'default'}
-                                   placeholder={'Description'}
+                                   icon={'ios-barcode'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'price'}
                                    keyboardType={'decimal-pad'}
                                    placeholder={'Unit Price'}
+                                   icon={'ios-pricetag'}
+                                   component={renderTextInput}/>
+                        </CardItem>
+                        <CardItem>
+                            <Field name={'description'}
+                                   keyboardType={'default'}
+                                   placeholder={'Description'}
+                                   icon={'ios-paper'}
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>
@@ -75,14 +79,10 @@ class AddItem extends Component<{}> {
 
 //todo refactor
 const validate = (values) => {
-    const errors = {};
-    if (!values.email) {
-        errors.email = 'Email is required.';
-    }
-    if (!values.password) {
-        errors.password = 'Password is required.';
-    }
-    return errors;
+    return {
+        name: validateRequiredField('Name', values.name),
+        price: validateRequiredField('Price', values.price),
+    };
 };
 
 const mapStateToProps = (state) => ({
@@ -97,7 +97,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
-        form: 'addItem',
+        form: 'itemForm',
         validate,
     }),
-)(AddItem);
+)(ItemForm);

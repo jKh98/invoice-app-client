@@ -1,12 +1,14 @@
-import {Input, Label, Item, Text} from 'native-base';
+import {Input, Label, Icon, Item, Text} from 'native-base';
 import React from 'react';
 
 const renderTextInput = (field) => {
-    const {meta: {touched, error} ,label, secureTextEntry, maxLength, keyboardType, placeholder, input: {onChange, ...restInput}} = field;
+    const {meta: {touched, error}, label, secureTextEntry, maxLength, keyboardType, placeholder, icon, input: {onChange, ...restInput}} = field;
     return (
         <Item>
-            <Label>{label}</Label>
+            {label && <Label>{label}</Label>}
+            {icon && <Icon active name={icon}/>}
             <Input
+                underlineColorAndroid='transparent'
                 onChangeText={onChange}
                 maxLength={maxLength}
                 placeholder={placeholder}
@@ -14,7 +16,7 @@ const renderTextInput = (field) => {
                 secureTextEntry={secureTextEntry}
                 label={label}
                 {...restInput} />
-            {(touched && error) && <Text>{error}</Text>}
+            {(touched && error) && <Text style={{color: '#f32013'}}>{error}</Text>}
         </Item>
     );
 };

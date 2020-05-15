@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {
-    Image,StyleSheet,
+    Image, StyleSheet,
 } from 'react-native';
-import {View,Text} from 'native-base';
+import {View, H1} from 'native-base';
 
 
 export default class Logo extends Component<{}> {
@@ -11,7 +11,7 @@ export default class Logo extends Component<{}> {
             <View style={styles.container}>
                 <Image style={{width: 120, height: 120}}
                        source={require('../assets/images/react-logo.png')}/>
-                <Text style={styles.logoText}> Test Client</Text>
+                <H1> Test Client</H1>
             </View>
         );
     };

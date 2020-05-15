@@ -5,8 +5,8 @@ import Invoices from './main/Invoices';
 import Customers from './main/Customers';
 import Items from './main/Items';
 import Settings from './main/Settings';
-import AddItem from './AddItem';
-import AddCustomer from './AddCustomer';
+import AddItem from './form-pages/ItemForm';
+import AddCustomer from './form-pages/CustomerForm';
 
 export {
     Login,

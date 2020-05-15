@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
 import {Container, Content, Header, Title, Right, Left, Body, Card, CardItem, Icon, Button, Text} from 'native-base';
-import renderTextInput from '../components/RenderTextInput';
+import renderTextInput from '../../components/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateEmailField, validateRequiredField} from '../utils/form.utils';
+import {validateEmailField, validateRequiredField} from '../../utils/form.utils';
 
-class AddCustomer extends Component<{}> {
+class CustomerForm extends Component<{}> {
     render() {
         return (
             <Container>
@@ -24,35 +24,48 @@ class AddCustomer extends Component<{}> {
                 </Header>
                 <Content padder>
                     <Card>
+                        <CardItem header>
+                            <Text>Contact</Text>
+                        </CardItem>
                         <CardItem>
                             <Field name={'name'}
                                    keyboardType={'default'}
                                    placeholder={'Customer Name'}
+                                   icon={'ios-contact'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'company'}
                                    keyboardType={'default'}
                                    placeholder={'Company'}
+                                   icon={'ios-briefcase'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'email'}
                                    keyboardType={'email-address'}
                                    placeholder={'Email'}
+                                   icon={'ios-mail'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'phone'}
                                    keyboardType={'phone-pad'}
                                    placeholder={'Phone'}
+                                   icon={'ios-call'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
                             <Field name={'mobile'}
                                    keyboardType={'phone-pad'}
                                    placeholder={'Mobile'}
+                                   icon={'ios-phone-portrait'}
                                    component={renderTextInput}/>
+                        </CardItem>
+                    </Card>
+                    <Card>
+                        <CardItem header>
+                            <Text>Addresses</Text>
                         </CardItem>
                         <CardItem>
                             <Field name={'address_1'}
@@ -95,8 +108,9 @@ class AddCustomer extends Component<{}> {
 const validate = (values) => {
     return {
         email: validateEmailField(values.email),
-        name: validateRequiredField(values.name),
-        phone: validateRequiredField(values.password),
+        name: validateRequiredField('Name', values.name),
+        phone: validateRequiredField('Phone', values.phone),
+        address_1: validateRequiredField('One Address', values.address_1),
     };
 };
 
@@ -112,7 +126,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
-        form: 'addCustomer',
+        form: 'customerForm',
         validate,
     }),
-)(AddCustomer);
+)(CustomerForm);
