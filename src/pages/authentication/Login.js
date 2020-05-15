@@ -1,18 +1,16 @@
 import React, {Component} from 'react';
-import {
-    Text,
-} from 'react-native';
-import {Container, Content, Button, Body} from 'native-base';
+import {Container, Content, Button, Body, Text} from 'native-base';
 
 import {Actions} from 'react-native-router-flux';
-import Logo from '../components/Logo';
+import Logo from '../../components/Logo';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {loginUser} from '../actions/auth.actions';
-import Loader from '../components/Loader';
-import {ErrorUtils} from '../utils/auth.utils';
-import renderTextInput from '../components/RenderTextInput';
+import {loginUser} from '../../actions/auth.actions';
+import Loader from '../../components/Loader';
+import {ErrorUtils} from '../../utils/auth.utils';
+import renderTextInput from '../../components/RenderTextInput';
+import {validateEmailField, validateRequiredField} from '../../utils/form.utils';
 
 class Login extends Component<{}> {
 
@@ -66,17 +64,11 @@ class Login extends Component<{}> {
         );
     };
 }
-
-//todo refactor
 const validate = (values) => {
-    const errors = {};
-    if (!values.email) {
-        errors.email = 'Email is required.';
-    }
-    if (!values.password) {
-        errors.password = 'Password is required.';
-    }
-    return errors;
+    return {
+        email: validateEmailField(values.email),
+        password: validateRequiredField('Password',values.password),
+    };
 };
 
 const mapStateToProps = (state) => ({

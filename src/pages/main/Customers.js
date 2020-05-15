@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
-import {
-    SafeAreaView,
-    View,
-} from 'react-native';
-import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon, List} from 'native-base';
-import ListView from '../components/ListView';
-import NavBar from '../components/NavBar';
+import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon, List, View} from 'native-base';
+import ListView from '../../components/ListView';
 
 const tempCustomers = [
     {

@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {
-    Text,
     View,
 } from 'react-native';
-import {Container, Content, Header, Title, Right, Left, Body, Icon, Button, Tabs, Tab, Fab} from 'native-base';
+import {Container, Content, Header, Title, Right, Left, Body,Text, Icon, Button, Tabs, Tab, Fab} from 'native-base';
 import {connect} from 'react-redux';
-import store from '../config/store';
+import store from '../../config/store';
 
 
 class Invoices extends Component<{}> {
@@ -18,7 +17,7 @@ class Invoices extends Component<{}> {
                 <Header>
                     <Left>
                         <Button transparent light>
-                            <Icon name='settings'/>
+                            <Icon name='ios-settings'/>
                         </Button>
                     </Left>
                     <Body>
@@ -26,7 +25,7 @@ class Invoices extends Component<{}> {
                     </Body>
                     <Right>
                         <Button transparent light>
-                            <Icon name='search'/>
+                            <Icon name='ios-search'/>
                         </Button>
                     </Right>
                 </Header>

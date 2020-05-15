@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
-import {
-    SafeAreaView, Text,
-    View,
-} from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import {Container, Content, Header, Title, Right, Left, Body, Card, CardItem, Icon, Button, Footer} from 'native-base';
+import {Container, Content, Header, Title, Right, Left, Body, Card, CardItem, Icon, Button, Text} from 'native-base';
 import renderTextInput from '../components/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
+import {validateEmailField, validateRequiredField} from '../utils/form.utils';
 
 class AddCustomer extends Component<{}> {
     render() {
@@ -43,13 +40,13 @@ class AddCustomer extends Component<{}> {
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
-                            <Field name={'mobile'}
-                                   placeholder={'Mobile'}
+                            <Field name={'phone'}
+                                   placeholder={'Phone'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
-                            <Field name={'phone'}
-                                   placeholder={'Phone'}
+                            <Field name={'mobile'}
+                                   placeholder={'Mobile'}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
@@ -88,14 +85,11 @@ class AddCustomer extends Component<{}> {
 
 //todo refactor
 const validate = (values) => {
-    const errors = {};
-    if (!values.email) {
-        errors.email = 'Email is required.';
-    }
-    if (!values.password) {
-        errors.password = 'Password is required.';
-    }
-    return errors;
+    return {
+        email: validateEmailField(values.email),
+        name: validateRequiredField(values.name),
+        phone: validateRequiredField(values.password),
+    };
 };
 
 const mapStateToProps = (state) => ({

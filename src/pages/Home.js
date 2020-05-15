@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Container, Content, Header, Footer, FooterTab, Icon} from 'native-base';
-import {
-    Text,
-} from 'react-native';
+import {Button, Container, Content, Header, Text, FooterTab, Icon} from 'native-base';
 import {connect} from 'react-redux';
 import {logoutUser} from '../actions/auth.actions';
 

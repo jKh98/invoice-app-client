@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Container, Footer, FooterTab, Icon, Header, Content} from 'native-base';
-import {
-    Text,
-} from 'react-native';
+import {Button, Text, Footer, FooterTab, Icon, Header, Content} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 
 class NavBar extends Component<{}> {
@@ -23,7 +20,7 @@ class NavBar extends Component<{}> {
                                 Actions.invoices();
                                 this.setState({scene: 1});
                             }}>
-                        <Icon name="ios-document"/>
+                        <Icon name="file-invoice-dollar" type={'FontAwesome5'}/>
                         <Text>Invoice</Text>
                     </Button>
                     <Button vertical
@@ -49,9 +46,10 @@ class NavBar extends Component<{}> {
                             onPress={() => {
                                 Actions.settings();
                                 this.setState({scene: 4});
-                            }}>
+                            }}
+                            textStyle={{color: "#fff"}}>
                         <Icon name="settings"/>
-                        <Text>Settings</Text>
+                        <Text active>Settings</Text>
                     </Button>
                 </FooterTab>
             </Footer>

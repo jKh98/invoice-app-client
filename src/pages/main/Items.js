@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import {
-    Text,
     View,
 } from 'react-native';
-import {Body, Container, Content, Fab, Header, Footer, Icon, Left, List, Right, Title} from 'native-base';
-import ListView from '../components/ListView';
+import {Body, Container, Content, Fab, Header, Text, Icon, Left, List, Right, Title} from 'native-base';
+import ListView from '../../components/ListView';
 import {Actions} from 'react-native-router-flux';
-import NavBar from '../components/NavBar';
 
 const tempItems = [
     {

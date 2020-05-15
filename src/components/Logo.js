@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {
-    View,
-    Image,
-    Text, StyleSheet,
+    Image,StyleSheet,
 } from 'react-native';
-import {Container} from 'native-base';
+import {View,Text} from 'native-base';
 
 
 export default class Logo extends Component<{}> {

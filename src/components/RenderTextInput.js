@@ -1,5 +1,4 @@
-import {Input, Label, Item} from 'native-base';
-import {Text} from 'react-native';
+import {Input, Label, Item, Text} from 'native-base';
 import React from 'react';
 
 const renderTextInput = (field) => {

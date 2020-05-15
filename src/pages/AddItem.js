@@ -1,8 +1,4 @@
 import React, {Component} from 'react';
-import {
-    SafeAreaView, Text,
-    View,
-} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
     Container,
@@ -16,7 +12,7 @@ import {
     CardItem,
     Icon,
     Button,
-    Textarea,
+    Text,
 } from 'native-base';
 import renderTextInput from '../components/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
@@ -53,11 +49,6 @@ class AddItem extends Component<{}> {
                         <CardItem>
                             <Field name={'cost'}
                                    placeholder={'Unit Cost'}
-                                   component={renderTextInput}/>
-                        </CardItem>
-                        <CardItem>
-                            <Field name={'description'}
-                                   placeholder={'Email'}
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>

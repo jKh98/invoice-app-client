@@ -1,10 +1,5 @@
 import React, {Component} from 'react';
-import {
-    Text,
-    View,
-} from 'react-native';
-import {Body, Container, Content, Header, Left, Right, Title} from 'native-base';
-import NavBar from '../components/NavBar';
+import {Body, Container, Content, Header, Left, Right, Title, Text} from 'native-base';
 
 
 class Settings extends Component<{}> {
