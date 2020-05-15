@@ -16,8 +16,10 @@ import NavBar from './NavBar';
 export default class Routes extends Component<{}> {
 
     render() {
+        const RouterWithRedux = connect()(Router);
+
         return (
-            <Router>
+            <RouterWithRedux>
                 <Scene>
                     <Scene key={'root'} hideNavBar={true} initial={!this.props.isLoggedIn}>
                         <Scene key="login" component={Login} title="Login" initial={true}/>
@@ -32,9 +34,10 @@ export default class Routes extends Component<{}> {
                         </Scene>
                         <Scene key="addCustomer" component={AddCustomer} title="Customer" hideNavBar/>
                         <Scene key="addItem" component={AddItem} title="Customer" hideNavBar/>
+
                     </Scene>
                 </Scene>
-            </Router>
+            </RouterWithRedux>
         );
     }
 }

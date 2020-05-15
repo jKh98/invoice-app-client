@@ -5,13 +5,14 @@ import {
 } from 'react-native';
 import {Container, Content, Header, Title, Right, Left, Body, Icon, Button, Tabs, Tab, Fab} from 'native-base';
 import {connect} from 'react-redux';
-import NavBar from '../components/NavBar';
+import store from '../config/store';
 
 
 class Invoices extends Component<{}> {
 
     render() {
         const {getUser: {userDetails}} = this.props;
+        console.log(store().store.getState())
         return (
             <Container>
                 <Header>
