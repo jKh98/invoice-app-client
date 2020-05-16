@@ -14,7 +14,7 @@ import {
     Button,
     Text,
 } from 'native-base';
-import renderTextInput from '../../components/RenderTextInput';
+import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
@@ -36,22 +36,22 @@ class ItemForm extends Component<{}> {
                     <Right/>
                 </Header>
                 <Content padder>
-                    <Card>
-                        <CardItem>
+                    <Card style={{padding: 10}}>
+                        <CardItem cardBody>
                             <Field name={'name'}
                                    keyboardType={'default'}
                                    placeholder={'Item Name'}
                                    icon={'ios-barcode'}
                                    component={renderTextInput}/>
                         </CardItem>
-                        <CardItem>
+                        <CardItem cardBody>
                             <Field name={'price'}
                                    keyboardType={'decimal-pad'}
                                    placeholder={'Unit Price'}
                                    icon={'ios-pricetag'}
                                    component={renderTextInput}/>
                         </CardItem>
-                        <CardItem>
+                        <CardItem cardBody>
                             <Field name={'description'}
                                    keyboardType={'default'}
                                    placeholder={'Description'}

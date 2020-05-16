@@ -7,8 +7,9 @@ import {
     Customers,
     Items,
     Settings,
-    AddCustomer,
-    AddItem,
+    CustomerForm,
+    ItemForm,
+    InvoiceForm
 } from '../pages/index';
 import {connect} from 'react-redux';
 import NavBar from './NavBar';
@@ -32,8 +33,9 @@ export default class Routes extends Component<{}> {
                             <Scene key="items" component={Items} title="Items" hideNavBar/>
                             <Scene key="settings" component={Settings} title="Settings" hideNavBar/>
                         </Scene>
-                        <Scene key="addCustomer" component={AddCustomer} title="Customer" hideNavBar/>
-                        <Scene key="addItem" component={AddItem} title="Customer" hideNavBar/>
+                        <Scene key="customerForm" component={CustomerForm} title="Customer" hideNavBar/>
+                        <Scene key="itemForm" component={ItemForm} title="Item" hideNavBar/>
+                        <Scene key="invoiceForm" component={InvoiceForm} title="Invoice" hideNavBar/>
 
                     </Scene>
                 </Scene>

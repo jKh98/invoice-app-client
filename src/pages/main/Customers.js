@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
 import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon, List, View, Text} from 'native-base';
 import ListView from '../../components/ListView';
+import {connect} from 'react-redux';
 
 const tempCustomers = [
     {
@@ -76,7 +77,7 @@ class Customers extends Component<{}> {
 
     addNewCustomer() {
         // alert('new customer');
-        Actions.addCustomer();
+        Actions.customerForm();
     }
 
     openCustomerPage() {
@@ -101,4 +102,13 @@ class Customers extends Component<{}> {
     }
 }
 
-export default Customers;
+
+const mapStateToProps = (state) => ({
+    getCustomers: state.customerReducer.getCustomers,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    dispatch,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

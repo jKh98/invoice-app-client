@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {
-    View,
-} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 import {
     Container,
     Content,
@@ -133,7 +131,8 @@ class Invoices extends Component<{}> {
     };
 
     addNewInvoice() {
-        alert('new invoice');
+        // alert('new invoice');
+        Actions.invoiceForm();
     }
 
     renderInvoicesList() {

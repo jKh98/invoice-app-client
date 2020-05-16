@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
 import {Container, Content, Header, Title, Right, Left, Body, Card, CardItem, Icon, Button, Text} from 'native-base';
-import renderTextInput from '../../components/RenderTextInput';
+import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
@@ -23,39 +23,39 @@ class CustomerForm extends Component<{}> {
                     <Right/>
                 </Header>
                 <Content padder>
-                    <Card>
-                        <CardItem header>
-                            <Text>Contact</Text>
-                        </CardItem>
-                        <CardItem>
+                    <Card style={{padding: 10}}>
+                        <CardItem cardBody listItemPadding>
                             <Field name={'name'}
                                    keyboardType={'default'}
                                    placeholder={'Customer Name'}
                                    icon={'ios-contact'}
                                    component={renderTextInput}/>
                         </CardItem>
-                        <CardItem>
+                        <CardItem cardBody>
+
                             <Field name={'company'}
                                    keyboardType={'default'}
                                    placeholder={'Company'}
                                    icon={'ios-briefcase'}
                                    component={renderTextInput}/>
                         </CardItem>
-                        <CardItem>
+                        <CardItem cardBody>
+
                             <Field name={'email'}
                                    keyboardType={'email-address'}
                                    placeholder={'Email'}
                                    icon={'ios-mail'}
                                    component={renderTextInput}/>
                         </CardItem>
-                        <CardItem>
+                        <CardItem cardBody>
+
                             <Field name={'phone'}
                                    keyboardType={'phone-pad'}
                                    placeholder={'Phone'}
                                    icon={'ios-call'}
                                    component={renderTextInput}/>
                         </CardItem>
-                        <CardItem>
+                        <CardItem cardBody>
                             <Field name={'mobile'}
                                    keyboardType={'phone-pad'}
                                    placeholder={'Mobile'}
@@ -63,23 +63,20 @@ class CustomerForm extends Component<{}> {
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>Addresses</Text>
-                        </CardItem>
-                        <CardItem>
+                    <Card style={{padding: 10}}>
+                        <CardItem cardBody>
                             <Field name={'address_1'}
                                    keyboardType={'default'}
                                    placeholder={'Address 1'}
                                    component={renderTextInput}/>
                         </CardItem>
-                        <CardItem>
+                        <CardItem cardBody>
                             <Field name={'address_2'}
                                    keyboardType={'default'}
                                    placeholder={'Address 2'}
                                    component={renderTextInput}/>
                         </CardItem>
-                        <CardItem>
+                        <CardItem cardBody>
                             <Field name={'address_3'}
                                    keyboardType={'default'}
                                    placeholder={'Address 3'}

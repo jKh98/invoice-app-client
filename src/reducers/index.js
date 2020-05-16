@@ -1,11 +1,13 @@
 import {combineReducers} from 'redux';
 import authReducer from './auth.reducer';
 import userReducer from './user.reducer';
+import customerReducer from './customer.reducer';
 import {reducer as formReducer} from 'redux-form';
 
 const reducers = {
     authReducer,
     userReducer,
+    customerReducer,
     form: formReducer,
 };
 

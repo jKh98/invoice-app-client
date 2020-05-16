@@ -101,7 +101,7 @@ class Items extends Component<{}> {
 
     addNewItem() {
         // alert('new item');
-        Actions.addItem();
+        Actions.itemForm();
     }
 
     openItemPage() {
