@@ -9,6 +9,7 @@ import {validateEmailField, validateRequiredField} from '../../utils/form.utils'
 
 class CustomerForm extends Component<{}> {
     render() {
+        // alert(this.props.customer.name)
         return (
             <Container>
                 <Header>
@@ -111,10 +112,22 @@ const validate = (values) => {
     };
 };
 
-const mapStateToProps = (state) => ({
-    //TODO CHECK STATE PARAMS
-    // loginUser: state.authReducer.loginUser,
-});
+const mapStateToProps = (state, props) => {
+    if (props.customer) {
+        return ({
+            initialValues: {
+                name: props.customer.name,
+                company: props.customer.company,
+                email: props.customer.email,
+                phone: props.customer.phone,
+                mobile: props.customer.mobile,
+                address_1: (props.customer.addresses)[0],
+                address_2: (props.customer.addresses)[1],
+                address_3: (props.customer.addresses)[2],
+            },
+        });
+    }
+};
 
 const mapDispatchToProps = (dispatch) => ({
     dispatch,
@@ -124,6 +137,7 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
         form: 'customerForm',
+        enableReinitialize: true,
         validate,
     }),
 )(CustomerForm);
