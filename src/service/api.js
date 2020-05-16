@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.1.3:3333';
+const BASE_URL = 'http://192.168.1.2:3333';
 
 export const api = async (url, method, body = null, headers = {}) => {
     try {
@@ -19,7 +19,7 @@ export const api = async (url, method, body = null, headers = {}) => {
         const timeOutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject('Request Timeout');
-            }, 10000);
+            }, 5000);
         });
 
         return await Promise.race([fetchPromise, timeOutPromise]);

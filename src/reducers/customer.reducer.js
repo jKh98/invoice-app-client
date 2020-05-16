@@ -7,21 +7,21 @@ const getCustomers = (state = {}, action) => {
                 isLoading: true,
                 isError: false,
                 isSuccess: false,
-                userDetails: null,
+                customersList: null,
             };
         case 'GET_CUSTOMERS_SUCCESS':
             return {
                 isLoading: false,
                 isError: false,
                 isSuccess: true,
-                userDetails: action.payload,
+                customersList: action.payload,
             };
         case 'GET_CUSTOMERS_FAIL':
             return {
                 isLoading: false,
                 isError: true,
                 isSuccess: false,
-                userDetails: action.payload,
+                customersList: action.payload,
             };
         default:
             return state;

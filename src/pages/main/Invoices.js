@@ -82,7 +82,6 @@ class Invoices extends Component<{}> {
 
     render() {
         const {getUser: {userDetails}} = this.props;
-        console.log(store().store.getState());
         return (
             <Container>
                 <Header>

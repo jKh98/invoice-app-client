@@ -3,6 +3,7 @@ import {Actions} from 'react-native-router-flux';
 import {Container, Content, Header, Title, Right, Left, Body, Fab, Icon, List, View, Text} from 'native-base';
 import ListView from '../../components/ListView';
 import {connect} from 'react-redux';
+import {getCustomersList} from '../../actions/customer.actions';
 
 const tempCustomers = [
     {
@@ -50,7 +51,13 @@ const tempCustomers = [
 ];
 
 class Customers extends Component<{}> {
+
+    componentDidMount() {
+        this.props.dispatch(getCustomersList());
+    }
+
     render() {
+        const {getCustomers: {customersList}} = this.props;
         return (
             <Container>
                 <Header>
@@ -61,7 +68,7 @@ class Customers extends Component<{}> {
                     <Right/>
                 </Header>
                 <View style={{flex: 1}}>
-                    {this.renderCustomersList()}
+                    {this.renderCustomersList(customersList)}
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
@@ -84,9 +91,10 @@ class Customers extends Component<{}> {
         alert('i was clicked');
     }
 
-    renderCustomersList() {
+    renderCustomersList(customersList) {
+        console.log(customersList);
         return (<List
-            dataArray={tempCustomers}
+            dataArray={customersList}
             renderRow={
                 (customer) =>
                     <ListView
@@ -111,4 +119,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Customers);
+
+// export default Customers;
