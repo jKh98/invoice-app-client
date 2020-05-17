@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {getCustomersList} from '../../actions/customer.actions';
 import Loader from '../../components/Loader';
 import {ErrorUtils} from '../../utils/error.utils';
+import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 
 class Customers extends Component<{}> {
 
@@ -63,6 +64,10 @@ class Customers extends Component<{}> {
 
     renderCustomersList(customersList) {
         return (<List
+            ListEmptyComponent={
+                <EmptyListPlaceHolder
+                    type={'item'}
+                    message={'No customers found. Press the plus button to add new customers.'}/>}
             dataArray={customersList}
             renderRow={
                 (customer) =>

@@ -22,6 +22,7 @@ import {validateRequiredField} from '../../utils/form.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editItem, getItemsList} from '../../actions/item.actions';
 import {getCustomersList} from '../../actions/customer.actions';
+import Loader from '../../components/Loader';
 
 class ItemForm extends Component<{}> {
     modifyItemsData = async (values) => {
@@ -65,6 +66,7 @@ class ItemForm extends Component<{}> {
         const {handleSubmit, editItem} = this.props;
         return (
             <Container>
+                {editItem.isLoading && <Loader/>}
                 <Header>
                     <Left>
                         <Button transparent onPress={this.goBack}>

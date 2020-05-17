@@ -9,6 +9,8 @@ import {ErrorUtils} from '../../utils/error.utils';
 import {getItemsList} from '../../actions/item.actions';
 import Loader from '../../components/Loader';
 import {connect} from 'react-redux';
+import Logo from '../../components/Logo';
+import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 
 class Items extends Component<{}> {
     componentDidMount() {
@@ -18,7 +20,7 @@ class Items extends Component<{}> {
     async loadItemsList() {
         try {
             const response = await this.props.dispatch(getItemsList());
-            console.log(response)
+            console.log(response);
             if (!response.success) {
                 throw response;
             }
@@ -41,7 +43,7 @@ class Items extends Component<{}> {
                     <Right/>
                 </Header>
                 <View style={{flex: 1}}>
-                    {this.renderItemsList(getItems.itemsList||[])}
+                    {this.renderItemsList(getItems.itemsList || [])}
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
@@ -64,8 +66,11 @@ class Items extends Component<{}> {
     }
 
     renderItemsList(itemsList) {
-        console.log(itemsList)
         return (<List
+            ListEmptyComponent={
+                <EmptyListPlaceHolder
+                    type={'item'}
+                    message={'No items found. Press the plus button to add new items.'}/>}
             dataArray={itemsList}
             renderRow={
                 (item) =>
@@ -73,6 +78,7 @@ class Items extends Component<{}> {
                         title={item.name}
                         subtitle={item.description}
                         right={item.price}
+                        ListEmptyComponent={Logo}
                         handleClickEvent={
                             () => {
                                 this.openItemPage(item);
