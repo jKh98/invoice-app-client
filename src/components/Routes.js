@@ -9,8 +9,9 @@ import {
     Settings,
     CustomerForm,
     ItemForm,
-    InvoiceForm
+    InvoiceForm,
 } from '../pages/index';
+import {Root} from 'native-base';
 import {connect} from 'react-redux';
 import NavBar from './NavBar';
 
@@ -20,26 +21,29 @@ export default class Routes extends Component<{}> {
         const RouterWithRedux = connect()(Router);
 
         return (
-            <RouterWithRedux>
-                <Scene>
-                    <Scene key={'root'} hideNavBar={true} initial={!this.props.isLoggedIn}>
-                        <Scene key="login" component={Login} title="Login" initial={true}/>
-                        <Scene key="signup" component={SignUp} title="Sign Up"/>
-                    </Scene>
-                    <Scene key={'app'} hideNavBar={true} initial={this.props.isLoggedIn}>
-                        <Scene key="home" title="Home" initial={this.props.isLoggedIn} tabs tabBarComponent={NavBar}>
-                            <Scene key="invoices" component={Invoices} title="Invoices" hideNavBar initial/>
-                            <Scene key="customers" component={Customers} title="Customers" hideNavBar/>
-                            <Scene key="items" component={Items} title="Items" hideNavBar/>
-                            <Scene key="settings" component={Settings} title="Settings" hideNavBar/>
+            <Root>
+                <RouterWithRedux>
+                    <Scene>
+                        <Scene key={'root'} hideNavBar={true} initial={!this.props.isLoggedIn}>
+                            <Scene key="login" component={Login} title="Login" initial={true}/>
+                            <Scene key="signup" component={SignUp} title="Sign Up"/>
                         </Scene>
-                        <Scene key="customerForm" component={CustomerForm} title="Customer" hideNavBar/>
-                        <Scene key="itemForm" component={ItemForm} title="Item" hideNavBar/>
-                        <Scene key="invoiceForm" component={InvoiceForm} title="Invoice" hideNavBar/>
+                        <Scene key={'app'} hideNavBar={true} initial={this.props.isLoggedIn}>
+                            <Scene key="home" title="Home" initial={this.props.isLoggedIn} tabs
+                                   tabBarComponent={NavBar}>
+                                <Scene key="invoices" component={Invoices} title="Invoices" hideNavBar initial/>
+                                <Scene key="customers" component={Customers} title="Customers" hideNavBar/>
+                                <Scene key="items" component={Items} title="Items" hideNavBar/>
+                                <Scene key="settings" component={Settings} title="Settings" hideNavBar/>
+                            </Scene>
+                            <Scene key="customerForm" component={CustomerForm} title="Customer" hideNavBar/>
+                            <Scene key="itemForm" component={ItemForm} title="Item" hideNavBar/>
+                            <Scene key="invoiceForm" component={InvoiceForm} title="Invoice" hideNavBar/>
 
+                        </Scene>
                     </Scene>
-                </Scene>
-            </RouterWithRedux>
+                </RouterWithRedux>
+            </Root>
         );
     }
 }

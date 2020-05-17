@@ -28,4 +28,32 @@ const getCustomers = (state = {}, action) => {
     }
 };
 
-export default combineReducers({getCustomers});
+const editCustomer = (state={}, action) => {
+    switch (action.type) {
+        case 'EDIT_CUSTOMER_LOADING':
+            return {
+                isLoading: true,
+                isError: false,
+                isSuccess: false,
+                customer: null,
+            };
+        case 'EDIT_CUSTOMER_SUCCESS':
+            return {
+                isLoading: false,
+                isError: false,
+                isSuccess: true,
+                customer: action.payload,
+            };
+        case 'EDIT_CUSTOMER_FAIL':
+            return {
+                isLoading: false,
+                isError: true,
+                isSuccess: false,
+                customer: action.payload,
+            };
+        default:
+            return state;
+    }
+}
+
+export default combineReducers({getCustomers, editCustomer});
