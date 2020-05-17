@@ -3,6 +3,7 @@ import authReducer from './auth.reducer';
 import userReducer from './user.reducer';
 import itemReducer from './item.reducer';
 import customerReducer from './customer.reducer';
+import invoiceReducer from './invoice.reducer';
 import {reducer as formReducer} from 'redux-form';
 
 const reducers = {
@@ -10,6 +11,7 @@ const reducers = {
     userReducer,
     customerReducer,
     itemReducer,
+    invoiceReducer,
     form: formReducer,
 };
 
