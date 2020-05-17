@@ -73,7 +73,7 @@ class Customers extends Component<{}> {
                 (customer) =>
                     <ListView
                         title={customer.name}
-                        subtitle={customer.status}
+                        subtitle={`${customer.number_invoices} invoices`}
                         right={customer.total}
                         handleClickEvent={
                             () => {

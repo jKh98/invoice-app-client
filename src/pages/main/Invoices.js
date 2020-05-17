@@ -17,71 +17,32 @@ import {
     List,
 } from 'native-base';
 import {connect} from 'react-redux';
-import store from '../../config/store';
 import ListView from '../../components/ListView';
-
-const tempInvoices = [
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-    {
-        customer: 'jihad',
-        number: 123234,
-        total: 120,
-        date: '15/5/2020',
-    },
-
-];
+import {getInvoicesList} from '../../actions/invoice.actions';
+import {ErrorUtils} from '../../utils/error.utils';
+import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 
 class Invoices extends Component<{}> {
 
+    componentDidMount() {
+        this.loadInvoicesList();
+    }
+
+    async loadInvoicesList() {
+        try {
+            const response = await this.props.dispatch(getInvoicesList());
+            console.log(response);
+            if (!response.success) {
+                throw response;
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    }
+
     render() {
-        const {getUser: {userDetails}} = this.props;
+        const {getUser: {userDetails}, getInvoices} = this.props;
         return (
             <Container>
                 <Header>
@@ -102,17 +63,27 @@ class Invoices extends Component<{}> {
                 <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
                     <Tabs>
                         <Tab heading="ALL">
-                            {this.renderInvoicesList()}
+                            {this.renderInvoicesList(getInvoices.invoicesList || [])}
                             <Text>{userDetails ? userDetails.name : 'man'}</Text>
                         </Tab>
                         <Tab heading="PENDING">
                             {   //todo add pending param
-                                this.renderInvoicesList()}
+                                this.renderInvoicesList(
+                                    (getInvoices.invoicesList
+                                        || []).filter((invoice) => {
+                                        return !invoice.paid.status;
+                                    }),
+                                )}
                             <Text>{userDetails ? userDetails.email : 'man'}</Text>
                         </Tab>
                         <Tab heading="PAID">
                             {   //todo add paid param
-                                this.renderInvoicesList()}
+                                this.renderInvoicesList(
+                                    (getInvoices.invoicesList
+                                        || []).filter((invoice) => {
+                                        return invoice.paid.status;
+                                    }),
+                                )}
                             <Text>{userDetails ? userDetails.password : 'man'}</Text>
                         </Tab>
                     </Tabs>
@@ -130,21 +101,28 @@ class Invoices extends Component<{}> {
     };
 
     addNewInvoice() {
-        // alert('new invoice');
-        Actions.invoiceForm();
+        Actions.invoiceForm({invoice: null});
     }
 
-    renderInvoicesList() {
+    openInvoicePage() {
+        Actions.invoiceForm({invoice: invoice});
+    }
+
+    renderInvoicesList(invoicesList) {
         return (
             <List
-                dataArray={tempInvoices}
+                ListEmptyComponent={
+                    <EmptyListPlaceHolder
+                        type={'item'}
+                        message={'No items found. Press the plus button to add new items.'}/>}
+                dataArray={invoicesList}
                 renderRow={
                     (invoice) =>
                         <ListView
-                            title={invoice.customer}
+                            title={invoice.customer.name}
                             subtitle={invoice.number}
                             right={invoice.total}
-                            rightSub={invoice.date}
+                            rightSub={invoice.issued}
                             handleClickEvent={
                                 this.openInvoicePage
                             }/>
@@ -153,13 +131,10 @@ class Invoices extends Component<{}> {
             </List>
         );
     }
-
-    openInvoicePage() {
-        alert('opened');
-    }
 }
 
 const mapStateToProps = (state) => ({
+    getInvoices: state.invoiceReducer.getInvoices,
     getUser: state.userReducer.getUser,
 });
 
@@ -167,4 +142,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch,
 });
 
-export default connect(mapStateToProps, null)(Invoices);
+export default connect(mapStateToProps, mapDispatchToProps)(Invoices);
