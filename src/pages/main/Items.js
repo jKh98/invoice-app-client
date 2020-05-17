@@ -64,6 +64,7 @@ class Items extends Component<{}> {
     }
 
     renderItemsList(itemsList) {
+        console.log(itemsList)
         return (<List
             dataArray={itemsList}
             renderRow={

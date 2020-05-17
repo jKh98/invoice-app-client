@@ -12,16 +12,57 @@ import {
     CardItem,
     Icon,
     Button,
-    Text,
+    Text, Toast,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateEmailField, validateRequiredField} from '../../utils/form.utils';
+import {validateRequiredField} from '../../utils/form.utils';
+import {ErrorUtils} from '../../utils/error.utils';
+import {editItem, getItemsList} from '../../actions/item.actions';
+import {getCustomersList} from '../../actions/customer.actions';
 
 class ItemForm extends Component<{}> {
+    modifyItemsData = async (values) => {
+        try {
+            const response = await this.props.dispatch(editItem(values));
+            if (!response.success) {
+                throw response;
+            } else {
+                await this.refreshItemsList();
+            }
+            console.log(response);
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    };
+
+    async refreshItemsList() {
+        try {
+            const response = await this.props.dispatch(getItemsList());
+            if (!response.success) {
+                throw response;
+            } else {
+                Toast.show({
+                    text: 'Items list successfully updated.',
+                    buttonText: 'Okay',
+                    type: 'success',
+                });
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    }
+
+    onSubmit = (values) => {
+        this.modifyItemsData(values);
+    };
+
     render() {
+        const {handleSubmit, editItem} = this.props;
         return (
             <Container>
                 <Header>
@@ -59,7 +100,7 @@ class ItemForm extends Component<{}> {
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>
-                    <Button padder block primary onPress={this.handleSubmit(this.onSubmit)}>
+                    <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
                         <Text>Save</Text>
                     </Button>
                 </Content>
@@ -72,12 +113,12 @@ class ItemForm extends Component<{}> {
     }
 
     goBack() {
-        //TODO handling
         Actions.pop();
+        Actions.refresh();
     }
+
 }
 
-//todo refactor
 const validate = (values) => {
     return {
         name: validateRequiredField('Name', values.name),
@@ -85,10 +126,21 @@ const validate = (values) => {
     };
 };
 
-const mapStateToProps = (state) => ({
-    //TODO CHECK STATE PARAMS
-    // loginUser: state.authReducer.loginUser,
-});
+const mapStateToProps = (state,props) => {
+    let initialValues;
+    if (props.item) {
+        initialValues = {
+            name: props.item.name,
+            price: props.item.price.toString(),
+            description: props.item.description,
+        };
+    }
+    return ({
+        initialValues,
+        editItem: state.itemReducer.editItem,
+        getItems: state.itemReducer.getItems,
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
     dispatch,
@@ -98,6 +150,7 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
         form: 'itemForm',
+        enableReinitialize: true,
         validate,
     }),
 )(ItemForm);

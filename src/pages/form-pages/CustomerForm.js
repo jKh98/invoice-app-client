@@ -1,6 +1,20 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
-import {Container, Content, Header, Title, Right, Left, Body, Card, CardItem, Icon, Button, Text,Toast } from 'native-base';
+import {
+    Container,
+    Content,
+    Header,
+    Title,
+    Right,
+    Left,
+    Body,
+    Card,
+    CardItem,
+    Icon,
+    Button,
+    Text,
+    Toast,
+} from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
@@ -16,8 +30,8 @@ class CustomerForm extends Component<{}> {
             const response = await this.props.dispatch(editCustomer(values));
             if (!response.success) {
                 throw response;
-            }else {
-                await this.refreshCustomersList()
+            } else {
+                await this.refreshCustomersList();
             }
             console.log(response);
         } catch (e) {
@@ -31,12 +45,12 @@ class CustomerForm extends Component<{}> {
             const response = await this.props.dispatch(getCustomersList());
             if (!response.success) {
                 throw response;
-            }else{
+            } else {
                 Toast.show({
-                    text: "Customers list successfully updated.",
-                    buttonText: "Okay",
-                    type: "success"
-                })
+                    text: 'Customers list successfully updated.',
+                    buttonText: 'Okay',
+                    type: 'success',
+                });
             }
         } catch (e) {
             const newError = new ErrorUtils(e);
@@ -136,9 +150,8 @@ class CustomerForm extends Component<{}> {
     };
 
     goBack() {
-        //TODO handling
-        Actions.pop()
-        Actions.refresh()
+        Actions.pop();
+        Actions.refresh();
     }
 }
 
@@ -163,14 +176,13 @@ const mapStateToProps = (state, props) => {
             address_1: (props.customer.addresses)[0],
             address_2: (props.customer.addresses)[1],
             address_3: (props.customer.addresses)[2],
-        }
+        };
     }
-        return ({
-            initialValues,
-            editCustomer: state.customerReducer.editCustomer,
-            getCustomers: state.customerReducer.getCustomers,
-        });
-
+    return ({
+        initialValues,
+        editCustomer: state.customerReducer.editCustomer,
+        getCustomers: state.customerReducer.getCustomers,
+    });
 };
 
 const mapDispatchToProps = (dispatch) => ({
