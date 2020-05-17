@@ -9,7 +9,6 @@ export const getItemsList = () => {
                 type: 'GET_ITEMS_LOADING',
             });
             const response = await fetchApi('/item/all', 'GET', null, 200, token);
-
             if (response.success) {
                 dispatch({
                     type: 'GET_ITEMS_SUCCESS',

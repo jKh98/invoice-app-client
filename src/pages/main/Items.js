@@ -5,78 +5,34 @@ import {
 import {Body, Container, Content, Fab, Header, Text, Icon, Left, List, Right, Title} from 'native-base';
 import ListView from '../../components/ListView';
 import {Actions} from 'react-native-router-flux';
-
-const tempItems = [
-    {
-        name: 'Item1',
-        description: 'nothing',
-        price: 20,
-    }, {
-        name: 'Item2',
-        description: 'nothing',
-        price: 100,
-    }, {
-        name: 'Item3',
-        description: 'nothing',
-        price: 0.11,
-    }, {
-        name: 'Item4',
-        description: 'nothing',
-        price: 12000,
-    }, {
-        name: 'Item5',
-        description: 'nothing',
-        price: 0.120,
-    },
-    {
-        name: 'Item1',
-        description: 'nothing',
-        price: 20,
-    }, {
-        name: 'Item2',
-        description: 'nothing',
-        price: 100,
-    }, {
-        name: 'Item3',
-        description: 'nothing',
-        price: 0.11,
-    }, {
-        name: 'Item4',
-        description: 'nothing',
-        price: 12000,
-    }, {
-        name: 'Item5',
-        description: 'nothing',
-        price: 0.120,
-    },
-    {
-        name: 'Item1',
-        description: 'nothing',
-        price: 20,
-    }, {
-        name: 'Item2',
-        description: 'nothing',
-        price: 100,
-    }, {
-        name: 'Item3',
-        description: 'nothing',
-        price: 0.11,
-    }, {
-        name: 'Item4',
-        description: 'nothing',
-        price: 12000,
-    }, {
-        name: 'Item5',
-        description: 'nothing',
-        price: 0.120,
-    },
-];
+import {ErrorUtils} from '../../utils/error.utils';
+import {getItemsList} from '../../actions/item.actions';
+import Loader from '../../components/Loader';
+import {connect} from 'react-redux';
 
 class Items extends Component<{}> {
+    componentDidMount() {
+        this.loadItemsList();
+    }
+
+    async loadItemsList() {
+        try {
+            const response = await this.props.dispatch(getItemsList());
+            console.log(response)
+            if (!response.success) {
+                throw response;
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    }
 
     render() {
+        const {getItems} = this.props;
         return (
             <Container>
+                {getItems.isLoading && <Loader/>}
                 <Header>
                     <Left/>
                     <Body>
@@ -85,7 +41,7 @@ class Items extends Component<{}> {
                     <Right/>
                 </Header>
                 <View style={{flex: 1}}>
-                    {this.renderItemsList()}
+                    {this.renderItemsList(getItems.itemsList||[])}
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
@@ -100,17 +56,16 @@ class Items extends Component<{}> {
     };
 
     addNewItem() {
-        // alert('new item');
-        Actions.itemForm();
+        Actions.itemForm({item: null});
     }
 
-    openItemPage() {
-        alert('opened');
+    openItemPage(item) {
+        Actions.itemForm({item: item});
     }
 
-    renderItemsList() {
+    renderItemsList(itemsList) {
         return (<List
-            dataArray={tempItems}
+            dataArray={itemsList}
             renderRow={
                 (item) =>
                     <ListView
@@ -118,7 +73,9 @@ class Items extends Component<{}> {
                         subtitle={item.description}
                         right={item.price}
                         handleClickEvent={
-                            this.openItemPage
+                            () => {
+                                this.openItemPage(item);
+                            }
                         }/>
             }>
             keyExtractor={(item, index) => index.toString()}>
@@ -126,4 +83,12 @@ class Items extends Component<{}> {
     }
 }
 
-export default Items;
+const mapStateToProps = (state) => ({
+    getItems: state.itemReducer.getItems,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    dispatch,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Items);

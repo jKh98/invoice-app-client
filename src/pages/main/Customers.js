@@ -13,10 +13,6 @@ class Customers extends Component<{}> {
         this.loadCustomersList();
     }
 
-    // componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any) {
-    //     this.loadCustomersList();
-    // }
-
     async loadCustomersList() {
         try {
             const response = await this.props.dispatch(getCustomersList());
@@ -43,7 +39,7 @@ class Customers extends Component<{}> {
                     <Right/>
                 </Header>
                 <View style={{flex: 1}}>
-                    {this.renderCustomersList(getCustomers.customersList)}
+                    {this.renderCustomersList(getCustomers.customersList || [])}
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
@@ -58,7 +54,6 @@ class Customers extends Component<{}> {
     };
 
     addNewCustomer() {
-        // alert('new customer');
         Actions.customerForm({customer: null});
     }
 
@@ -67,7 +62,6 @@ class Customers extends Component<{}> {
     }
 
     renderCustomersList(customersList) {
-        console.log(customersList);
         return (<List
             dataArray={customersList}
             renderRow={
@@ -97,5 +91,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Customers);
-
-// export default Customers;
