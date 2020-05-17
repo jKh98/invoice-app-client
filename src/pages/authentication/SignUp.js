@@ -6,7 +6,7 @@ import Logo from '../../components/Logo';
 import {Actions} from 'react-native-router-flux';
 import {registerNewUser} from '../../actions/auth.actions';
 import Loader from '../../components/Loader';
-import {ErrorUtils} from '../../utils/auth.utils';
+import {ErrorUtils} from '../../utils/error.utils';
 import {Button, Container, Content, Body, Text, Input, CardItem, Card} from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {validateEmailField, validateRequiredField} from '../../utils/form.utils';

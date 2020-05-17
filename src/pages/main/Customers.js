@@ -5,7 +5,7 @@ import ListView from '../../components/ListView';
 import {connect} from 'react-redux';
 import {getCustomersList} from '../../actions/customer.actions';
 import Loader from '../../components/Loader';
-import {ErrorUtils} from '../../utils/auth.utils';
+import {ErrorUtils} from '../../utils/error.utils';
 
 class Customers extends Component<{}> {
 
