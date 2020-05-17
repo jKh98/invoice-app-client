@@ -31,7 +31,6 @@ class Invoices extends Component<{}> {
     async loadInvoicesList() {
         try {
             const response = await this.props.dispatch(getInvoicesList());
-            console.log(response);
             if (!response.success) {
                 throw response;
             }

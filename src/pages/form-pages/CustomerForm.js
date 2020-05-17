@@ -33,7 +33,6 @@ class CustomerForm extends Component<{}> {
             } else {
                 await this.refreshCustomersList();
             }
-            console.log(response);
         } catch (e) {
             const newError = new ErrorUtils(e);
             newError.showAlert();

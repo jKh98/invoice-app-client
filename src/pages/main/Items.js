@@ -20,7 +20,6 @@ class Items extends Component<{}> {
     async loadItemsList() {
         try {
             const response = await this.props.dispatch(getItemsList());
-            console.log(response);
             if (!response.success) {
                 throw response;
             }

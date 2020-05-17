@@ -33,7 +33,6 @@ class ItemForm extends Component<{}> {
             } else {
                 await this.refreshItemsList();
             }
-            console.log(response);
         } catch (e) {
             const newError = new ErrorUtils(e);
             newError.showAlert();
