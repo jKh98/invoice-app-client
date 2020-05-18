@@ -1,6 +1,12 @@
 import {Input, Label, Icon, Item, Text} from 'native-base';
 import React from 'react';
 
+/**
+ * Renders a native-base input component based on supplied field parameters.
+ *
+ * @param field
+ * @returns {*}
+ */
 const renderTextInput = (field) => {
     const {meta: {touched, error}, label, secureTextEntry, value, maxLength, keyboardType, placeholder, icon, input: {onChange, ...restInput}} = field;
     return (
