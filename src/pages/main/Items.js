@@ -83,7 +83,7 @@ class Items extends Component<{}> {
                                 this.openItemPage(item);
                             }
                         }/>
-            }>
+            }
             keyExtractor={(item, index) => index.toString()}>
         </List>);
     }

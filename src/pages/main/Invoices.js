@@ -136,6 +136,7 @@ class Invoices extends Component<{}> {
 
 const mapStateToProps = (state) => ({
     getInvoices: state.invoiceReducer.getInvoices,
+    getCustomer: state.customerReducer.getCustomers,
     getUser: state.userReducer.getUser,
 });
 

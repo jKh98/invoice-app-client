@@ -12,7 +12,7 @@ import {
     CardItem,
     Icon,
     Button,
-    Text, Tabs, Tab, Fab, List, Toast,
+    Text, Tabs, Tab, Fab, List, Toast, Picker,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import renderItemsTextInputArray from '../../components/reduxFormRenderers/RenderItemsInputArray';
@@ -24,6 +24,7 @@ import ListView from '../../components/ListView';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
+import renderSelectItem from '../../components/reduxFormRenderers/RenderSelectItem';
 
 class InvoiceForm extends Component<{}> {
 
@@ -60,12 +61,12 @@ class InvoiceForm extends Component<{}> {
     }
 
     onSubmit = (values) => {
-        console.log(values)
+        console.log(values);
         // this.modifyInvoicesData(values);
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers} = this.props;
         return (
             <Container>
                 {editInvoice.isLoading && <Loader/>}
@@ -100,13 +101,20 @@ class InvoiceForm extends Component<{}> {
                                     </CardItem>
                                 </Card>
                                 <Card style={{paddingHorizontal: 10}}>
-                                    <CardItem cardBody>
-                                        <Field name={'customer.name'}
-                                               keyboardType={'default'}
-                                               placeholder={'Customer'}
-                                               label={'To: '}
-                                               component={renderTextInput}/>
-                                    </CardItem>
+
+                                    <Field name={`customer`}
+                                           component={renderSelectItem}
+                                           iosHeader="Select Customer"
+                                           optionsArray={(getCustomers.customersList || [])}
+                                           label={'To: '}
+                                           placeholder={'Customer'}>
+                                        {/*{.map((option, i) => {*/}
+                                        {/*    return <Picker.Item key={i}*/}
+                                        {/*                        value={option}*/}
+                                        {/*                        label={option.name}*/}
+                                        {/*    />;*/}
+                                        {/*})}*/}
+                                    </Field>
                                     <CardItem cardBody>
                                         <Field name={'due'}
                                                keyboardType={'default'}
@@ -202,6 +210,9 @@ const validate = (values) => {
 
 const mapStateToProps = (state, props) => {
     let initialValues;
+    props.invoice.items.forEach((item) => {
+        item.quantity = String(item.quantity);
+    })
     if (props.invoice) {
         initialValues = {
             number: props.invoice.number,

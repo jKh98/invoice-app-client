@@ -4,7 +4,7 @@ import {Field} from 'redux-form';
 import renderTextInput from './RenderTextInput';
 import renderSelectItem from './RenderSelectItem';
 
-const renderItemsInputArray = ({fields,optionsArray, meta: {error, submitFailed}}) => (
+const renderItemsInputArray = ({fields, optionsArray, values, meta: {error, submitFailed}}) => (
     <View style={{flex: 1}}>
         {fields.map((item, index) => (
             <CardItem key={index}>
@@ -14,21 +14,17 @@ const renderItemsInputArray = ({fields,optionsArray, meta: {error, submitFailed}
                     </Button>
                     <Field name={`${item}.item`}
                            component={renderSelectItem}
+                           optionsArray={optionsArray}
                            iosHeader="Select Item"
-                           placeholder={"Item"}
-                           mode="dropdown" >
-                        {optionsArray.map((option, i) => {
-                            return <Picker.Item key={i}
-                                                value={option._id}
-                                                label={option.name}/>;
-                        })}
+                           placeholder={'Item'}>
+
                     </Field>
 
                 </Left>
                 <Right>
                     <Field
                         name={`${item}.quantity`}
-                        type="text"
+                        keyboardType={'decimal-pad'}
                         placeholder={'0'}
                         component={renderTextInput}
                     />
