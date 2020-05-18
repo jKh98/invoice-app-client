@@ -98,6 +98,7 @@ class ItemForm extends Component<{}> {
                                    keyboardType={'default'}
                                    placeholder={'Description'}
                                    icon={'ios-paper'}
+                                   multiline
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>

@@ -8,7 +8,7 @@ import React from 'react';
  * @returns {*}
  */
 const renderTextInput = (field) => {
-    const {meta: {touched, error}, label, secureTextEntry, value, maxLength, keyboardType, placeholder, icon, input: {onChange, ...restInput}} = field;
+    const {meta: {touched, error}, label, secureTextEntry, value, maxLength, keyboardType, placeholder, textAlign, icon, editable, input: {onChange, ...restInput}} = field;
     return (
         <Item itemProps>
             {label && <Label>{label}</Label>}
@@ -21,7 +21,9 @@ const renderTextInput = (field) => {
                 keyboardType={keyboardType}
                 secureTextEntry={secureTextEntry}
                 label={label}
+                textAlign={textAlign}
                 value={String(value)}
+                editable={editable}
                 {...restInput} />
             {(touched && error) && <Text style={{color: '#f32013'}}>{error}</Text>}
         </Item>

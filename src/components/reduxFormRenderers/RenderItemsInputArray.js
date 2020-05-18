@@ -1,4 +1,4 @@
-import {View, Body, Right, Left, Text, CardItem, ListItem, Button, Icon, Picker} from 'native-base';
+import {View, Body, Right, Left, Text, CardItem, ListItem, Button, Icon, Content} from 'native-base';
 import React from 'react';
 import {Field} from 'redux-form';
 import renderTextInput from './RenderTextInput';
@@ -17,24 +17,32 @@ const renderItemsInputArray = ({fields, optionsArray, meta: {error, submitFailed
     <View style={{flex: 1}}>
         {fields.map((item, index) => (
             <CardItem key={index}>
-                <Left>
-                    <Button transparent onPress={() => fields.remove(index)}>
-                        <Icon name='ios-remove' color={'black'}/>
-                    </Button>
+                <Button transparent onPress={() => fields.remove(index)}>
+                    <Icon name='ios-remove' color={'black'}/>
+                </Button>
+                <Body>
                     <Field name={`${item}.item`}
                            component={renderSelectItem}
                            optionsArray={optionsArray}
                            iosHeader="Select Item"
-                           placeholder={'Item'}>
-
-                    </Field>
-
-                </Left>
+                           placeholder={'Item'}/>
+                </Body>
                 <Right>
                     <Field
                         name={`${item}.quantity`}
                         keyboardType={'decimal-pad'}
                         placeholder={'0'}
+                        textAlign={'right'}
+                        label={'Quantity'}
+                        component={renderTextInput}
+                    />
+                    <Field
+                        name={`${item}.subtotal`}
+                        keyboardType={'decimal-pad'}
+                        placeholder={'0'}
+                        textAlign={'right'}
+                        label={'Net Price'}
+                        editable={false}
                         component={renderTextInput}
                     />
                 </Right>

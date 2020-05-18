@@ -47,7 +47,7 @@ class Invoices extends Component<{}> {
                 <Header>
                     <Left>
                         <Button transparent light>
-                            <Icon name='ios-settings'/>
+                            <Icon name='ios-menu'/>
                         </Button>
                     </Left>
                     <Body>

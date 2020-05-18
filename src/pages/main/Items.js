@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     View,
 } from 'react-native';
-import {Body, Container, Content, Fab, Header, Text, Icon, Left, List, Right, Title} from 'native-base';
+import {Body, Container, Content, Fab, Header, Text, Icon, Left, List, Right, Title, Button} from 'native-base';
 import ListView from '../../components/ListView';
 import {Actions} from 'react-native-router-flux';
 import {ErrorUtils} from '../../utils/error.utils';
@@ -35,7 +35,11 @@ class Items extends Component<{}> {
             <Container>
                 {getItems.isLoading && <Loader/>}
                 <Header>
-                    <Left/>
+                    <Left>
+                        <Button transparent light>
+                            <Icon name='ios-menu'/>
+                        </Button>
+                    </Left>
                     <Body>
                         <Title>Items</Title>
                     </Body>

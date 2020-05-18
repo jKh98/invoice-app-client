@@ -41,16 +41,16 @@ class NavBar extends Component<{}> {
                         <Icon active name="ios-barcode"/>
                         <Text>Items</Text>
                     </Button>
-                    <Button vertical
-                            active={this.state.scene === 4}
-                            onPress={() => {
-                                Actions.settings();
-                                this.setState({scene: 4});
-                            }}
-                            textStyle={{color: "#fff"}}>
-                        <Icon name="settings"/>
-                        <Text active>Settings</Text>
-                    </Button>
+                    {/*<Button vertical*/}
+                    {/*        active={this.state.scene === 4}*/}
+                    {/*        onPress={() => {*/}
+                    {/*            Actions.settings();*/}
+                    {/*            this.setState({scene: 4});*/}
+                    {/*        }}*/}
+                    {/*        textStyle={{color: "#fff"}}>*/}
+                    {/*    <Icon name="settings"/>*/}
+                    {/*    <Text active>Settings</Text>*/}
+                    {/*</Button>*/}
                 </FooterTab>
             </Footer>
         );

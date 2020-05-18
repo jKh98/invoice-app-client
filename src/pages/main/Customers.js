@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
-import {Container, Header, Title, Right, Left, Body, Fab, Icon, List, View, Text} from 'native-base';
+import {Container, Header, Title, Right, Left, Body, Fab, Icon, List, View, Text, Button} from 'native-base';
 import ListView from '../../components/ListView';
 import {connect} from 'react-redux';
 import {getCustomersList} from '../../actions/customer.actions';
@@ -33,7 +33,11 @@ class Customers extends Component<{}> {
             <Container>
                 {getCustomers.isLoading && <Loader/>}
                 <Header>
-                    <Left/>
+                    <Left>
+                        <Button transparent light>
+                            <Icon name='ios-menu'/>
+                        </Button>
+                    </Left>
                     <Body>
                         <Title>Customers</Title>
                     </Body>

@@ -101,20 +101,14 @@ class InvoiceForm extends Component<{}> {
                                     </CardItem>
                                 </Card>
                                 <Card style={{paddingHorizontal: 10}}>
-
-                                    <Field name={`customer`}
-                                           component={renderSelectItem}
-                                           iosHeader="Select Customer"
-                                           optionsArray={(getCustomers.customersList || [])}
-                                           label={'To: '}
-                                           placeholder={'Customer'}>
-                                        {/*{.map((option, i) => {*/}
-                                        {/*    return <Picker.Item key={i}*/}
-                                        {/*                        value={option}*/}
-                                        {/*                        label={option.name}*/}
-                                        {/*    />;*/}
-                                        {/*})}*/}
-                                    </Field>
+                                    <CardItem cardBody>
+                                        <Field name={`customer`}
+                                               component={renderSelectItem}
+                                               iosHeader="Select Customer"
+                                               optionsArray={(getCustomers.customersList || [])}
+                                               label={'To: '}
+                                               placeholder={'Customer'}/>
+                                    </CardItem>
                                     <CardItem cardBody>
                                         <Field name={'due'}
                                                keyboardType={'default'}
@@ -127,47 +121,53 @@ class InvoiceForm extends Component<{}> {
                                     <FieldArray name="items"
                                                 optionsArray={getItems.itemsList || []}
                                                 component={renderItemsTextInputArray}/>
-                                    <CardItem cardBody style={{backgroundColor: 'lightgray'}}>
-                                        <Left>
-                                            <Text>Subtotal</Text>
-                                        </Left>
-                                        <Body/>
-                                        <Right>
-                                            <Field name={'subtotal'}
-                                                   keyboardType={'numeric'}
-                                                   placeholder={'0'}
-                                                   component={renderTextInput}/>
-                                        </Right>
+                                    <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
+                                        <Field name={'subtotal'}
+                                               keyboardType={'numeric'}
+                                               placeholder={'0'}
+                                               label={'Subtotal'}
+                                               textAlign={'right'}
+                                               editable={false}
+                                               component={renderTextInput}/>
                                     </CardItem>
                                 </Card>
                                 <Card>
-                                    <CardItem cardBody>
-                                        <Left>
-                                            <Text>Discount</Text>
-                                        </Left>
-                                        <Body/>
-                                        <Right>
-                                            <Field name={'discount'}
-                                                   keyboardType={'numeric'}
-                                                   placeholder={'0'}
-                                                   component={renderTextInput}/>
-                                        </Right>
+                                    <CardItem cardBody style={{paddingHorizontal: 10}}>
+                                        <Field name={'discount'}
+                                               keyboardType={'numeric'}
+                                               placeholder={'0'}
+                                               label={'Discount'}
+                                               textAlign={'right'}
+                                               component={renderTextInput}/>
                                     </CardItem>
-                                    <CardItem cardBody style={{backgroundColor: 'lightgray'}}>
-                                        <Left>
-                                            <Text>Total</Text>
-                                        </Left>
-                                        <Body/>
-                                        <Right>
-                                            <Field name={'total'}
-                                                   keyboardType={'numeric'}
-                                                   placeholder={'0'}
-                                                   component={renderTextInput}/>
-                                        </Right>
+                                    <CardItem cardBody style={{paddingHorizontal: 10}}>
+                                        <Field name={'total'}
+                                               keyboardType={'numeric'}
+                                               placeholder={'0'}
+                                               label={'Total'}
+                                               textAlign={'right'}
+                                               editable={false}
+                                               component={renderTextInput}/>
+                                    </CardItem>
+                                    <CardItem cardBody style={{paddingHorizontal: 10}}>
+                                        <Field name={'paid_amount'}
+                                               keyboardType={'numeric'}
+                                               label={'Payments'}
+                                               placeholder={'0'}
+                                               textAlign={'right'}
+                                               component={renderTextInput}/>
+                                    </CardItem>
+                                    <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
+                                        <Field name={'amount_due'}
+                                               keyboardType={'numeric'}
+                                               placeholder={'0'}
+                                               label={'Amount Due'}
+                                               textAlign={'right'}
+                                               editable={false}
+                                               component={renderTextInput}/>
                                     </CardItem>
                                 </Card>
                                 <Button block primary onPress={handleSubmit(this.onSubmit)}>
-
                                     <Text>Save</Text>
                                 </Button>
                             </Content>
@@ -212,7 +212,8 @@ const mapStateToProps = (state, props) => {
     let initialValues;
     props.invoice.items.forEach((item) => {
         item.quantity = String(item.quantity);
-    })
+        item.subtotal = String(item.subtotal);
+    });
     if (props.invoice) {
         initialValues = {
             number: props.invoice.number,
@@ -220,10 +221,10 @@ const mapStateToProps = (state, props) => {
             issued: props.invoice.issued,
             due: props.invoice.due,
             items: props.invoice.items,
-            subtotal: props.invoice.subtotal,
-            discount: props.invoice.discount,
-            total: props.invoice.total,
-            paid: props.invoice.paid,
+            subtotal: props.invoice.subtotal.toString(),
+            discount: props.invoice.discount.toString(),
+            total: props.invoice.total.toString(),
+            paid_amount: props.invoice.paid.amount.toString(),
 
         };
     }
