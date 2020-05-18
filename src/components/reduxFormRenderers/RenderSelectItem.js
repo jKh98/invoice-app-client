@@ -1,6 +1,16 @@
 import React from 'react';
-import {Item, Text, Icon, Picker} from 'native-base';
+import {Picker} from 'native-base';
 
+/**
+ * Renders a native-base Picker component with options retrieved from a specified array of [{_id,_name,...}].
+ *
+ * @param onChange
+ * @param value
+ * @param inputProps
+ * @param optionsArray
+ * @param pickerProps
+ * @returns {*}
+ */
 const renderSelectItem = ({input: {onChange, value, ...inputProps}, optionsArray, ...pickerProps}) => (
     <Picker selectedValue={value}
             onValueChange={value => onChange(value)}
