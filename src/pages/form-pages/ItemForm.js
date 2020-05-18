@@ -25,7 +25,7 @@ import {getCustomersList} from '../../actions/customer.actions';
 import Loader from '../../components/Loader';
 
 class ItemForm extends Component<{}> {
-    modifyItemsData = async (values) => {
+    modifyItemData = async (values) => {
         try {
             const response = await this.props.dispatch(editItem(values));
             if (!response.success) {
@@ -58,7 +58,7 @@ class ItemForm extends Component<{}> {
     }
 
     onSubmit = (values) => {
-        this.modifyItemsData(values);
+        this.modifyItemData(values);
     };
 
     render() {
@@ -78,7 +78,7 @@ class ItemForm extends Component<{}> {
                     <Right/>
                 </Header>
                 <Content padder>
-                    <Card style={{padding: 10}}>
+                    <Card style={{paddingHorizontal: 10}}>
                         <CardItem cardBody>
                             <Field name={'name'}
                                    keyboardType={'default'}
@@ -108,10 +108,6 @@ class ItemForm extends Component<{}> {
             </Container>
         );
     };
-
-    handleSubmit(values) {
-        //TODO DISPATCH ACTIONS
-    }
 
     goBack() {
         Actions.pop();

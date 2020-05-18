@@ -2,7 +2,7 @@ import {Input, Label, Icon, Item, Text} from 'native-base';
 import React from 'react';
 
 const renderTextInput = (field) => {
-    const {meta: {touched, error}, itemProps,label, secureTextEntry, maxLength, keyboardType, placeholder, icon, input: {onChange, ...restInput}} = field;
+    const {meta: {touched, error}, label, secureTextEntry, maxLength, keyboardType, placeholder, icon, input: {onChange, ...restInput}} = field;
     return (
         <Item itemProps>
             {label && <Label>{label}</Label>}

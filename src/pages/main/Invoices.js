@@ -103,7 +103,7 @@ class Invoices extends Component<{}> {
         Actions.invoiceForm({invoice: null});
     }
 
-    openInvoicePage() {
+    openInvoicePage(invoice) {
         Actions.invoiceForm({invoice: invoice});
     }
 
@@ -123,7 +123,9 @@ class Invoices extends Component<{}> {
                             right={invoice.total}
                             rightSub={invoice.issued}
                             handleClickEvent={
-                                this.openInvoicePage
+                                () => {
+                                    this.openInvoicePage(invoice);
+                                }
                             }/>
                 }
                 keyExtractor={(item, index) => index.toString()}>

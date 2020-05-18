@@ -80,7 +80,7 @@ class CustomerForm extends Component<{}> {
                     <Right/>
                 </Header>
                 <Content padder>
-                    <Card style={{padding: 10}}>
+                    <Card style={{paddingHorizontal: 10}}>
                         <CardItem cardBody listItemPadding>
                             <Field name={'name'}
                                    keyboardType={'default'}
@@ -120,7 +120,7 @@ class CustomerForm extends Component<{}> {
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>
-                    <Card style={{padding: 10}}>
+                    <Card style={{paddingHorizontal: 10}}>
                         <CardItem cardBody>
                             <Field name={'address_1'}
                                    keyboardType={'default'}
@@ -172,9 +172,9 @@ const mapStateToProps = (state, props) => {
             email: props.customer.email,
             phone: props.customer.phone,
             mobile: props.customer.mobile,
-            address_1: (props.customer.addresses)[0],
-            address_2: (props.customer.addresses)[1],
-            address_3: (props.customer.addresses)[2],
+            address_1: props.customer.addresses && (props.customer.addresses)[0],
+            address_2: props.customer.addresses &&(props.customer.addresses)[1],
+            address_3: props.customer.addresses && (props.customer.addresses)[2],
         };
     }
     return ({

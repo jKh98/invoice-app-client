@@ -12,43 +12,63 @@ import {
     CardItem,
     Icon,
     Button,
-    Text, Tabs, Tab, Fab, List,
+    Text, Tabs, Tab, Fab, List, Toast,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
-import {Field, reduxForm} from 'redux-form';
+import renderItemsTextInputArray from '../../components/reduxFormRenderers/RenderItemsInputArray';
+import {Field, FieldArray, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {validateRequiredField} from '../../utils/form.utils';
 import ListView from '../../components/ListView';
+import {ErrorUtils} from '../../utils/error.utils';
+import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
+import Loader from '../../components/Loader';
 
 class InvoiceForm extends Component<{}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tempItems: [
-                {
-                    name: 'Item1',
-                    description: 'nothing',
-                    price: 20,
-                    quantity: 3,
-                }, {
-                    name: 'Item2',
-                    description: 'nothing',
-                    price: 100,
-                    quantity: 1,
-                }, {
-                    name: 'Item3',
-                    description: 'nothing',
-                    price: 0.11,
-                    quantity: 3,
-                },
-            ],
-        };
+
+    modifyInvoicesData = async (values) => {
+        try {
+            const response = await this.props.dispatch(editInvoice(values));
+            if (!response.success) {
+                throw response;
+            } else {
+                await this.refreshInvoicesList();
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    };
+
+    async refreshInvoicesList() {
+        try {
+            const response = await this.props.dispatch(getInvoicesList());
+            if (!response.success) {
+                throw response;
+            } else {
+                Toast.show({
+                    text: 'Invoices list successfully updated.',
+                    buttonText: 'Okay',
+                    type: 'success',
+                });
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
     }
 
+    onSubmit = (values) => {
+        console.log(values)
+        // this.modifyInvoicesData(values);
+    };
+
     render() {
+        const {handleSubmit, editInvoice, getItems} = this.props;
         return (
             <Container>
+                {editInvoice.isLoading && <Loader/>}
                 <Header>
                     <Left>
                         <Button transparent onPress={this.goBack}>
@@ -64,7 +84,7 @@ class InvoiceForm extends Component<{}> {
                     <Tabs>
                         <Tab heading="EDIT" padder>
                             <Content padder>
-                                <Card>
+                                <Card style={{paddingHorizontal: 10}}>
                                     <CardItem cardBody>
                                         <Field name={'number'}
                                                keyboardType={'default'}
@@ -72,53 +92,73 @@ class InvoiceForm extends Component<{}> {
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody>
-                                        <Field name={'date'}
+                                        <Field name={'issued'}
                                                keyboardType={'numeric'}
-                                               placeholder={'15/05/2020'}
+                                               placeholder={''}
+                                               label={'Issued: '}
                                                component={renderTextInput}/>
                                     </CardItem>
                                 </Card>
-                                <Card>
+                                <Card style={{paddingHorizontal: 10}}>
                                     <CardItem cardBody>
-
-                                        <Field name={'customer'}
+                                        <Field name={'customer.name'}
                                                keyboardType={'default'}
                                                placeholder={'Customer'}
+                                               label={'To: '}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody>
-
                                         <Field name={'due'}
                                                keyboardType={'default'}
-                                               placeholder={'Due'}
-                                               itemProps
+                                               placeholder={''}
+                                               label={'Due: '}
                                                component={renderTextInput}/>
                                     </CardItem>
                                 </Card>
                                 <Card>
-                                    <CardItem cardBody>
-                                        {this.renderItemsList()}
-                                    </CardItem>
-                                    <CardItem button light onPress={() => {
-                                        this.addItemToInvoice();
-                                    }}>
-                                        <Left>
-                                            <Icon active name="ios-add"/>
-                                            <Body>
-                                                <Text>Add Item</Text>
-                                            </Body>
-                                        </Left>
-                                    </CardItem>
-                                    <CardItem style={{backgroundColor: 'lightgray'}}>
+                                    <FieldArray name="items"
+                                                optionsArray={getItems.itemsList || []}
+                                                component={renderItemsTextInputArray}/>
+                                    <CardItem cardBody style={{backgroundColor: 'lightgray'}}>
                                         <Left>
                                             <Text>Subtotal</Text>
                                         </Left>
+                                        <Body/>
                                         <Right>
-                                            <Text>Total</Text>
+                                            <Field name={'subtotal'}
+                                                   keyboardType={'numeric'}
+                                                   placeholder={'0'}
+                                                   component={renderTextInput}/>
                                         </Right>
                                     </CardItem>
                                 </Card>
-                                <Button block primary onPress={this.handleSubmit(this.onSubmit)}>
+                                <Card>
+                                    <CardItem cardBody>
+                                        <Left>
+                                            <Text>Discount</Text>
+                                        </Left>
+                                        <Body/>
+                                        <Right>
+                                            <Field name={'discount'}
+                                                   keyboardType={'numeric'}
+                                                   placeholder={'0'}
+                                                   component={renderTextInput}/>
+                                        </Right>
+                                    </CardItem>
+                                    <CardItem cardBody style={{backgroundColor: 'lightgray'}}>
+                                        <Left>
+                                            <Text>Total</Text>
+                                        </Left>
+                                        <Body/>
+                                        <Right>
+                                            <Field name={'total'}
+                                                   keyboardType={'numeric'}
+                                                   placeholder={'0'}
+                                                   component={renderTextInput}/>
+                                        </Right>
+                                    </CardItem>
+                                </Card>
+                                <Button block primary onPress={handleSubmit(this.onSubmit)}>
 
                                     <Text>Save</Text>
                                 </Button>
@@ -142,51 +182,13 @@ class InvoiceForm extends Component<{}> {
         );
     };
 
-
-    handleSubmit(values) {
-        //TODO DISPATCH ACTIONS
-    }
-
     goBack() {
-        //TODO handling
         Actions.pop();
+        Actions.refresh();
     }
 
     sendInvoice() {
-
-    }
-
-    renderItemsList() {
-        return (
-            <List
-                dataArray={this.state.tempItems}
-                renderRow={
-                    (item, i) =>
-                        <ListView
-                            title={item.name}
-                            subtitle={item.description}
-                            right={`${item.quantity} × ${item.price}`}
-                            rightSub={item.price * item.quantity}
-                            left={i}
-                            handleClickEvent={
-                                this.openInvoicePage
-                            }/>
-                }
-                keyExtractor={(item, index) => index.toString()}>
-            </List>
-        );
-    }
-
-    addItemToInvoice() {
-        // TODO add Items dynamically
-        this.setState({
-            tempItems: [...this.state.tempItems, {
-                name: 'Item4',
-                description: 'nothing',
-                price: 21,
-                quantity: 3,
-            }],
-        });
+        //Todo Lookup
     }
 }
 
@@ -198,10 +200,30 @@ const validate = (values) => {
     };
 };
 
-const mapStateToProps = (state) => ({
-    //TODO CHECK STATE PARAMS
-    // loginUser: state.authReducer.loginUser,
-});
+const mapStateToProps = (state, props) => {
+    let initialValues;
+    if (props.invoice) {
+        initialValues = {
+            number: props.invoice.number,
+            customer: props.invoice.customer,
+            issued: props.invoice.issued,
+            due: props.invoice.due,
+            items: props.invoice.items,
+            subtotal: props.invoice.subtotal,
+            discount: props.invoice.discount,
+            total: props.invoice.total,
+            paid: props.invoice.paid,
+
+        };
+    }
+    return ({
+        initialValues,
+        editInvoice: state.invoiceReducer.editInvoice,
+        getInvoices: state.invoiceReducer.getInvoices,
+        getCustomers: state.customerReducer.getCustomers,
+        getItems: state.itemReducer.getItems,
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
     dispatch,
@@ -211,6 +233,9 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
         form: 'invoiceForm',
+        enableReinitialize: true,
+        keepDirtyOnReinitialize: true,
+        updateUnregisteredFields: true,
         validate,
     }),
 )(InvoiceForm);
