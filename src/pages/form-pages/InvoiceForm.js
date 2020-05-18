@@ -65,7 +65,7 @@ class InvoiceForm extends Component<{}> {
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems, getCustomers, items, totalValue, subtotalValue, amountDue, change} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers, items, totalValue, subtotalValue, paidAmount, change} = this.props;
         return (
             <Container>
                 {editInvoice.isLoading && <Loader/>}
@@ -129,6 +129,7 @@ class InvoiceForm extends Component<{}> {
                                                placeholder={'0'}
                                                label={'Subtotal'}
                                                textAlign={'right'}
+                                               defaultValue={'0'}
                                                editable={false}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -141,7 +142,9 @@ class InvoiceForm extends Component<{}> {
                                                label={'Discount'}
                                                textAlign={'right'}
                                                onChange={(value) => {
-                                                   change('total', String(Number(subtotalValue) - Number(value)));
+                                                   let newTotal = Number(subtotalValue) - Number(value);
+                                                   change('total', String(newTotal));
+                                                   change('amount_due', String(newTotal - Number(paidAmount)));
                                                }}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -242,8 +245,16 @@ const mapStateToProps = (state, props) => {
             subtotal: props.invoice.subtotal.toString(),
             discount: props.invoice.discount.toString(),
             total: props.invoice.total.toString(),
-            paid_amount: props.invoice.paid.amount.toString(),
+            paid: {amount: props.invoice.paid.amount.toString()},
 
+        };
+    } else {
+        initialValues = {
+            number: 'INV0000',
+            subtotal: '0',
+            discount: '0',
+            total: '0',
+            paid: {amount: '0'},
         };
     }
     return ({
