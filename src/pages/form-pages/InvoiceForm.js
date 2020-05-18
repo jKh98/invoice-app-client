@@ -16,11 +16,10 @@ import {
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import renderItemsTextInputArray from '../../components/reduxFormRenderers/RenderItemsInputArray';
-import {Field, FieldArray, reduxForm} from 'redux-form';
-import {compose} from 'redux';
+import {Field, FieldArray, formValueSelector, reduxForm, change} from 'redux-form';
+import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
 import {validateRequiredField} from '../../utils/form.utils';
-import ListView from '../../components/ListView';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
@@ -66,7 +65,7 @@ class InvoiceForm extends Component<{}> {
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems, getCustomers} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers, items, totalValue, subtotalValue, amountDue, change} = this.props;
         return (
             <Container>
                 {editInvoice.isLoading && <Loader/>}
@@ -120,7 +119,10 @@ class InvoiceForm extends Component<{}> {
                                 <Card>
                                     <FieldArray name="items"
                                                 optionsArray={getItems.itemsList || []}
-                                                component={renderItemsTextInputArray}/>
+                                                change={change}
+                                                items={items}
+                                                component={renderItemsTextInputArray}
+                                    />
                                     <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
                                         <Field name={'subtotal'}
                                                keyboardType={'numeric'}
@@ -138,6 +140,9 @@ class InvoiceForm extends Component<{}> {
                                                placeholder={'0'}
                                                label={'Discount'}
                                                textAlign={'right'}
+                                               onChange={(value) => {
+                                                   change('total', String(Number(subtotalValue) - Number(value)));
+                                               }}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{paddingHorizontal: 10}}>
@@ -150,11 +155,14 @@ class InvoiceForm extends Component<{}> {
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{paddingHorizontal: 10}}>
-                                        <Field name={'paid_amount'}
+                                        <Field name={'paid.amount'}
                                                keyboardType={'numeric'}
                                                label={'Payments'}
                                                placeholder={'0'}
                                                textAlign={'right'}
+                                               onChange={(value) => {
+                                                   change('amount_due', String(Number(totalValue) - Number(value)));
+                                               }}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
@@ -208,13 +216,23 @@ const validate = (values) => {
     };
 };
 
+
+const selector = formValueSelector('invoiceForm');
+
 const mapStateToProps = (state, props) => {
     let initialValues;
-    props.invoice.items.forEach((item) => {
-        item.quantity = String(item.quantity);
-        item.subtotal = String(item.subtotal);
-    });
+    let items = selector(state, 'items');
+    let subtotalValue = selector(state, 'subtotal');
+    let discountValue = selector(state, 'discount');
+    let totalValue = selector(state, 'total');
+    let paidAmount = selector(state, 'paid.amount');
+    let amountDue = selector(state, 'amount_due');
     if (props.invoice) {
+
+        props.invoice.items.forEach((item) => {
+            item.quantity = String(item.quantity);
+            item.subtotal = String(item.subtotal);
+        });
         initialValues = {
             number: props.invoice.number,
             customer: props.invoice.customer,
@@ -234,15 +252,25 @@ const mapStateToProps = (state, props) => {
         getInvoices: state.invoiceReducer.getInvoices,
         getCustomers: state.customerReducer.getCustomers,
         getItems: state.itemReducer.getItems,
+        items,
+        subtotalValue,
+        discountValue,
+        totalValue,
+        paidAmount,
+        amountDue,
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    dispatch,
-});
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({change}, dispatch);
+};
+
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     reduxForm({
         form: 'invoiceForm',
         enableReinitialize: true,

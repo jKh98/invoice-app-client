@@ -8,12 +8,13 @@ import renderSelectItem from './RenderSelectItem';
  * Renders an array of field tuples for redux-form. Each tuple has an item selector and a quantity input field
  *
  * @param fields
+ * @param change
  * @param optionsArray that contains item objects for the item selector
  * @param error
  * @param submitFailed
  * @returns {*}
  */
-const renderItemsInputArray = ({fields, optionsArray, meta: {error, submitFailed}}) => (
+const renderItemsInputArray = ({fields, change, optionsArray, meta: {error, submitFailed}}) => (
     <View style={{flex: 1}}>
         {fields.map((item, index) => (
             <CardItem key={index}>
@@ -61,3 +62,4 @@ const renderItemsInputArray = ({fields, optionsArray, meta: {error, submitFailed
 );
 
 export default renderItemsInputArray;
+

@@ -2,33 +2,15 @@ import React, {Component} from 'react';
 import {
     View,
 } from 'react-native';
-import {Body, Container, Content, Fab, Header, Text, Icon, Left, List, Right, Title, Button} from 'native-base';
+import {Body, Container, Fab, Header, Icon, Left, List, Right, Title, Button} from 'native-base';
 import ListView from '../../components/ListView';
 import {Actions} from 'react-native-router-flux';
-import {ErrorUtils} from '../../utils/error.utils';
-import {getItemsList} from '../../actions/item.actions';
 import Loader from '../../components/Loader';
 import {connect} from 'react-redux';
 import Logo from '../../components/Logo';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 
 class Items extends Component<{}> {
-    componentDidMount() {
-        this.loadItemsList();
-    }
-
-    async loadItemsList() {
-        try {
-            const response = await this.props.dispatch(getItemsList());
-            if (!response.success) {
-                throw response;
-            }
-        } catch (e) {
-            const newError = new ErrorUtils(e);
-            newError.showAlert();
-        }
-    }
-
     render() {
         const {getItems} = this.props;
         return (

@@ -9,29 +9,10 @@ import {ErrorUtils} from '../../utils/error.utils';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 
 class Customers extends Component<{}> {
-
-    componentDidMount() {
-        this.loadCustomersList();
-    }
-
-    async loadCustomersList() {
-        try {
-            const response = await this.props.dispatch(getCustomersList());
-            if (!response.success) {
-                throw response;
-            }
-        } catch (e) {
-            const newError = new ErrorUtils(e);
-            newError.showAlert();
-        }
-    }
-
     render() {
         const {getCustomers} = this.props;
         return (
-
             <Container>
-                {getCustomers.isLoading && <Loader/>}
                 <Header>
                     <Left>
                         <Button transparent light>

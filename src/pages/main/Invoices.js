@@ -21,11 +21,16 @@ import ListView from '../../components/ListView';
 import {getInvoicesList} from '../../actions/invoice.actions';
 import {ErrorUtils} from '../../utils/error.utils';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
+import {getCustomersList} from '../../actions/customer.actions';
+import Loader from '../../components/Loader';
+import {getItemsList} from '../../actions/item.actions';
 
 class Invoices extends Component<{}> {
 
     componentDidMount() {
-        this.loadInvoicesList();
+        this.loadInvoicesList().then(r => {});
+        this.loadCustomersList().then(r => {});
+        this.loadItemsList().then(r => {});
     }
 
     async loadInvoicesList() {
@@ -40,10 +45,35 @@ class Invoices extends Component<{}> {
         }
     }
 
+    async loadCustomersList() {
+        try {
+            const response = await this.props.dispatch(getCustomersList());
+            if (!response.success) {
+                throw response;
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    }
+
+    async loadItemsList() {
+        try {
+            const response = await this.props.dispatch(getItemsList());
+            if (!response.success) {
+                throw response;
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    }
+
     render() {
-        const {getUser: {userDetails}, getInvoices} = this.props;
+        const {getUser: {userDetails}, getInvoices, getCustomers, getItems} = this.props;
         return (
             <Container>
+                {(getCustomers.isLoading || getItems.isLoading || getInvoices.isLoading) && <Loader/>}
                 <Header>
                     <Left>
                         <Button transparent light>
@@ -62,26 +92,24 @@ class Invoices extends Component<{}> {
                 <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
                     <Tabs>
                         <Tab heading="ALL">
-                            {this.renderInvoicesList(getInvoices.invoicesList || [])}
+                            {this.renderInvoicesList(getInvoices.invoicesList || [], getCustomers.customersList || [])}
                             <Text>{userDetails ? userDetails.name : 'man'}</Text>
                         </Tab>
                         <Tab heading="PENDING">
-                            {   //todo add pending param
+                            {   //todo add paid param
                                 this.renderInvoicesList(
-                                    (getInvoices.invoicesList
-                                        || []).filter((invoice) => {
+                                    (getInvoices.invoicesList || []).filter((invoice) => {
                                         return !invoice.paid.status;
-                                    }),
+                                    }, getCustomers.customersList || []),
                                 )}
                             <Text>{userDetails ? userDetails.email : 'man'}</Text>
                         </Tab>
                         <Tab heading="PAID">
                             {   //todo add paid param
                                 this.renderInvoicesList(
-                                    (getInvoices.invoicesList
-                                        || []).filter((invoice) => {
+                                    (getInvoices.invoicesList || []).filter((invoice) => {
                                         return invoice.paid.status;
-                                    }),
+                                    }, getCustomers.customersList || []),
                                 )}
                             <Text>{userDetails ? userDetails.password : 'man'}</Text>
                         </Tab>
@@ -107,7 +135,7 @@ class Invoices extends Component<{}> {
         Actions.invoiceForm({invoice: invoice});
     }
 
-    renderInvoicesList(invoicesList) {
+    renderInvoicesList(invoicesList, customersList) {
         return (
             <List
                 ListEmptyComponent={
@@ -118,7 +146,9 @@ class Invoices extends Component<{}> {
                 renderRow={
                     (invoice) =>
                         <ListView
-                            title={invoice.customer.name}
+                            // title={customersList.filter((e) => {
+                            //     return e._id === invoice.customer;
+                            // }).name}
                             subtitle={invoice.number}
                             right={invoice.total}
                             rightSub={invoice.issued}
@@ -136,7 +166,8 @@ class Invoices extends Component<{}> {
 
 const mapStateToProps = (state) => ({
     getInvoices: state.invoiceReducer.getInvoices,
-    getCustomer: state.customerReducer.getCustomers,
+    getCustomers: state.customerReducer.getCustomers,
+    getItems: state.itemReducer.getItems,
     getUser: state.userReducer.getUser,
 });
 
