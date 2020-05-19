@@ -13,7 +13,7 @@ import {
     Icon,
     Button,
     Text,
-    Toast,
+    Toast, Footer, FooterTab,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
@@ -140,10 +140,14 @@ class CustomerForm extends Component<{}> {
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>
-                    <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
-                        <Text>Save</Text>
-                    </Button>
                 </Content>
+                <Footer>
+                    <FooterTab>
+                        <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
+                            <Text>Save</Text>
+                        </Button>
+                    </FooterTab>
+                </Footer>
             </Container>
         );
     };
@@ -173,7 +177,7 @@ const mapStateToProps = (state, props) => {
             phone: props.customer.phone,
             mobile: props.customer.mobile,
             address_1: props.customer.addresses && (props.customer.addresses)[0],
-            address_2: props.customer.addresses &&(props.customer.addresses)[1],
+            address_2: props.customer.addresses && (props.customer.addresses)[1],
             address_3: props.customer.addresses && (props.customer.addresses)[2],
         };
     }

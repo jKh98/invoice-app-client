@@ -12,7 +12,7 @@ import {
     CardItem,
     Icon,
     Button,
-    Text, Toast,
+    Text, Toast, FooterTab, Footer,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
@@ -102,10 +102,14 @@ class ItemForm extends Component<{}> {
                                    component={renderTextInput}/>
                         </CardItem>
                     </Card>
-                    <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
-                        <Text>Save</Text>
-                    </Button>
                 </Content>
+                <Footer>
+                    <FooterTab>
+                        <Button padder block primary onPress={handleSubmit(this.onSubmit)}>
+                            <Text>Save</Text>
+                        </Button>
+                    </FooterTab>
+                </Footer>
             </Container>
         );
     };
@@ -124,7 +128,7 @@ const validate = (values) => {
     };
 };
 
-const mapStateToProps = (state,props) => {
+const mapStateToProps = (state, props) => {
     let initialValues;
     if (props.item) {
         initialValues = {

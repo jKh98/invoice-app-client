@@ -11,7 +11,7 @@ import {
     Card,
     CardItem,
     Icon,
-    Button,
+    Button, Footer, FooterTab,
     Text, Tabs, Tab, Fab, Toast,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
@@ -206,9 +206,6 @@ class InvoiceForm extends Component<{}> {
                                         </Left>
                                     </CardItem>
                                 </Card>
-                                <Button block primary onPress={handleSubmit(this.onSubmit)}>
-                                    <Text>Save</Text>
-                                </Button>
                             </Content>
                         </Tab>
                         <Tab heading="PREVIEW">
@@ -225,6 +222,13 @@ class InvoiceForm extends Component<{}> {
                         <Icon name="ios-send"/>
                     </Fab>
                 </Content>
+                <Footer>
+                    <FooterTab>
+                        <Button full onPress={handleSubmit(this.onSubmit)}>
+                            <Text>Save</Text>
+                        </Button>
+                    </FooterTab>
+                </Footer>
             </Container>
         );
     };
