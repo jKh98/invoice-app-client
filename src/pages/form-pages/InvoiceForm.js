@@ -12,14 +12,14 @@ import {
     CardItem,
     Icon,
     Button,
-    Text, Tabs, Tab, Fab, Switch, Toast,
+    Text, Tabs, Tab, Fab, Toast,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import renderItemsTextInputArray from '../../components/reduxFormRenderers/RenderItemsInputArray';
 import {Field, FieldArray, formValueSelector, reduxForm, change} from 'redux-form';
 import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateRequiredField} from '../../utils/form.utils';
+import {validateRequiredField, validateNumberField} from '../../utils/form.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
@@ -60,9 +60,7 @@ class InvoiceForm extends Component<{}> {
     }
 
     onSubmit = (values) => {
-        values.payment.status = false;
-        console.log(values);
-        // this.modifyInvoicesData(values);
+        this.modifyInvoicesData(values);
     };
 
     render() {
@@ -255,8 +253,22 @@ class InvoiceForm extends Component<{}> {
 //todo refactor
 const validate = (values) => {
     return {
-        name: validateRequiredField('Name', values.name),
-        price: validateRequiredField('Price', values.price),
+        number: validateRequiredField('Number ', values.number),
+        customer: validateRequiredField('Customer ', values.customer),
+        issued: validateRequiredField('Issue date ', values.issued),
+        due: validateRequiredField('Due date ', values.due),
+        // items: [{
+        //     item: validateRequiredField('Item', values.items.item),
+        //     quantity: validateNumberField('Quantity', values.items.quantity, 1, null, true),
+        //     subtotal: validateNumberField('Subtotal', values.items.subtotal, 0),
+        // }],
+        subtotal: validateNumberField('Subtotal', values.subtotal, 0),
+        total: validateNumberField('Subtotal', values.total, 0),
+        discount: validateNumberField('Subtotal', values.discount, 0),
+        // payment: {
+        //     amount_paid: validateNumberField('Subtotal', values.payment.amount_paid, 0),
+        //     amount_due: validateNumberField('Subtotal', values.payment.amount_due, 0),
+        // },
     };
 };
 
