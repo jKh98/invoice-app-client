@@ -12,7 +12,7 @@ import {
     CardItem,
     Icon,
     Button,
-    Text, Tabs, Tab, Fab, List, Toast, Picker,
+    Text, Tabs, Tab, Fab, Switch, Toast,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import renderItemsTextInputArray from '../../components/reduxFormRenderers/RenderItemsInputArray';
@@ -25,10 +25,8 @@ import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
 import renderSelectItem from '../../components/reduxFormRenderers/RenderSelectItem';
 import renderDatePicker from '../../components/reduxFormRenderers/RenderDatePicker';
-import moment from 'moment';
 
 class InvoiceForm extends Component<{}> {
-
     modifyInvoicesData = async (values) => {
         try {
             const response = await this.props.dispatch(editInvoice(values));
@@ -62,15 +60,13 @@ class InvoiceForm extends Component<{}> {
     }
 
     onSubmit = (values) => {
-        values.issued = new Date(values.issued);
-        values.due = new Date(values.due);
         values.payment.status = false;
         console.log(values);
-        this.modifyInvoicesData(values);
+        // this.modifyInvoicesData(values);
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems, getCustomers, totalValue, subtotalValue, amountPaid, change, items, fields} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers, totalValue, subtotalValue, amountPaid, change} = this.props;
         return (
             <Container>
                 {editInvoice.isLoading && <Loader/>}
@@ -130,9 +126,21 @@ class InvoiceForm extends Component<{}> {
                                                 optionsArray={getItems.itemsList || []}
                                                 change={change}
                                                 rerenderOnEveryChange={true}
-                                                onChange={(fields) => this.calculateSubTotal(fields)}
+                                                handleSubmit={handleSubmit}
                                                 component={renderItemsTextInputArray}
                                     />
+                                </Card>
+                                <Card>
+                                    <CardItem button light onPress={handleSubmit(this.calculateSubTotal)}>
+                                        <Left>
+                                            <Icon active name="ios-calculator"/>
+                                            <Body>
+                                                <Text>Calculate</Text>
+                                            </Body>
+                                        </Left>
+                                    </CardItem>
+                                </Card>
+                                <Card>
                                     <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
                                         <Field name={'subtotal'}
                                                keyboardType={'numeric'}
@@ -143,8 +151,6 @@ class InvoiceForm extends Component<{}> {
                                                editable={false}
                                                component={renderTextInput}/>
                                     </CardItem>
-                                </Card>
-                                <Card>
                                     <CardItem cardBody style={{paddingHorizontal: 10}}>
                                         <Field name={'discount'}
                                                keyboardType={'numeric'}
@@ -154,7 +160,7 @@ class InvoiceForm extends Component<{}> {
                                                onChange={(value) => {
                                                    let newTotal = Number(subtotalValue) - Number(value);
                                                    change('total', String(newTotal));
-                                                   change('amount_due', String(newTotal - Number(amountPaid)));
+                                                   change('payment.amount_due', String(newTotal - Number(amountPaid)));
                                                }}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -174,18 +180,28 @@ class InvoiceForm extends Component<{}> {
                                                placeholder={'0'}
                                                textAlign={'right'}
                                                onChange={(value) => {
-                                                   change('amount_due', String(Number(totalValue) - Number(value)));
+                                                   change('payment.amount_due', String(Number(totalValue) - Number(value)));
                                                }}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
-                                        <Field name={'amount_due'}
+                                        <Field name={'payment.amount_due'}
                                                keyboardType={'numeric'}
                                                placeholder={'0'}
                                                label={'Amount Due'}
                                                textAlign={'right'}
                                                editable={false}
                                                component={renderTextInput}/>
+                                    </CardItem>
+                                </Card>
+                                <Card>
+                                    <CardItem button light onPress={handleSubmit(this.setPaymentStatus)}>
+                                        <Left>
+                                            <Icon active name="ios-cash"/>
+                                            <Body>
+                                                <Text>Mark as Paid</Text>
+                                            </Body>
+                                        </Left>
                                     </CardItem>
                                 </Card>
                                 <Button block primary onPress={handleSubmit(this.onSubmit)}>
@@ -220,16 +236,20 @@ class InvoiceForm extends Component<{}> {
         //Todo Lookup
     }
 
-    calculateSubTotal(fields) {
-        console.log(fields.getAll());
-        if (fields) {
-            let allItemsSubtotal = fields.getAll().reduce(function (a, b) {
+    calculateSubTotal = (values) => {
+        if (values.items) {
+            let allItemsSubtotal = values.items.reduce(function (a, b) {
                 return a + Number(b.subtotal);
             }, 0);
             console.log(allItemsSubtotal);
-            change('subtotal', String(allItemsSubtotal));
+            values.subtotal = String(allItemsSubtotal);
+            values.total = String(allItemsSubtotal - Number(values.discount));
+            values.payment.amount_due = String(Number(values.total) - Number(values.payment.amount_paid));
         }
-    }
+    };
+    setPaymentStatus = (values) => {
+        values.items = !values.items;
+    };
 }
 
 //todo refactor
@@ -244,9 +264,9 @@ const validate = (values) => {
 const selector = formValueSelector('invoiceForm');
 
 const mapStateToProps = (state, props) => {
-    let initialValues, items = selector(state, 'items'), subtotalValue = selector(state, 'subtotal'),
-        discountValue = selector(state, 'discount'), totalValue = selector(state, 'total'),
-        amountPaid = selector(state, 'payment.amount_paid'), amountDue = selector(state, 'payment.amount_due');
+    let initialValues, subtotalValue = selector(state, 'subtotal'),
+        totalValue = selector(state, 'total'),
+        amountPaid = selector(state, 'payment.amount_paid');
     if (props.invoice) {
 
         props.invoice.items.forEach((item) => {
@@ -265,18 +285,22 @@ const mapStateToProps = (state, props) => {
             payment: {
                 amount_paid: props.invoice.payment.amount_paid.toString(),
                 amount_due: props.invoice.payment.amount_due.toString(),
+                status: props.invoice.payment.status,
             },
 
         };
     } else {
         initialValues = {
             number: 'INV0000',
+            customer: null,
+            items: [{item: null, quantity: '0', subtotal: '0'}],
             subtotal: '0',
             discount: '0',
             total: '0',
             payment: {
                 amount_paid: '0',
                 amount_due: '0',
+                status: false,
             },
         };
     }
@@ -286,12 +310,9 @@ const mapStateToProps = (state, props) => {
         getInvoices: state.invoiceReducer.getInvoices,
         getCustomers: state.customerReducer.getCustomers,
         getItems: state.itemReducer.getItems,
-        items,
         subtotalValue,
-        discountValue,
         totalValue,
         amountPaid,
-        amountDue,
     });
 };
 

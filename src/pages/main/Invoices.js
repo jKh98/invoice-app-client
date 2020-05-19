@@ -142,7 +142,7 @@ class Invoices extends Component<{}> {
                 ListEmptyComponent={
                     <EmptyListPlaceHolder
                         type={'item'}
-                        message={'No items found. Press the plus button to add new items.'}/>}
+                        message={'No invoices found. Press the plus button to add new items.'}/>}
                 dataArray={invoicesList}
                 renderRow={
                     (invoice) =>

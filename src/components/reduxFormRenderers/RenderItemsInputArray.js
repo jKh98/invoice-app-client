@@ -29,6 +29,7 @@ const renderItemsInputArray = ({fields, change, onChange, optionsArray, meta: {e
                            iosHeader="Select Item"
                            placeholder={'Item'}
                            onChange={(value) => {
+                               // Calculate product subtotal based on new product
                                let quantity = Number(fields.get(index).quantity);
                                let itemValue = optionsArray.find((e) => {
                                    if (e._id === value) {
@@ -38,18 +39,18 @@ const renderItemsInputArray = ({fields, change, onChange, optionsArray, meta: {e
                                if (quantity && item) {
                                    change(`${item}.subtotal`, String(quantity * itemValue.price));
                                }
-                               onChange(fields);
+                               // onChange();
                            }}
                     />
-                </Body>
-                <Right>
                     <Field
                         name={`${item}.quantity`}
                         keyboardType={'decimal-pad'}
                         placeholder={'0'}
                         textAlign={'right'}
-                        label={'Quantity'}
+                        label={'×'}
+                        component={renderTextInput}
                         onChange={(value) => {
+                            // Calculate product subtotal based on new quantity
                             let itemValue = optionsArray.find((e) => {
                                 if (e._id === fields.get(index).item) {
                                     return e;
@@ -58,9 +59,8 @@ const renderItemsInputArray = ({fields, change, onChange, optionsArray, meta: {e
                             if (itemValue) {
                                 change(`${item}.subtotal`, String(Number(value) * itemValue.price));
                             }
-                            onChange(fields);
+                            // onChange();
                         }}
-                        component={renderTextInput}
                     />
                     <Field
                         name={`${item}.subtotal`}
@@ -71,7 +71,7 @@ const renderItemsInputArray = ({fields, change, onChange, optionsArray, meta: {e
                         editable={false}
                         component={renderTextInput}
                     />
-                </Right>
+                </Body>
             </CardItem>
         ))}
         <CardItem button light onPress={() => fields.push({})}>
