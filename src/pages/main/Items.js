@@ -55,7 +55,7 @@ class Items extends Component<{}> {
             ListEmptyComponent={
                 <EmptyListPlaceHolder
                     type={'item'}
-                    message={'No items found. Press the plus button to add new items.'}/>}
+                    message={'No items found.\nPress the plus button to add new items.'}/>}
             dataArray={itemsList}
             renderRow={
                 (item) =>

@@ -10,7 +10,7 @@ import {loginUser} from '../../actions/auth.actions';
 import Loader from '../../components/Loader';
 import {ErrorUtils} from '../../utils/error.utils';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
-import {validateEmailField, validateRequiredField} from '../../utils/validate.utils';
+import {email, required, validateEmailField, validateRequiredField} from '../../utils/validate.utils';
 
 class Login extends Component<{}> {
 
@@ -48,6 +48,7 @@ class Login extends Component<{}> {
                                 <Field name={'email'}
                                        keyboardType={'email-address'}
                                        placeholder={'Email'}
+                                       validate={[email, required]}
                                        component={renderTextInput}/>
                             </Body>
                         </CardItem>
@@ -57,6 +58,7 @@ class Login extends Component<{}> {
                                        keyboardType={'default'}
                                        placeholder={'Password'}
                                        secureTextEntry={true}
+                                       validate={[required]}
                                        component={renderTextInput}/>
                             </Body>
                         </CardItem>
@@ -68,10 +70,10 @@ class Login extends Component<{}> {
                             </Body>
                         </CardItem>
                         <CardItem>
-                                <Text> Don't have an account yet?</Text>
-                                <Button transparent onPress={this.signUp}>
-                                    <Text>Sign Up</Text>
-                                </Button>
+                            <Text> Don't have an account yet?</Text>
+                            <Button transparent onPress={this.signUp}>
+                                <Text>Sign Up</Text>
+                            </Button>
                         </CardItem>
                     </Card>
                 </Content>
@@ -79,13 +81,6 @@ class Login extends Component<{}> {
         );
     };
 }
-
-const validate = (values) => {
-    return {
-        email: validateEmailField(values.email),
-        password: validateRequiredField('Password', values.password),
-    };
-};
 
 const mapStateToProps = (state) => ({
     loginUser: state.authReducer.loginUser,
@@ -99,6 +94,8 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
         form: 'login',
-        validate,
+        enableReinitialize: true,
+        keepDirtyOnReinitialize: true,
+        updateUnregisteredFields: true,
     }),
 )(Login);

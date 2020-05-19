@@ -7,8 +7,8 @@ import {Picker, Label, Item, Icon, Text} from 'native-base';
  * @returns {*}
  * @param field
  */
-const renderSelectItem = (field) => {
-    const {meta: {touched, error}, input: {onChange, value, ...inputProps}, label, optionsArray, ...pickerProps} = field;
+const renderSelectOption = (field) => {
+    const {meta: {touched, error}, input: {onChange, value, ...inputProps}, placeHolder, label, optionsArray, ...pickerProps} = field;
     return (
         <Item picker>
             {label && <Label>{label}</Label>}
@@ -16,7 +16,7 @@ const renderSelectItem = (field) => {
                     iosIcon={<Icon name="arrow-down"/>}
                     onValueChange={value => onChange(value)}
                     {...inputProps} {...pickerProps} >
-                <Picker.Item label={'Select an option ...'} value={null}/>
+                <Picker.Item label={placeHolder} value={null}/>
                 {optionsArray.map((option, i) => {
                     return <Picker.Item key={i}
                                         value={option._id}
@@ -29,6 +29,6 @@ const renderSelectItem = (field) => {
     );
 };
 
-export default renderSelectItem;
+export default renderSelectOption;
 
 

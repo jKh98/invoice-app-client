@@ -29,7 +29,7 @@ export const registerNewUser = (payload) => {
 
         } catch (error) {
             dispatch({
-                type: "CREAT_USER_FAIL",
+                type: "REGISTER_USER_FAIL",
                 payload: error.responseBody
             });
             return error;

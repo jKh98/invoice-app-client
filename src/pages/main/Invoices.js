@@ -20,6 +20,8 @@ import ListView from '../../components/ListView';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 import Loader from '../../components/Loader';
 import moment from 'moment';
+import {getInvoicesList} from '../../actions/invoice.actions';
+import {zeroPad} from '../../utils/general.utils';
 
 class Invoices extends Component<{}> {
 
@@ -79,7 +81,8 @@ class Invoices extends Component<{}> {
     };
 
     addNewInvoice() {
-        Actions.invoiceForm({invoice: null});
+        let newNumber = this.props.getInvoices ? this.props.getInvoices.invoicesList.length : 1;
+        Actions.invoiceForm({invoice: null, newNumber: zeroPad(newNumber, 8)});
     }
 
     openInvoicePage(invoice) {
@@ -92,7 +95,7 @@ class Invoices extends Component<{}> {
                 ListEmptyComponent={
                     <EmptyListPlaceHolder
                         type={'item'}
-                        message={'No invoices found. Press the plus button to add new items.'}/>}
+                        message={'No invoices found.\nPress the plus button to add new items.'}/>}
                 dataArray={invoicesList}
                 renderRow={
                     (invoice) =>

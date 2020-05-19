@@ -18,7 +18,7 @@ import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateRequiredField} from '../../utils/validate.utils';
+import {number, required, validateRequiredField} from '../../utils/validate.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editItem, getItemsList} from '../../actions/item.actions';
 import {getCustomersList} from '../../actions/customer.actions';
@@ -84,12 +84,14 @@ class ItemForm extends Component<{}> {
                                    keyboardType={'default'}
                                    placeholder={'Item Name'}
                                    icon={'ios-barcode'}
+                                   validate={[required]}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem cardBody>
                             <Field name={'price'}
                                    keyboardType={'decimal-pad'}
                                    placeholder={'Unit Price'}
+                                   valdiate={[number, required]}
                                    icon={'ios-pricetag'}
                                    component={renderTextInput}/>
                         </CardItem>
@@ -121,13 +123,6 @@ class ItemForm extends Component<{}> {
 
 }
 
-const validate = (values) => {
-    return {
-        name: validateRequiredField('Name', values.name),
-        price: validateRequiredField('Price', values.price),
-    };
-};
-
 const mapStateToProps = (state, props) => {
     let initialValues;
     if (props.item) {
@@ -153,6 +148,7 @@ export default compose(
     reduxForm({
         form: 'itemForm',
         enableReinitialize: true,
-        validate,
+        keepDirtyOnReinitialize: true,
+        updateUnregisteredFields: true,
     }),
 )(ItemForm);

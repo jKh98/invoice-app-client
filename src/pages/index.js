@@ -1,6 +1,5 @@
 import Login from './authentication/Login';
 import SignUp from './authentication/SignUp';
-import Home from './Home';
 import Invoices from './main/Invoices';
 import Customers from './main/Customers';
 import Items from './main/Items';
@@ -13,7 +12,6 @@ import Splash from './Splash';
 export {
     Login,
     SignUp,
-    Home,
     Invoices,
     Customers,
     Items,

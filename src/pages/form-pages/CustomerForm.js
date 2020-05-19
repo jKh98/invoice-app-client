@@ -19,7 +19,7 @@ import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateEmailField, validateRequiredField} from '../../utils/validate.utils';
+import {email, phone, required, validateEmailField, validateRequiredField} from '../../utils/validate.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editCustomer, getCustomersList} from '../../actions/customer.actions';
 import Loader from '../../components/Loader';
@@ -86,6 +86,15 @@ class CustomerForm extends Component<{}> {
                                    keyboardType={'default'}
                                    placeholder={'Customer Name'}
                                    icon={'ios-contact'}
+                                   valdiate={[required]}
+                                   component={renderTextInput}/>
+                        </CardItem>
+                        <CardItem cardBody>
+                            <Field name={'email'}
+                                   keyboardType={'email-address'}
+                                   placeholder={'Email'}
+                                   icon={'ios-mail'}
+                                   validate={[email, required]}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem cardBody>
@@ -97,19 +106,11 @@ class CustomerForm extends Component<{}> {
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem cardBody>
-
-                            <Field name={'email'}
-                                   keyboardType={'email-address'}
-                                   placeholder={'Email'}
-                                   icon={'ios-mail'}
-                                   component={renderTextInput}/>
-                        </CardItem>
-                        <CardItem cardBody>
-
                             <Field name={'phone'}
                                    keyboardType={'phone-pad'}
                                    placeholder={'Phone'}
                                    icon={'ios-call'}
+                                   validate={[phone, required]}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem cardBody>
@@ -125,6 +126,7 @@ class CustomerForm extends Component<{}> {
                             <Field name={'address_1'}
                                    keyboardType={'default'}
                                    placeholder={'Address 1'}
+                                   validate={[required]}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem cardBody>
@@ -158,15 +160,6 @@ class CustomerForm extends Component<{}> {
     }
 }
 
-const validate = (values) => {
-    return {
-        email: validateEmailField(values.email),
-        name: validateRequiredField('Name', values.name),
-        phone: validateRequiredField('Phone', values.phone),
-        address_1: validateRequiredField('One Address', values.address_1),
-    };
-};
-
 const mapStateToProps = (state, props) => {
     let initialValues;
     if (props.customer) {
@@ -197,6 +190,7 @@ export default compose(
     reduxForm({
         form: 'customerForm',
         enableReinitialize: true,
-        validate,
+        keepDirtyOnReinitialize: true,
+        updateUnregisteredFields: true,
     }),
 )(CustomerForm);

@@ -2,8 +2,8 @@ import {View, Body, Right, Left, Text, CardItem, ListItem, Button, Icon, Content
 import React from 'react';
 import {Field} from 'redux-form';
 import renderTextInput from './RenderTextInput';
-import renderSelectItem from './RenderSelectItem';
-import {validateNumberField, validateRequiredField} from '../../utils/validate.utils';
+import renderSelectOption from './RenderSelectOption';
+import {integer, number, required, validateNumberField, validateRequiredField} from '../../utils/validate.utils';
 
 /**
  * Renders an array of field tuples for redux-form. Each tuple has an item selector and a quantity input field
@@ -22,11 +22,12 @@ const renderItemsInputArray = (field) => {
                     </Button>
                     <Body>
                         <Field name={`${item}.item`}
-                               component={renderSelectItem}
+                               component={renderSelectOption}
                                optionsArray={optionsArray}
                                iosHeader="Select Item"
+                               placeHolder={'Select an item...'}
                                placeholder={'Item'}
-                               validate={validateItem}
+                               validate={[required]}
                                onChange={(value) => {
                                    // Calculate product subtotal based on new product
                                    let quantity = Number(fields.get(index).quantity);
@@ -47,7 +48,7 @@ const renderItemsInputArray = (field) => {
                             textAlign={'right'}
                             label={'×'}
                             component={renderTextInput}
-                            validate={validateQuantity}
+                            validate={[required, integer]}
                             onChange={(value) => {
                                 // Calculate product subtotal based on new quantity
                                 let itemValue = optionsArray.find((e) => {
@@ -67,7 +68,7 @@ const renderItemsInputArray = (field) => {
                             textAlign={'right'}
                             label={'Net Price'}
                             editable={false}
-                            validate={validateItemSubtotal}
+                            validate={[required, number]}
                             component={renderTextInput}
                         />
                     </Body>
@@ -84,16 +85,6 @@ const renderItemsInputArray = (field) => {
             </CardItem>
         </View>
     );
-};
-
-const validateItem = (value) => {
-    return validateRequiredField('Item', value);
-};
-const validateQuantity = (value) => {
-    return validateNumberField('Quantity', value, 1, null, true);
-};
-const validateItemSubtotal = (value) => {
-    return validateNumberField('Subtotal', value, 0);
 };
 export default renderItemsInputArray;
 

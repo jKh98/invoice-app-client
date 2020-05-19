@@ -19,15 +19,21 @@ import renderItemsTextInputArray from '../../components/reduxFormRenderers/Rende
 import {Field, FieldArray, formValueSelector, reduxForm, change} from 'redux-form';
 import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateRequiredField, validateNumberField, validatePositiveTimeDifference} from '../../utils/validate.utils';
+import {
+    validateRequiredField,
+    validateNumberField,
+    validatePositiveTimeDifference,
+    required, number,
+} from '../../utils/validate.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
-import renderSelectItem from '../../components/reduxFormRenderers/RenderSelectItem';
+import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
 import renderDatePicker from '../../components/reduxFormRenderers/RenderDatePicker';
 
 class InvoiceForm extends Component<{}> {
-    modifyInvoicesData = async (values) => {
+
+    sendInvoiceData = async (values) => {
         try {
             const response = await this.props.dispatch(editInvoice(values));
             if (!response.success) {
@@ -60,11 +66,11 @@ class InvoiceForm extends Component<{}> {
     }
 
     onSubmit = (values) => {
-        this.modifyInvoicesData(values);
+        this.sendInvoiceData(values);
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems, getCustomers, totalValue, subtotalValue, amountPaid, change} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers, totalValue, subtotalValue, amountPaid, change, paymentStatus} = this.props;
         return (
             <Container>
                 {editInvoice.isLoading && <Loader/>}
@@ -88,6 +94,7 @@ class InvoiceForm extends Component<{}> {
                                         <Field name={'number'}
                                                keyboardType={'default'}
                                                placeholder={'INV0000'}
+                                               validate={[required]}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody>
@@ -97,16 +104,19 @@ class InvoiceForm extends Component<{}> {
                                             name={'issued'}
                                             label={'Issued: '}
                                             placeholder="YYYY/MM/DD"
+                                            validate={[required]}
                                         />
                                     </CardItem>
                                 </Card>
                                 <Card style={{paddingHorizontal: 10}}>
                                     <CardItem cardBody>
                                         <Field name={`customer`}
-                                               component={renderSelectItem}
+                                               component={renderSelectOption}
                                                iosHeader="Select Customer"
+                                               placeHolder={"Select a customer..."}
                                                optionsArray={(getCustomers.customersList || [])}
                                                label={'To: '}
+                                               validate={[required]}
                                                placeholder={'Customer'}/>
                                     </CardItem>
                                     <CardItem cardBody>
@@ -116,6 +126,7 @@ class InvoiceForm extends Component<{}> {
                                             name={'due'}
                                             label={'Due: '}
                                             placeholder="YYYY/MM/DD"
+                                            validate={[required]}
                                         />
                                     </CardItem>
                                 </Card>
@@ -145,6 +156,7 @@ class InvoiceForm extends Component<{}> {
                                                textAlign={'right'}
                                                defaultValue={'0'}
                                                editable={false}
+                                               validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{paddingHorizontal: 10}}>
@@ -158,6 +170,7 @@ class InvoiceForm extends Component<{}> {
                                                    change('total', String(newTotal));
                                                    change('payment.amount_due', String(newTotal - Number(amountPaid)));
                                                }}
+                                               valdiate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{paddingHorizontal: 10}}>
@@ -167,6 +180,7 @@ class InvoiceForm extends Component<{}> {
                                                label={'Total'}
                                                textAlign={'right'}
                                                editable={false}
+                                               validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{paddingHorizontal: 10}}>
@@ -178,9 +192,7 @@ class InvoiceForm extends Component<{}> {
                                                onChange={(value) => {
                                                    change('payment.amount_due', String(Number(totalValue) - Number(value)));
                                                }}
-                                               validate={(value) => {
-                                                   return validateNumberField('Amount paid ', value, 0);
-                                               }}
+                                               validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
@@ -190,9 +202,7 @@ class InvoiceForm extends Component<{}> {
                                                label={'Amount Due'}
                                                textAlign={'right'}
                                                editable={false}
-                                               validate={(value) => {
-                                                   return validateNumberField('Amount due ', value, 0);
-                                               }}
+                                               validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
                                 </Card>
@@ -201,7 +211,7 @@ class InvoiceForm extends Component<{}> {
                                         <Left>
                                             <Icon active name="ios-cash"/>
                                             <Body>
-                                                <Text>Mark as Paid</Text>
+                                                <Text>Mark as {paymentStatus ? 'Unpaid' : 'Paid'} </Text>
                                             </Body>
                                         </Left>
                                     </CardItem>
@@ -253,23 +263,10 @@ class InvoiceForm extends Component<{}> {
         }
     };
     setPaymentStatus = (values) => {
-        values.items = !values.items;
+        console.log(values.payment.status);
+        values.payment.status = !values.payment.status;
     };
 }
-
-//todo refactor
-const validate = (values) => {
-    return {
-        number: validateRequiredField('Number ', values.number),
-        customer: validateRequiredField('Customer ', values.customer),
-        issued: validateRequiredField('Issue date ', values.issued, validatePositiveTimeDifference(values.issued, values.due)),
-        due: [validateRequiredField('Due date ', values.due), validatePositiveTimeDifference(values.issued, values.due)],
-        subtotal: validateNumberField('Subtotal', values.subtotal, 0),
-        total: validateNumberField('Subtotal', values.total, 0),
-        discount: validateNumberField('Subtotal', values.discount, 0),
-    };
-};
-
 
 const selector = formValueSelector('invoiceForm');
 
@@ -301,7 +298,7 @@ const mapStateToProps = (state, props) => {
         };
     } else {
         initialValues = {
-            number: 'INV0000',
+            number: `INV${props.newNumber}`,
             customer: null,
             items: [{item: null, quantity: '0', subtotal: '0'}],
             subtotal: '0',
@@ -314,6 +311,8 @@ const mapStateToProps = (state, props) => {
             },
         };
     }
+    let paymentStatus = initialValues.payment.status;
+
     return ({
         initialValues,
         editInvoice: state.invoiceReducer.editInvoice,
@@ -323,6 +322,7 @@ const mapStateToProps = (state, props) => {
         subtotalValue,
         totalValue,
         amountPaid,
+        paymentStatus,
     });
 };
 
@@ -341,6 +341,5 @@ export default compose(
         enableReinitialize: true,
         keepDirtyOnReinitialize: true,
         updateUnregisteredFields: true,
-        validate,
     }),
 )(InvoiceForm);

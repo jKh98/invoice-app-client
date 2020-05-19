@@ -2,14 +2,18 @@ import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import Logo from '../../components/Logo';
 import {Actions} from 'react-native-router-flux';
 import {registerNewUser} from '../../actions/auth.actions';
 import Loader from '../../components/Loader';
 import {ErrorUtils} from '../../utils/error.utils';
-import {Button, Container, Content, Body, Text, Input, CardItem, Card} from 'native-base';
+import {Button, Container, Content, Body, Text, Header, CardItem, Card, Title, Icon, Left, Right} from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
-import {validateEmailField, validateRequiredField} from '../../utils/validate.utils';
+import {
+    email, phone,
+    required,
+} from '../../utils/validate.utils';
+import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
+import {currencies} from '../../utils/currencies.array';
 
 
 class SignUp extends Component<{}> {
@@ -32,6 +36,7 @@ class SignUp extends Component<{}> {
     }
 
     onSubmit = (values) => {
+        console.log(values);
         this.registerNewUser(values);
     };
 
@@ -40,33 +45,69 @@ class SignUp extends Component<{}> {
         return (
             <Container style={{flex: 1, justifyContent: 'center'}}>
                 {registerUser.isLoading && <Loader/>}
+                <Header>
+                    <Left>
+                        <Button transparent onPress={this.goBack}>
+                            <Icon name={'ios-arrow-back'}/>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Sign Up as Merchant</Title>
+                    </Body>
+                    <Right/>
+                </Header>
                 <Content padder contentContainerStyle={{display: 'flex', flex: 1, justifyContent: 'center'}}>
-                    <Logo/>
                     <Card transparent>
                         <CardItem>
-                            <Body>
-                                <Field name={'name'}
-                                       placeholder={'Name'}
-                                       keyboardType={'default'}
-                                       component={renderTextInput}/>
-                            </Body>
+                            <Field name={'name'}
+                                   placeholder={'Name'}
+                                   keyboardType={'default'}
+                                   validate={[required]}
+                                   component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
-                            <Body>
-                                <Field name={'email'}
-                                       placeholder={'Email'}
-                                       keyboardType={'email-address'}
-                                       component={renderTextInput}/>
-                            </Body>
+                            <Field name={'email'}
+                                   placeholder={'Email'}
+                                   keyboardType={'email-address'}
+                                   validate={[email, required]}
+                                   component={renderTextInput}/>
                         </CardItem>
                         <CardItem>
-                            <Body>
-                                <Field name={'password'}
-                                       keyboardType={'default'}
-                                       placeholder={'Password'}
-                                       secureTextEntry={true}
-                                       component={renderTextInput}/>
-                            </Body>
+                            <Field name={'password'}
+                                   keyboardType={'default'}
+                                   placeholder={'Password'}
+                                   secureTextEntry={true}
+                                   validate={[required]}
+                                   component={renderTextInput}/>
+                        </CardItem>
+                        <CardItem>
+                            <Field name={'company'}
+                                   keyboardType={'default'}
+                                   placeholder={'Company'}
+                                   component={renderTextInput}/>
+                        </CardItem>
+                        <CardItem>
+                            <Field name={'phone'}
+                                   keyboardType={'phone-pad'}
+                                   placeholder={'Phone'}
+                                   validate={[required, phone]}
+                                   component={renderTextInput}/>
+                        </CardItem>
+                        <CardItem>
+                            <Field name={'address'}
+                                   keyboardType={'default'}
+                                   placeholder={'Address'}
+                                   validate={[required]}
+                                   component={renderTextInput}/>
+                        </CardItem>
+                        <CardItem>
+                            <Field name={'base_currency'}
+                                   keyboardType={'default'}
+                                   placeholder={'Base Items Currency'}
+                                   optionsArray={currencies}
+                                   validate={[required]}
+                                   placeHolder={'Select Base Currency'}
+                                   component={renderSelectOption}/>
                         </CardItem>
                         <CardItem footer>
                             <Body>
@@ -88,14 +129,6 @@ class SignUp extends Component<{}> {
     };
 }
 
-const validate = (values) => {
-    return {
-        email: validateEmailField(values.email),
-        name: validateRequiredField('Name', values.name),
-        password: validateRequiredField('Password', values.password),
-    };
-};
-
 const mapStateToProps = (state) => ({
     registerUser: state.authReducer.registerUser,
 });
@@ -108,6 +141,8 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
         form: 'register',
-        validate,
+        enableReinitialize: true,
+        keepDirtyOnReinitialize: true,
+        updateUnregisteredFields: true,
     }),
 )(SignUp);
