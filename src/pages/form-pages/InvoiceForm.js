@@ -19,7 +19,7 @@ import renderItemsTextInputArray from '../../components/reduxFormRenderers/Rende
 import {Field, FieldArray, formValueSelector, reduxForm, change} from 'redux-form';
 import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateRequiredField, validateNumberField} from '../../utils/form.utils';
+import {validateRequiredField, validateNumberField} from '../../utils/validate.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
@@ -180,6 +180,9 @@ class InvoiceForm extends Component<{}> {
                                                onChange={(value) => {
                                                    change('payment.amount_due', String(Number(totalValue) - Number(value)));
                                                }}
+                                               validate={(value) => {
+                                                   return validateNumberField('Amount paid ', value, 0);
+                                               }}
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
@@ -189,6 +192,9 @@ class InvoiceForm extends Component<{}> {
                                                label={'Amount Due'}
                                                textAlign={'right'}
                                                editable={false}
+                                               validate={(value) => {
+                                                   return validateNumberField('Amount due ', value, 0);
+                                               }}
                                                component={renderTextInput}/>
                                     </CardItem>
                                 </Card>
@@ -252,23 +258,15 @@ class InvoiceForm extends Component<{}> {
 
 //todo refactor
 const validate = (values) => {
+    console.log(values);
     return {
         number: validateRequiredField('Number ', values.number),
         customer: validateRequiredField('Customer ', values.customer),
         issued: validateRequiredField('Issue date ', values.issued),
         due: validateRequiredField('Due date ', values.due),
-        // items: [{
-        //     item: validateRequiredField('Item', values.items.item),
-        //     quantity: validateNumberField('Quantity', values.items.quantity, 1, null, true),
-        //     subtotal: validateNumberField('Subtotal', values.items.subtotal, 0),
-        // }],
         subtotal: validateNumberField('Subtotal', values.subtotal, 0),
         total: validateNumberField('Subtotal', values.total, 0),
         discount: validateNumberField('Subtotal', values.discount, 0),
-        // payment: {
-        //     amount_paid: validateNumberField('Subtotal', values.payment.amount_paid, 0),
-        //     amount_due: validateNumberField('Subtotal', values.payment.amount_due, 0),
-        // },
     };
 };
 

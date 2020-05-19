@@ -18,7 +18,7 @@ import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateRequiredField} from '../../utils/form.utils';
+import {validateRequiredField} from '../../utils/validate.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editItem, getItemsList} from '../../actions/item.actions';
 import {getCustomersList} from '../../actions/customer.actions';

@@ -15,7 +15,7 @@ export function validateNumberField(fieldName, value, min = null, max = null, in
     } catch (e) {
         return `${fieldName} should be a number.`;
     }
-    if (integer && !Number.isInteger(value)) {
+    if (integer && !Number.isInteger(Number(value))) {
         return `${fieldName} should be an integer.`;
     }
     if (min && Number(value) < min) {

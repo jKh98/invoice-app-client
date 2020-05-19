@@ -3,6 +3,7 @@ import React from 'react';
 import {Field} from 'redux-form';
 import renderTextInput from './RenderTextInput';
 import renderSelectItem from './RenderSelectItem';
+import {validateNumberField, validateRequiredField} from '../../utils/validate.utils';
 
 /**
  * Renders an array of field tuples for redux-form. Each tuple has an item selector and a quantity input field
@@ -25,6 +26,10 @@ const renderItemsInputArray = (field) => {
                                optionsArray={optionsArray}
                                iosHeader="Select Item"
                                placeholder={'Item'}
+                               validate={(value) => {
+                                   return validateRequiredField('Item', value);
+                               }
+                               }
                                onChange={(value) => {
                                    // Calculate product subtotal based on new product
                                    let quantity = Number(fields.get(index).quantity);
@@ -46,6 +51,9 @@ const renderItemsInputArray = (field) => {
                             textAlign={'right'}
                             label={'×'}
                             component={renderTextInput}
+                            validate={(value) => {
+                                return validateNumberField('Quantity', value, 1, null, true);
+                            }}
                             onChange={(value) => {
                                 // Calculate product subtotal based on new quantity
                                 let itemValue = optionsArray.find((e) => {
@@ -66,6 +74,9 @@ const renderItemsInputArray = (field) => {
                             textAlign={'right'}
                             label={'Net Price'}
                             editable={false}
+                            validate={(value) => {
+                                return validateNumberField('Subtotal', value, 0);
+                            }}
                             component={renderTextInput}
                         />
                     </Body>

@@ -10,7 +10,7 @@ import {loginUser} from '../../actions/auth.actions';
 import Loader from '../../components/Loader';
 import {ErrorUtils} from '../../utils/error.utils';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
-import {validateEmailField, validateRequiredField} from '../../utils/form.utils';
+import {validateEmailField, validateRequiredField} from '../../utils/validate.utils';
 
 class Login extends Component<{}> {
 
