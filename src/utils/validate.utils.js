@@ -29,3 +29,7 @@ export function validateNumberField(fieldName, value, min = null, max = null, in
 export function validatePhoneField(value) {
     return !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ? 'Invalid phone number.' : undefined;
 }
+
+export function validatePositiveTimeDifference(issued, due) {
+    return due < issued ? 'Due date should be after issuing' : undefined;
+}

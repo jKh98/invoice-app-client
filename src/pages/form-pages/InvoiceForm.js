@@ -19,7 +19,7 @@ import renderItemsTextInputArray from '../../components/reduxFormRenderers/Rende
 import {Field, FieldArray, formValueSelector, reduxForm, change} from 'redux-form';
 import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
-import {validateRequiredField, validateNumberField} from '../../utils/validate.utils';
+import {validateRequiredField, validateNumberField, validatePositiveTimeDifference} from '../../utils/validate.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
@@ -258,8 +258,8 @@ const validate = (values) => {
     return {
         number: validateRequiredField('Number ', values.number),
         customer: validateRequiredField('Customer ', values.customer),
-        issued: validateRequiredField('Issue date ', values.issued),
-        due: validateRequiredField('Due date ', values.due),
+        issued: validateRequiredField('Issue date ', values.issued, validatePositiveTimeDifference(values.issued, values.due)),
+        due: [validateRequiredField('Due date ', values.due), validatePositiveTimeDifference(values.issued, values.due)],
         subtotal: validateNumberField('Subtotal', values.subtotal, 0),
         total: validateNumberField('Subtotal', values.total, 0),
         discount: validateNumberField('Subtotal', values.discount, 0),

@@ -19,6 +19,7 @@ import {connect} from 'react-redux';
 import ListView from '../../components/ListView';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 import Loader from '../../components/Loader';
+import moment from 'moment';
 
 class Invoices extends Component<{}> {
 
@@ -99,7 +100,7 @@ class Invoices extends Component<{}> {
                             title={(customersList.find(e => e._id === invoice.customer) || {}).name}
                             subtitle={invoice.number}
                             right={invoice.total}
-                            rightSub={invoice.issued}
+                            rightSub={moment(invoice.issued).format('DD/MM/YYYY')}
                             handleClickEvent={
                                 () => {
                                     this.openInvoicePage(invoice);
