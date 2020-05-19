@@ -26,10 +26,7 @@ const renderItemsInputArray = (field) => {
                                optionsArray={optionsArray}
                                iosHeader="Select Item"
                                placeholder={'Item'}
-                               validate={(value) => {
-                                   return validateRequiredField('Item', value);
-                               }
-                               }
+                               validate={validateItem}
                                onChange={(value) => {
                                    // Calculate product subtotal based on new product
                                    let quantity = Number(fields.get(index).quantity);
@@ -41,7 +38,6 @@ const renderItemsInputArray = (field) => {
                                    if (quantity && item) {
                                        change(`${item}.subtotal`, String(quantity * itemValue.price));
                                    }
-                                   // onChange();
                                }}
                         />
                         <Field
@@ -51,9 +47,7 @@ const renderItemsInputArray = (field) => {
                             textAlign={'right'}
                             label={'×'}
                             component={renderTextInput}
-                            validate={(value) => {
-                                return validateNumberField('Quantity', value, 1, null, true);
-                            }}
+                            validate={validateQuantity}
                             onChange={(value) => {
                                 // Calculate product subtotal based on new quantity
                                 let itemValue = optionsArray.find((e) => {
@@ -64,7 +58,6 @@ const renderItemsInputArray = (field) => {
                                 if (itemValue) {
                                     change(`${item}.subtotal`, String(Number(value) * itemValue.price));
                                 }
-                                // onChange();
                             }}
                         />
                         <Field
@@ -74,13 +67,11 @@ const renderItemsInputArray = (field) => {
                             textAlign={'right'}
                             label={'Net Price'}
                             editable={false}
-                            validate={(value) => {
-                                return validateNumberField('Subtotal', value, 0);
-                            }}
+                            validate={validateItemSubtotal}
                             component={renderTextInput}
                         />
                     </Body>
-                    {(touched && error || submitFailed) && <Text style={{color: '#f32013'}}>{error}</Text>}
+                    {(touched && error) && <Text style={{color: '#f32013'}}>{error}</Text>}
                 </CardItem>
             ))}
             <CardItem button light onPress={() => fields.push({})}>
@@ -95,5 +86,14 @@ const renderItemsInputArray = (field) => {
     );
 };
 
+const validateItem = (value) => {
+    return validateRequiredField('Item', value);
+};
+const validateQuantity = (value) => {
+    return validateNumberField('Quantity', value, 1, null, true);
+};
+const validateItemSubtotal = (value) => {
+    return validateNumberField('Subtotal', value, 0);
+};
 export default renderItemsInputArray;
 

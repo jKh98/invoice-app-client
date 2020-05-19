@@ -11,7 +11,7 @@ export default class Logo extends Component<{}> {
             <View style={styles.container}>
                 <Image style={{width: 120, height: 120}}
                        source={require('../assets/images/react-logo.png')}/>
-                <H1> Test Client</H1>
+                <H1>Invoice App</H1>
             </View>
         );
     };

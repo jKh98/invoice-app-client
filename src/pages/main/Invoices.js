@@ -8,7 +8,6 @@ import {
     Right,
     Left,
     Body,
-    Text,
     Icon,
     Button,
     Tabs,
@@ -18,60 +17,10 @@ import {
 } from 'native-base';
 import {connect} from 'react-redux';
 import ListView from '../../components/ListView';
-import {getInvoicesList} from '../../actions/invoice.actions';
-import {ErrorUtils} from '../../utils/error.utils';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
-import {getCustomersList} from '../../actions/customer.actions';
 import Loader from '../../components/Loader';
-import {getItemsList} from '../../actions/item.actions';
 
 class Invoices extends Component<{}> {
-
-    componentDidMount() {
-        this.loadCustomersList().then(() => {
-            this.loadItemsList().then(() => {
-                this.loadInvoicesList();
-            });
-        });
-
-
-    }
-
-    async loadInvoicesList() {
-        try {
-            const response = await this.props.dispatch(getInvoicesList());
-            if (!response.success) {
-                throw response;
-            }
-        } catch (e) {
-            const newError = new ErrorUtils(e);
-            newError.showAlert();
-        }
-    }
-
-    async loadCustomersList() {
-        try {
-            const response = await this.props.dispatch(getCustomersList());
-            if (!response.success) {
-                throw response;
-            }
-        } catch (e) {
-            const newError = new ErrorUtils(e);
-            newError.showAlert();
-        }
-    }
-
-    async loadItemsList() {
-        try {
-            const response = await this.props.dispatch(getItemsList());
-            if (!response.success) {
-                throw response;
-            }
-        } catch (e) {
-            const newError = new ErrorUtils(e);
-            newError.showAlert();
-        }
-    }
 
     render() {
         const {getUser: {userDetails}, getInvoices, getCustomers, getItems} = this.props;
@@ -147,7 +96,7 @@ class Invoices extends Component<{}> {
                 renderRow={
                     (invoice) =>
                         <ListView
-                            title={customersList.find(e => e._id === invoice.customer).name}
+                            title={(customersList.find(e => e._id === invoice.customer) || {}).name}
                             subtitle={invoice.number}
                             right={invoice.total}
                             rightSub={invoice.issued}

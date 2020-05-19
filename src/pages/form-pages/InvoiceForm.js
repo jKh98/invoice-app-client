@@ -123,8 +123,6 @@ class InvoiceForm extends Component<{}> {
                                     <FieldArray name="items"
                                                 optionsArray={getItems.itemsList || []}
                                                 change={change}
-                                                rerenderOnEveryChange={true}
-                                                handleSubmit={handleSubmit}
                                                 component={renderItemsTextInputArray}
                                     />
                                 </Card>
@@ -245,7 +243,6 @@ class InvoiceForm extends Component<{}> {
             let allItemsSubtotal = values.items.reduce(function (a, b) {
                 return a + Number(b.subtotal);
             }, 0);
-            console.log(allItemsSubtotal);
             values.subtotal = String(allItemsSubtotal);
             values.total = String(allItemsSubtotal - Number(values.discount));
             values.payment.amount_due = String(Number(values.total) - Number(values.payment.amount_paid));
@@ -258,7 +255,6 @@ class InvoiceForm extends Component<{}> {
 
 //todo refactor
 const validate = (values) => {
-    console.log(values);
     return {
         number: validateRequiredField('Number ', values.number),
         customer: validateRequiredField('Customer ', values.customer),

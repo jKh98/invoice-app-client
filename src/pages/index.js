@@ -8,6 +8,7 @@ import Settings from './main/Settings';
 import ItemForm from './form-pages/ItemForm';
 import CustomerForm from './form-pages/CustomerForm';
 import InvoiceForm from './form-pages/InvoiceForm';
+import Splash from './Splash';
 
 export {
     Login,
@@ -19,5 +20,6 @@ export {
     Settings,
     ItemForm,
     CustomerForm,
-    InvoiceForm
+    InvoiceForm,
+    Splash,
 };

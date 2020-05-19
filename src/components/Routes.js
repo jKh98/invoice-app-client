@@ -10,6 +10,7 @@ import {
     CustomerForm,
     ItemForm,
     InvoiceForm,
+    Splash,
 } from '../pages/index';
 import {Root} from 'native-base';
 import {connect} from 'react-redux';
@@ -29,7 +30,8 @@ export default class Routes extends Component<{}> {
                             <Scene key="signup" component={SignUp} title="Sign Up"/>
                         </Scene>
                         <Scene key={'app'} hideNavBar={true} initial={this.props.isLoggedIn}>
-                            <Scene key="home" title="Home" initial={this.props.isLoggedIn} tabs
+                            <Scene key="splash" title="Splash" initial={this.props.isLoggedIn} component={Splash}/>
+                            <Scene key="home" title="Home" tabs
                                    tabBarComponent={NavBar}>
                                 <Scene key="invoices" component={Invoices} title="Invoices" hideNavBar initial/>
                                 <Scene key="customers" component={Customers} title="Customers" hideNavBar/>
