@@ -24,6 +24,8 @@ import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
 import renderSelectItem from '../../components/reduxFormRenderers/RenderSelectItem';
+import renderDatePicker from '../../components/reduxFormRenderers/RenderDatePicker';
+import moment from 'moment';
 
 class InvoiceForm extends Component<{}> {
 
@@ -60,12 +62,15 @@ class InvoiceForm extends Component<{}> {
     }
 
     onSubmit = (values) => {
+        values.issued = new Date(values.issued);
+        values.due = new Date(values.due);
+        values.payment.status = false;
         console.log(values);
-        // this.modifyInvoicesData(values);
+        this.modifyInvoicesData(values);
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems, getCustomers, items, totalValue, subtotalValue, paidAmount, change} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers, totalValue, subtotalValue, amountPaid, change, items, fields} = this.props;
         return (
             <Container>
                 {editInvoice.isLoading && <Loader/>}
@@ -92,11 +97,13 @@ class InvoiceForm extends Component<{}> {
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody>
-                                        <Field name={'issued'}
-                                               keyboardType={'numeric'}
-                                               placeholder={''}
-                                               label={'Issued: '}
-                                               component={renderTextInput}/>
+                                        <Field
+                                            component={renderDatePicker}
+                                            keyboardType='default'
+                                            name={'issued'}
+                                            label={'Issued: '}
+                                            placeholder="YYYY/MM/DD"
+                                        />
                                     </CardItem>
                                 </Card>
                                 <Card style={{paddingHorizontal: 10}}>
@@ -109,18 +116,21 @@ class InvoiceForm extends Component<{}> {
                                                placeholder={'Customer'}/>
                                     </CardItem>
                                     <CardItem cardBody>
-                                        <Field name={'due'}
-                                               keyboardType={'default'}
-                                               placeholder={''}
-                                               label={'Due: '}
-                                               component={renderTextInput}/>
+                                        <Field
+                                            component={renderDatePicker}
+                                            keyboardType='default'
+                                            name={'due'}
+                                            label={'Due: '}
+                                            placeholder="YYYY/MM/DD"
+                                        />
                                     </CardItem>
                                 </Card>
                                 <Card>
                                     <FieldArray name="items"
                                                 optionsArray={getItems.itemsList || []}
                                                 change={change}
-                                                items={items}
+                                                rerenderOnEveryChange={true}
+                                                onChange={(fields) => this.calculateSubTotal(fields)}
                                                 component={renderItemsTextInputArray}
                                     />
                                     <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
@@ -144,7 +154,7 @@ class InvoiceForm extends Component<{}> {
                                                onChange={(value) => {
                                                    let newTotal = Number(subtotalValue) - Number(value);
                                                    change('total', String(newTotal));
-                                                   change('amount_due', String(newTotal - Number(paidAmount)));
+                                                   change('amount_due', String(newTotal - Number(amountPaid)));
                                                }}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -158,7 +168,7 @@ class InvoiceForm extends Component<{}> {
                                                component={renderTextInput}/>
                                     </CardItem>
                                     <CardItem cardBody style={{paddingHorizontal: 10}}>
-                                        <Field name={'paid.amount'}
+                                        <Field name={'payment.amount_paid'}
                                                keyboardType={'numeric'}
                                                label={'Payments'}
                                                placeholder={'0'}
@@ -209,6 +219,17 @@ class InvoiceForm extends Component<{}> {
     sendInvoice() {
         //Todo Lookup
     }
+
+    calculateSubTotal(fields) {
+        console.log(fields.getAll());
+        if (fields) {
+            let allItemsSubtotal = fields.getAll().reduce(function (a, b) {
+                return a + Number(b.subtotal);
+            }, 0);
+            console.log(allItemsSubtotal);
+            change('subtotal', String(allItemsSubtotal));
+        }
+    }
 }
 
 //todo refactor
@@ -223,13 +244,9 @@ const validate = (values) => {
 const selector = formValueSelector('invoiceForm');
 
 const mapStateToProps = (state, props) => {
-    let initialValues;
-    let items = selector(state, 'items');
-    let subtotalValue = selector(state, 'subtotal');
-    let discountValue = selector(state, 'discount');
-    let totalValue = selector(state, 'total');
-    let paidAmount = selector(state, 'paid.amount');
-    let amountDue = selector(state, 'amount_due');
+    let initialValues, items = selector(state, 'items'), subtotalValue = selector(state, 'subtotal'),
+        discountValue = selector(state, 'discount'), totalValue = selector(state, 'total'),
+        amountPaid = selector(state, 'payment.amount_paid'), amountDue = selector(state, 'payment.amount_due');
     if (props.invoice) {
 
         props.invoice.items.forEach((item) => {
@@ -239,13 +256,16 @@ const mapStateToProps = (state, props) => {
         initialValues = {
             number: props.invoice.number,
             customer: props.invoice.customer,
-            issued: props.invoice.issued,
-            due: props.invoice.due,
+            issued: new Date(props.invoice.issued),
+            due: new Date(props.invoice.due),
             items: props.invoice.items,
             subtotal: props.invoice.subtotal.toString(),
             discount: props.invoice.discount.toString(),
             total: props.invoice.total.toString(),
-            paid: {amount: props.invoice.paid.amount.toString()},
+            payment: {
+                amount_paid: props.invoice.payment.amount_paid.toString(),
+                amount_due: props.invoice.payment.amount_due.toString(),
+            },
 
         };
     } else {
@@ -254,7 +274,10 @@ const mapStateToProps = (state, props) => {
             subtotal: '0',
             discount: '0',
             total: '0',
-            paid: {amount: '0'},
+            payment: {
+                amount_paid: '0',
+                amount_due: '0',
+            },
         };
     }
     return ({
@@ -267,7 +290,7 @@ const mapStateToProps = (state, props) => {
         subtotalValue,
         discountValue,
         totalValue,
-        paidAmount,
+        amountPaid,
         amountDue,
     });
 };

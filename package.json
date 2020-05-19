@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
-    "prop-types": "^15.7.2",
+    "moment": "^2.25.3",
     "native-base": "^2.13.12",
+    "npm": "^6.14.5",
+    "prop-types": "^15.7.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.6.1",
@@ -24,8 +26,7 @@
     "redux": "^4.0.5",
     "redux-form": "^8.3.5",
     "redux-persist": "^5.6.12",
-    "redux-thunk": "^2.3.0",
-    "npm": "^6.14.5"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

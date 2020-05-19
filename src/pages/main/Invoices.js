@@ -28,9 +28,13 @@ import {getItemsList} from '../../actions/item.actions';
 class Invoices extends Component<{}> {
 
     componentDidMount() {
-        this.loadInvoicesList().then(r => {});
-        this.loadCustomersList().then(r => {});
-        this.loadItemsList().then(r => {});
+        this.loadCustomersList().then(() => {
+            this.loadItemsList().then(() => {
+                this.loadInvoicesList();
+            });
+        });
+
+
     }
 
     async loadInvoicesList() {
@@ -93,25 +97,22 @@ class Invoices extends Component<{}> {
                     <Tabs>
                         <Tab heading="ALL">
                             {this.renderInvoicesList(getInvoices.invoicesList || [], getCustomers.customersList || [])}
-                            <Text>{userDetails ? userDetails.name : 'man'}</Text>
                         </Tab>
                         <Tab heading="PENDING">
-                            {   //todo add paid param
+                            {
                                 this.renderInvoicesList(
                                     (getInvoices.invoicesList || []).filter((invoice) => {
-                                        return !invoice.paid.status;
+                                        return !invoice.payment.status;
                                     }, getCustomers.customersList || []),
                                 )}
-                            <Text>{userDetails ? userDetails.email : 'man'}</Text>
                         </Tab>
                         <Tab heading="PAID">
-                            {   //todo add paid param
+                            {
                                 this.renderInvoicesList(
                                     (getInvoices.invoicesList || []).filter((invoice) => {
-                                        return invoice.paid.status;
+                                        return invoice.payment.status;
                                     }, getCustomers.customersList || []),
                                 )}
-                            <Text>{userDetails ? userDetails.password : 'man'}</Text>
                         </Tab>
                     </Tabs>
                     <Fab
@@ -146,9 +147,7 @@ class Invoices extends Component<{}> {
                 renderRow={
                     (invoice) =>
                         <ListView
-                            // title={customersList.filter((e) => {
-                            //     return e._id === invoice.customer;
-                            // }).name}
+                            title={customersList.find(e => e._id === invoice.customer).name}
                             subtitle={invoice.number}
                             right={invoice.total}
                             rightSub={invoice.issued}

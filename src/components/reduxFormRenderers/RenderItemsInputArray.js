@@ -9,12 +9,13 @@ import renderSelectItem from './RenderSelectItem';
  *
  * @param fields
  * @param change
+ * @param onChange
  * @param optionsArray that contains item objects for the item selector
  * @param error
  * @param submitFailed
  * @returns {*}
  */
-const renderItemsInputArray = ({fields, change, optionsArray, meta: {error, submitFailed}}) => (
+const renderItemsInputArray = ({fields, change, onChange, optionsArray, meta: {error, submitFailed}}) => (
     <View style={{flex: 1}}>
         {fields.map((item, index) => (
             <CardItem key={index}>
@@ -26,7 +27,20 @@ const renderItemsInputArray = ({fields, change, optionsArray, meta: {error, subm
                            component={renderSelectItem}
                            optionsArray={optionsArray}
                            iosHeader="Select Item"
-                           placeholder={'Item'}/>
+                           placeholder={'Item'}
+                           onChange={(value) => {
+                               let quantity = Number(fields.get(index).quantity);
+                               let itemValue = optionsArray.find((e) => {
+                                   if (e._id === value) {
+                                       return e;
+                                   }
+                               });
+                               if (quantity && item) {
+                                   change(`${item}.subtotal`, String(quantity * itemValue.price));
+                               }
+                               onChange(fields);
+                           }}
+                    />
                 </Body>
                 <Right>
                     <Field
@@ -35,6 +49,17 @@ const renderItemsInputArray = ({fields, change, optionsArray, meta: {error, subm
                         placeholder={'0'}
                         textAlign={'right'}
                         label={'Quantity'}
+                        onChange={(value) => {
+                            let itemValue = optionsArray.find((e) => {
+                                if (e._id === fields.get(index).item) {
+                                    return e;
+                                }
+                            });
+                            if (itemValue) {
+                                change(`${item}.subtotal`, String(Number(value) * itemValue.price));
+                            }
+                            onChange(fields);
+                        }}
                         component={renderTextInput}
                     />
                     <Field
