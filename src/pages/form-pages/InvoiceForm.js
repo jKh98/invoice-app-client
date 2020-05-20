@@ -12,7 +12,7 @@ import {
     CardItem,
     Icon,
     Button, Footer, FooterTab,
-    Text, Tabs, Tab, Fab, Toast,
+    Text, Tabs, Tab, Fab, Toast, Badge,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import renderItemsTextInputArray from '../../components/reduxFormRenderers/RenderItemsInputArray';
@@ -20,8 +20,6 @@ import {Field, FieldArray, formValueSelector, reduxForm, change} from 'redux-for
 import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
 import {
-    validateRequiredField,
-    validateNumberField,
     validatePositiveTimeDifference,
     required, number, formatCurrency, normalizeCurrency,
 } from '../../utils/redux.form.utils';
@@ -31,7 +29,6 @@ import Loader from '../../components/Loader';
 import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
 import renderDatePicker from '../../components/reduxFormRenderers/RenderDatePicker';
 import {getCurrency} from '../../utils/currencies.utils';
-import {Value} from 'react-native-reanimated';
 
 class InvoiceForm extends Component<{}> {
 
@@ -72,7 +69,7 @@ class InvoiceForm extends Component<{}> {
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems, getCustomers, totalValue, subtotalValue, amountPaid, change, paymentStatus, getUser: {userDetails}} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers, subtotalValue, status, paidOn, change, getUser: {userDetails}} = this.props;
         const currency = getCurrency(userDetails.base_currency);
         return (
             <Container>
@@ -94,11 +91,23 @@ class InvoiceForm extends Component<{}> {
                             <Content padder>
                                 <Card style={{paddingHorizontal: 10}}>
                                     <CardItem cardBody>
-                                        <Field name={'number'}
-                                               keyboardType={'default'}
-                                               placeholder={'INV0000'}
-                                               validate={[required]}
-                                               component={renderTextInput}/>
+                                        <Body>
+                                            <Field name={'number'}
+                                                   keyboardType={'default'}
+                                                   placeholder={'INV0000'}
+                                                   validate={[required]}
+                                                   component={renderTextInput}/>
+                                        </Body>
+                                        <Right>
+                                            {status &&
+                                            <Badge style={{backgroundColor: 'green'}}>
+                                                <Text style={{color: 'white'}}>Paid on {paidOn}</Text>
+                                            </Badge>}
+                                            {!status &&
+                                            <Badge style={{backgroundColor: 'red'}}>
+                                                <Text style={{color: 'white'}}>Not paid</Text>
+                                            </Badge>}
+                                        </Right>
                                     </CardItem>
                                     <CardItem cardBody>
                                         <Field
@@ -144,7 +153,7 @@ class InvoiceForm extends Component<{}> {
                                         <Left>
                                             <Icon active name="ios-calculator"/>
                                             <Body>
-                                                <Text>Calculate</Text>
+                                                <Text>Compute Total</Text>
                                             </Body>
                                         </Left>
                                     </CardItem>
@@ -171,16 +180,14 @@ class InvoiceForm extends Component<{}> {
                                                textAlign={'right'}
                                                onChange={(value) => {
                                                    value = normalizeCurrency(value);
-                                                   let newTotal = Number(subtotalValue) - Number(value);
-                                                   change('total', String(newTotal));
-                                                   change('payment.amount_due', String(newTotal - Number(amountPaid)));
+                                                   change('total', String(Number(subtotalValue) - Number(value)));
                                                }}
                                                format={value => (formatCurrency(value, currency))}
                                                normalize={value => (normalizeCurrency(value))}
                                                valdiate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
-                                    <CardItem cardBody style={{paddingHorizontal: 10}}>
+                                    <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
                                         <Field name={'total'}
                                                keyboardType={'numeric'}
                                                placeholder={'0'}
@@ -192,44 +199,8 @@ class InvoiceForm extends Component<{}> {
                                                validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
-                                    <CardItem cardBody style={{paddingHorizontal: 10}}>
-                                        <Field name={'payment.amount_paid'}
-                                               keyboardType={'numeric'}
-                                               label={'Payments'}
-                                               placeholder={'0'}
-                                               textAlign={'right'}
-                                               onChange={(value) => {
-                                                   value = normalizeCurrency(value);
-                                                   change('payment.amount_due', String(Number(totalValue) - Number(value)));
-                                               }}
-                                               format={value => (formatCurrency(value, currency))}
-                                               normalize={value => (normalizeCurrency(value))}
-                                               validate={[required, number]}
-                                               component={renderTextInput}/>
-                                    </CardItem>
-                                    <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
-                                        <Field name={'payment.amount_due'}
-                                               keyboardType={'numeric'}
-                                               placeholder={'0'}
-                                               label={'Amount Due'}
-                                               textAlign={'right'}
-                                               editable={false}
-                                               format={value => (formatCurrency(value, currency))}
-                                               normalize={value => (normalizeCurrency(value))}
-                                               validate={[required, number]}
-                                               component={renderTextInput}/>
-                                    </CardItem>
                                 </Card>
-                                <Card>
-                                    <CardItem button light onPress={handleSubmit(this.setPaymentStatus)}>
-                                        <Left>
-                                            <Icon active name="ios-cash"/>
-                                            <Body>
-                                                <Text>Mark as {paymentStatus ? 'Unpaid' : 'Paid'} </Text>
-                                            </Body>
-                                        </Left>
-                                    </CardItem>
-                                </Card>
+                                <Card transparent><CardItem/><CardItem/></Card>
                             </Content>
                         </Tab>
                         <Tab heading="PREVIEW">
@@ -273,23 +244,16 @@ class InvoiceForm extends Component<{}> {
             }, 0);
             values.subtotal = String(allItemsSubtotal);
             values.total = String(allItemsSubtotal - Number(values.discount));
-            values.payment.amount_due = String(Number(values.total) - Number(values.payment.amount_paid));
         }
-    };
-    setPaymentStatus = (values) => {
-        console.log(values.payment.status);
-        values.payment.status = !values.payment.status;
     };
 }
 
 const selector = formValueSelector('invoiceForm');
 
 const mapStateToProps = (state, props) => {
-    let initialValues, subtotalValue = selector(state, 'subtotal'),
-        totalValue = selector(state, 'total'),
-        amountPaid = selector(state, 'payment.amount_paid');
+    let status = false, paidOn = null;
+    let initialValues, subtotalValue = selector(state, 'subtotal');
     if (props.invoice) {
-
         props.invoice.items.forEach((item) => {
             item.quantity = String(item.quantity);
             item.subtotal = String(item.subtotal);
@@ -303,13 +267,11 @@ const mapStateToProps = (state, props) => {
             subtotal: props.invoice.subtotal.toString(),
             discount: props.invoice.discount.toString(),
             total: props.invoice.total.toString(),
-            payment: {
-                amount_paid: props.invoice.payment.amount_paid.toString(),
-                amount_due: props.invoice.payment.amount_due.toString(),
-                status: props.invoice.payment.status,
-            },
-
         };
+        if (props.invoice.payment) {
+            status = props.invoice.payment.status;
+            paidOn = props.invoice.payment.paid_on;
+        }
     } else {
         initialValues = {
             number: `INV${props.newNumber}`,
@@ -318,14 +280,8 @@ const mapStateToProps = (state, props) => {
             subtotal: '0',
             discount: '0',
             total: '0',
-            payment: {
-                amount_paid: '0',
-                amount_due: '0',
-                status: false,
-            },
         };
     }
-    let paymentStatus = initialValues.payment.status;
 
     return ({
         initialValues,
@@ -335,9 +291,8 @@ const mapStateToProps = (state, props) => {
         getCustomers: state.customerReducer.getCustomers,
         getItems: state.itemReducer.getItems,
         subtotalValue,
-        totalValue,
-        amountPaid,
-        paymentStatus,
+        status,
+        paidOn,
     });
 };
 

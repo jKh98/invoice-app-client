@@ -27,11 +27,11 @@ import {formatCurrency} from '../../utils/redux.form.utils';
 class Invoices extends Component<{}> {
 
     render() {
-        const {getUser: {userDetails}, getInvoices, getCustomers, getItems} = this.props;
+        const {getUser: {userDetails}, getInvoices, getCustomers} = this.props;
         const currency = getCurrency(userDetails.base_currency);
         return (
             <Container>
-                {(getCustomers.isLoading || getItems.isLoading || getInvoices.isLoading) && <Loader/>}
+                {getInvoices.isLoading && <Loader/>}
                 <Header>
                     <Left>
                         <Button transparent light>
@@ -58,7 +58,7 @@ class Invoices extends Component<{}> {
                             {
                                 this.renderInvoicesList(
                                     (getInvoices.invoicesList || []).filter((invoice) => {
-                                            return !invoice.payment.status;
+                                            return (invoice.payment && !invoice.payment.status);
                                         }, getCustomers.customersList || [],
                                         currency),
                                 )}
@@ -67,7 +67,7 @@ class Invoices extends Component<{}> {
                             {
                                 this.renderInvoicesList(
                                     (getInvoices.invoicesList || []).filter((invoice) => {
-                                            return invoice.payment.status;
+                                            return (invoice.payment && invoice.payment.status);
                                         }, getCustomers.customersList || [],
                                         currency),
                                 )}

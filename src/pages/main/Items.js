@@ -9,10 +9,13 @@ import Loader from '../../components/Loader';
 import {connect} from 'react-redux';
 import Logo from '../../components/Logo';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
+import {getCurrency} from '../../utils/currencies.utils';
+import {formatCurrency} from '../../utils/redux.form.utils';
 
 class Items extends Component<{}> {
     render() {
-        const {getItems} = this.props;
+        const {getItems, getUser: {userDetails}} = this.props;
+        const currency = getCurrency(userDetails.base_currency);
         return (
             <Container>
                 {getItems.isLoading && <Loader/>}
@@ -28,7 +31,7 @@ class Items extends Component<{}> {
                     <Right/>
                 </Header>
                 <View style={{flex: 1}}>
-                    {this.renderItemsList(getItems.itemsList || [])}
+                    {this.renderItemsList(getItems.itemsList || [], currency)}
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
@@ -50,7 +53,7 @@ class Items extends Component<{}> {
         Actions.itemForm({item: item});
     }
 
-    renderItemsList(itemsList) {
+    renderItemsList(itemsList, currency) {
         return (<List
             ListEmptyComponent={
                 <EmptyListPlaceHolder
@@ -62,7 +65,7 @@ class Items extends Component<{}> {
                     <ListView
                         title={item.name}
                         subtitle={item.description}
-                        right={item.price}
+                        right={formatCurrency(item.price, currency)}
                         ListEmptyComponent={Logo}
                         handleClickEvent={
                             () => {
@@ -77,6 +80,7 @@ class Items extends Component<{}> {
 
 const mapStateToProps = (state) => ({
     getItems: state.itemReducer.getItems,
+    getUser: state.userReducer.getUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
