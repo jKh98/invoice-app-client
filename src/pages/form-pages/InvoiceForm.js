@@ -23,13 +23,15 @@ import {
     validateRequiredField,
     validateNumberField,
     validatePositiveTimeDifference,
-    required, number,
-} from '../../utils/validate.utils';
+    required, number, formatCurrency, normalizeCurrency,
+} from '../../utils/redux.form.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
 import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
 import renderDatePicker from '../../components/reduxFormRenderers/RenderDatePicker';
+import {getCurrency} from '../../utils/currencies.utils';
+import {Value} from 'react-native-reanimated';
 
 class InvoiceForm extends Component<{}> {
 
@@ -70,7 +72,8 @@ class InvoiceForm extends Component<{}> {
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems, getCustomers, totalValue, subtotalValue, amountPaid, change, paymentStatus} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers, totalValue, subtotalValue, amountPaid, change, paymentStatus, getUser: {userDetails}} = this.props;
+        const currency = getCurrency(userDetails.base_currency);
         return (
             <Container>
                 {editInvoice.isLoading && <Loader/>}
@@ -113,7 +116,7 @@ class InvoiceForm extends Component<{}> {
                                         <Field name={`customer`}
                                                component={renderSelectOption}
                                                iosHeader="Select Customer"
-                                               placeHolder={"Select a customer..."}
+                                               placeHolder={'Select a customer...'}
                                                optionsArray={(getCustomers.customersList || [])}
                                                label={'To: '}
                                                validate={[required]}
@@ -130,13 +133,12 @@ class InvoiceForm extends Component<{}> {
                                         />
                                     </CardItem>
                                 </Card>
-                                <Card>
-                                    <FieldArray name="items"
-                                                optionsArray={getItems.itemsList || []}
-                                                change={change}
-                                                component={renderItemsTextInputArray}
-                                    />
-                                </Card>
+                                <FieldArray name="items"
+                                            optionsArray={getItems.itemsList || []}
+                                            change={change}
+                                            currency={currency}
+                                            component={renderItemsTextInputArray}
+                                />
                                 <Card>
                                     <CardItem button light onPress={handleSubmit(this.calculateSubTotal)}>
                                         <Left>
@@ -156,6 +158,8 @@ class InvoiceForm extends Component<{}> {
                                                textAlign={'right'}
                                                defaultValue={'0'}
                                                editable={false}
+                                               format={value => (formatCurrency(value, currency))}
+                                               normalize={value => (normalizeCurrency(value))}
                                                validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -166,10 +170,13 @@ class InvoiceForm extends Component<{}> {
                                                label={'Discount'}
                                                textAlign={'right'}
                                                onChange={(value) => {
+                                                   value = normalizeCurrency(value);
                                                    let newTotal = Number(subtotalValue) - Number(value);
                                                    change('total', String(newTotal));
                                                    change('payment.amount_due', String(newTotal - Number(amountPaid)));
                                                }}
+                                               format={value => (formatCurrency(value, currency))}
+                                               normalize={value => (normalizeCurrency(value))}
                                                valdiate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -180,6 +187,8 @@ class InvoiceForm extends Component<{}> {
                                                label={'Total'}
                                                textAlign={'right'}
                                                editable={false}
+                                               format={value => (formatCurrency(value, currency))}
+                                               normalize={value => (normalizeCurrency(value))}
                                                validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -190,8 +199,11 @@ class InvoiceForm extends Component<{}> {
                                                placeholder={'0'}
                                                textAlign={'right'}
                                                onChange={(value) => {
+                                                   value = normalizeCurrency(value);
                                                    change('payment.amount_due', String(Number(totalValue) - Number(value)));
                                                }}
+                                               format={value => (formatCurrency(value, currency))}
+                                               normalize={value => (normalizeCurrency(value))}
                                                validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -202,6 +214,8 @@ class InvoiceForm extends Component<{}> {
                                                label={'Amount Due'}
                                                textAlign={'right'}
                                                editable={false}
+                                               format={value => (formatCurrency(value, currency))}
+                                               normalize={value => (normalizeCurrency(value))}
                                                validate={[required, number]}
                                                component={renderTextInput}/>
                                     </CardItem>
@@ -315,6 +329,7 @@ const mapStateToProps = (state, props) => {
 
     return ({
         initialValues,
+        getUser: state.userReducer.getUser,
         editInvoice: state.invoiceReducer.editInvoice,
         getInvoices: state.invoiceReducer.getInvoices,
         getCustomers: state.customerReducer.getCustomers,
@@ -330,6 +345,10 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({change}, dispatch);
 };
 
+const validate = (values) => ({
+    due: validatePositiveTimeDifference(values.issued, values.due),
+});
+
 
 export default compose(
     connect(
@@ -338,6 +357,7 @@ export default compose(
     ),
     reduxForm({
         form: 'invoiceForm',
+        validate,
         enableReinitialize: true,
         keepDirtyOnReinitialize: true,
         updateUnregisteredFields: true,

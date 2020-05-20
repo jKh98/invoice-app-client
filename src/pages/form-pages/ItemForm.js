@@ -18,11 +18,11 @@ import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {number, required, validateRequiredField} from '../../utils/validate.utils';
+import {formatCurrency, normalizeCurrency, number, required} from '../../utils/redux.form.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editItem, getItemsList} from '../../actions/item.actions';
-import {getCustomersList} from '../../actions/customer.actions';
 import Loader from '../../components/Loader';
+import {currencies, getCurrency} from '../../utils/currencies.utils';
 
 class ItemForm extends Component<{}> {
     modifyItemData = async (values) => {
@@ -62,7 +62,8 @@ class ItemForm extends Component<{}> {
     };
 
     render() {
-        const {handleSubmit, editItem} = this.props;
+        const {handleSubmit, editItem, getUser: {userDetails}} = this.props;
+        const currency = getCurrency(userDetails.base_currency);
         return (
             <Container>
                 {editItem.isLoading && <Loader/>}
@@ -93,6 +94,8 @@ class ItemForm extends Component<{}> {
                                    placeholder={'Unit Price'}
                                    valdiate={[number, required]}
                                    icon={'ios-pricetag'}
+                                   format={value => (formatCurrency(value, currency))}
+                                   normalize={value => (normalizeCurrency(value))}
                                    component={renderTextInput}/>
                         </CardItem>
                         <CardItem cardBody>
@@ -134,6 +137,7 @@ const mapStateToProps = (state, props) => {
     }
     return ({
         initialValues,
+        getUser: state.userReducer.getUser,
         editItem: state.itemReducer.editItem,
         getItems: state.itemReducer.getItems,
     });

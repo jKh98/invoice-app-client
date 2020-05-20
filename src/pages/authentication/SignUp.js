@@ -11,9 +11,9 @@ import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput
 import {
     email, phone,
     required,
-} from '../../utils/validate.utils';
+} from '../../utils/redux.form.utils';
 import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
-import {currencies} from '../../utils/currencies.array';
+import {currencies} from '../../utils/currencies.utils';
 
 
 class SignUp extends Component<{}> {

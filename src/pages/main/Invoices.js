@@ -20,13 +20,15 @@ import ListView from '../../components/ListView';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 import Loader from '../../components/Loader';
 import moment from 'moment';
-import {getInvoicesList} from '../../actions/invoice.actions';
 import {zeroPad} from '../../utils/general.utils';
+import {getCurrency} from '../../utils/currencies.utils';
+import {formatCurrency} from '../../utils/redux.form.utils';
 
 class Invoices extends Component<{}> {
 
     render() {
         const {getUser: {userDetails}, getInvoices, getCustomers, getItems} = this.props;
+        const currency = getCurrency(userDetails.base_currency);
         return (
             <Container>
                 {(getCustomers.isLoading || getItems.isLoading || getInvoices.isLoading) && <Loader/>}
@@ -48,22 +50,26 @@ class Invoices extends Component<{}> {
                 <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
                     <Tabs>
                         <Tab heading="ALL">
-                            {this.renderInvoicesList(getInvoices.invoicesList || [], getCustomers.customersList || [])}
+                            {this.renderInvoicesList(getInvoices.invoicesList || [],
+                                getCustomers.customersList || [],
+                                currency)}
                         </Tab>
                         <Tab heading="PENDING">
                             {
                                 this.renderInvoicesList(
                                     (getInvoices.invoicesList || []).filter((invoice) => {
-                                        return !invoice.payment.status;
-                                    }, getCustomers.customersList || []),
+                                            return !invoice.payment.status;
+                                        }, getCustomers.customersList || [],
+                                        currency),
                                 )}
                         </Tab>
                         <Tab heading="PAID">
                             {
                                 this.renderInvoicesList(
                                     (getInvoices.invoicesList || []).filter((invoice) => {
-                                        return invoice.payment.status;
-                                    }, getCustomers.customersList || []),
+                                            return invoice.payment.status;
+                                        }, getCustomers.customersList || [],
+                                        currency),
                                 )}
                         </Tab>
                     </Tabs>
@@ -89,7 +95,7 @@ class Invoices extends Component<{}> {
         Actions.invoiceForm({invoice: invoice});
     }
 
-    renderInvoicesList(invoicesList, customersList) {
+    renderInvoicesList(invoicesList, customersList, currency) {
         return (
             <List
                 ListEmptyComponent={
@@ -102,7 +108,7 @@ class Invoices extends Component<{}> {
                         <ListView
                             title={(customersList.find(e => e._id === invoice.customer) || {}).name}
                             subtitle={invoice.number}
-                            right={invoice.total}
+                            right={formatCurrency(invoice.total, currency)}
                             rightSub={moment(invoice.issued).format('DD/MM/YYYY')}
                             handleClickEvent={
                                 () => {
