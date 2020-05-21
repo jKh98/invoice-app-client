@@ -98,7 +98,6 @@ class InvoiceForm extends Component<{}> {
     };
 
     onSendInvoice = (values) => {
-        //Todo Lookup
         this.sendInvoiceByEmail(values);
     };
 
@@ -114,128 +113,120 @@ class InvoiceForm extends Component<{}> {
                 {editInvoice.isLoading && <Loader/>}
                 <InnerPageHeader title={'Invoice'}/>
                 <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
-                    <Tabs>
-                        <Tab heading="EDIT" padder>
-                            <Content padder>
-                                <Card style={{paddingHorizontal: 10}}>
-                                    <CardItem cardBody>
-                                        <Body>
-                                            <Field name={'number'}
-                                                   keyboardType={'default'}
-                                                   placeholder={'INV0000'}
-                                                   validate={[required]}
-                                                   component={renderTextInput}/>
-                                        </Body>
-                                        <Right>
-                                            {status &&
-                                            <Badge style={{backgroundColor: 'green'}}>
-                                                <Text style={{color: 'white'}}>Paid on {paidOn}</Text>
-                                            </Badge>}
-                                            {!status &&
-                                            <Badge style={{backgroundColor: 'red'}}>
-                                                <Text style={{color: 'white'}}>Not paid</Text>
-                                            </Badge>}
-                                        </Right>
-                                    </CardItem>
-                                    <CardItem cardBody>
-                                        <Field
-                                            component={renderDatePicker}
-                                            keyboardType='default'
-                                            name={'issued'}
-                                            label={'Issued: '}
-                                            placeholder="YYYY/MM/DD"
-                                            validate={[required]}
-                                        />
-                                    </CardItem>
-                                </Card>
-                                <Card style={{paddingHorizontal: 10}}>
-                                    <CardItem cardBody>
-                                        <Field name={`customer`}
-                                               component={renderSelectOption}
-                                               iosHeader="Select Customer"
-                                               placeHolder={'Select a customer...'}
-                                               optionsArray={(getCustomers.customersList || [])}
-                                               label={'To: '}
-                                               validate={[required]}
-                                               placeholder={'Customer'}/>
-                                    </CardItem>
-                                    <CardItem cardBody>
-                                        <Field
-                                            component={renderDatePicker}
-                                            keyboardType='default'
-                                            name={'due'}
-                                            label={'Due: '}
-                                            placeholder="YYYY/MM/DD"
-                                            validate={[required]}
-                                        />
-                                    </CardItem>
-                                </Card>
-                                <FieldArray name="items"
-                                            optionsArray={getItems.itemsList || []}
-                                            change={change}
-                                            currency={currency}
-                                            component={renderItemsTextInputArray}
+                    <Content padder>
+                        <Card style={{paddingHorizontal: 10}}>
+                            <CardItem cardBody>
+                                <Body>
+                                    <Field name={'number'}
+                                           keyboardType={'default'}
+                                           placeholder={'INV0000'}
+                                           validate={[required]}
+                                           component={renderTextInput}/>
+                                </Body>
+                                <Right>
+                                    {status &&
+                                    <Badge style={{backgroundColor: 'green'}}>
+                                        <Text style={{color: 'white'}}>Paid on {paidOn}</Text>
+                                    </Badge>}
+                                    {!status &&
+                                    <Badge style={{backgroundColor: 'red'}}>
+                                        <Text style={{color: 'white'}}>Not paid</Text>
+                                    </Badge>}
+                                </Right>
+                            </CardItem>
+                            <CardItem cardBody>
+                                <Field
+                                    component={renderDatePicker}
+                                    keyboardType='default'
+                                    name={'issued'}
+                                    label={'Issued: '}
+                                    placeholder="YYYY/MM/DD"
+                                    validate={[required]}
                                 />
-                                <Card>
-                                    <CardItem button light onPress={handleSubmit(this.calculateSubTotal)}>
-                                        <Left>
-                                            <Icon active name="ios-calculator"/>
-                                            <Body>
-                                                <Text>Compute Total</Text>
-                                            </Body>
-                                        </Left>
-                                    </CardItem>
-                                </Card>
-                                <Card>
-                                    <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
-                                        <Field name={'subtotal'}
-                                               keyboardType={'numeric'}
-                                               placeholder={'0'}
-                                               label={'Subtotal'}
-                                               textAlign={'right'}
-                                               defaultValue={'0'}
-                                               editable={false}
-                                               format={value => (formatCurrency(value, currency))}
-                                               normalize={value => (normalizeCurrency(value))}
-                                               validate={[required, number]}
-                                               component={renderTextInput}/>
-                                    </CardItem>
-                                    <CardItem cardBody style={{paddingHorizontal: 10}}>
-                                        <Field name={'discount'}
-                                               keyboardType={'numeric'}
-                                               placeholder={'0'}
-                                               label={'Discount'}
-                                               textAlign={'right'}
-                                               onChange={(value) => {
-                                                   value = normalizeCurrency(value);
-                                                   change('total', String(Number(subtotalValue) - Number(value)));
-                                               }}
-                                               format={value => (formatCurrency(value, currency))}
-                                               normalize={value => (normalizeCurrency(value))}
-                                               valdiate={[required, number]}
-                                               component={renderTextInput}/>
-                                    </CardItem>
-                                    <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
-                                        <Field name={'total'}
-                                               keyboardType={'numeric'}
-                                               placeholder={'0'}
-                                               label={'Total'}
-                                               textAlign={'right'}
-                                               editable={false}
-                                               format={value => (formatCurrency(value, currency))}
-                                               normalize={value => (normalizeCurrency(value))}
-                                               validate={[required, number]}
-                                               component={renderTextInput}/>
-                                    </CardItem>
-                                </Card>
-                                <Card transparent><CardItem/><CardItem/></Card>
-                            </Content>
-                        </Tab>
-                        <Tab heading="PREVIEW">
-                            <Content padder>
-                            </Content>
-                        </Tab>
-                    </Tabs>
+                            </CardItem>
+                        </Card>
+                        <Card style={{paddingHorizontal: 10}}>
+                            <CardItem cardBody>
+                                <Field name={`customer`}
+                                       component={renderSelectOption}
+                                       iosHeader="Select Customer"
+                                       placeHolder={'Select a customer...'}
+                                       optionsArray={(getCustomers.customersList || [])}
+                                       label={'To: '}
+                                       validate={[required]}
+                                       placeholder={'Customer'}/>
+                            </CardItem>
+                            <CardItem cardBody>
+                                <Field
+                                    component={renderDatePicker}
+                                    keyboardType='default'
+                                    name={'due'}
+                                    label={'Due: '}
+                                    placeholder="YYYY/MM/DD"
+                                    validate={[required]}
+                                />
+                            </CardItem>
+                        </Card>
+                        <FieldArray name="items"
+                                    optionsArray={getItems.itemsList || []}
+                                    change={change}
+                                    currency={currency}
+                                    component={renderItemsTextInputArray}
+                        />
+                        <Card>
+                            <CardItem button light onPress={handleSubmit(this.calculateSubTotal)}>
+                                <Left>
+                                    <Icon active name="ios-calculator"/>
+                                    <Body>
+                                        <Text>Compute Total</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                        </Card>
+                        <Card>
+                            <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
+                                <Field name={'subtotal'}
+                                       keyboardType={'numeric'}
+                                       placeholder={'0'}
+                                       label={'Subtotal'}
+                                       textAlign={'right'}
+                                       defaultValue={'0'}
+                                       editable={false}
+                                       format={value => (formatCurrency(value, currency))}
+                                       normalize={value => (normalizeCurrency(value))}
+                                       validate={[required, number]}
+                                       component={renderTextInput}/>
+                            </CardItem>
+                            <CardItem cardBody style={{paddingHorizontal: 10}}>
+                                <Field name={'discount'}
+                                       keyboardType={'numeric'}
+                                       placeholder={'0'}
+                                       label={'Discount'}
+                                       textAlign={'right'}
+                                       onChange={(value) => {
+                                           value = normalizeCurrency(value);
+                                           change('total', String(Number(subtotalValue) - Number(value)));
+                                       }}
+                                       format={value => (formatCurrency(value, currency))}
+                                       normalize={value => (normalizeCurrency(value))}
+                                       valdiate={[required, number]}
+                                       component={renderTextInput}/>
+                            </CardItem>
+                            <CardItem cardBody style={{backgroundColor: 'lightgray', paddingHorizontal: 10}}>
+                                <Field name={'total'}
+                                       keyboardType={'numeric'}
+                                       placeholder={'0'}
+                                       label={'Total'}
+                                       textAlign={'right'}
+                                       editable={false}
+                                       format={value => (formatCurrency(value, currency))}
+                                       normalize={value => (normalizeCurrency(value))}
+                                       validate={[required, number]}
+                                       component={renderTextInput}/>
+                            </CardItem>
+                        </Card>
+                        <Card transparent><CardItem/><CardItem/></Card>
+                    </Content>
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
