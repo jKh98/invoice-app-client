@@ -3,13 +3,7 @@ import {Actions} from 'react-native-router-flux';
 import {
     Container,
     Content,
-    Header,
-    Title,
-    Right,
-    Left,
-    Body,
     Icon,
-    Button,
     Tabs,
     Tab,
     Fab,
@@ -29,10 +23,7 @@ class Invoices extends Component<{}> {
 
     render() {
         const {getUser: {userDetails}, getInvoices, getCustomers} = this.props;
-        let currency = '';
-        if (userDetails) {
-            currency = getCurrency(userDetails.base_currency);
-        }
+        const currency = getCurrency(userDetails.base_currency);
 
         return (
             <Container>

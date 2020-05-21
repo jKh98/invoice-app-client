@@ -39,7 +39,6 @@ export const registerNewUser = (payload) => {
 
 export const loginUser = (payload) => {
     return async (dispatch) => {
-
         try {
             dispatch({
                 type: 'LOGIN_USER_LOADING',
@@ -84,9 +83,9 @@ export const getUser = () => {
                     type: 'GET_USER_SUCCESS',
                     payload: response.responseBody,
                 });
-                return response
-            }else {
-                throw response
+                return response;
+            } else {
+                throw response;
             }
         } catch (error) {
             dispatch({
@@ -116,26 +115,30 @@ export const logoutUser = () => {
 };
 
 
-// export const editUser = (payload) => {
-//     return async (dispatch, getState) => {
-//         const state = getState();
-//         try {
-//             const {authReducer: {authData: {token}}} = state;
-//             const response = await fetchApi('/user/edit', 'POST', payload, 200, token);
-//             if (response.success) {
-//                 dispatch({
-//                     type: 'EDIT_USER_SUCCESS',
-//                     payload: response.responseBody,
-//                 });
-//                 return response;
-//             } else {
-//                 throw response;
-//             }
-//         } catch (error) {
-//             dispatch({
-//                 type: 'EDIT_USER_SUCCESS',
-//                 payload: error.responseBody,
-//             });
-//             return error;
-//         }
-//     };
+export const editUser = (payload) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            dispatch({
+                type: 'EDIT_USER_LOADING',
+            });
+            const {authReducer: {authData: {token}}} = state;
+            const response = await fetchApi('/user/edit', 'POST', payload, 200, token);
+            if (response.success) {
+                dispatch({
+                    type: 'EDIT_USER_SUCCESS',
+                    payload: response.responseBody,
+                });
+                return response;
+            } else {
+                throw response;
+            }
+        } catch (error) {
+            dispatch({
+                type: 'EDIT_USER_FAIL',
+                payload: error.responseBody,
+            });
+            return error;
+        }
+    };
+};

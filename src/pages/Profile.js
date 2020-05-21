@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Content, CardItem, Card, Body, Button, Text} from 'native-base';
+import {Container, Content, CardItem, Card, Body, Button, Text, Toast} from 'native-base';
 import {Field, reduxForm} from 'redux-form';
 import renderTextInput from '../components/reduxFormRenderers/RenderTextInput';
 import {phone, required} from '../utils/redux.form.utils';
@@ -8,22 +8,53 @@ import renderSelectOption from '../components/reduxFormRenderers/RenderSelectOpt
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import InnerPageHeader from '../components/InnerPageHeader';
-import {editUser, logoutUser} from '../actions/auth.actions';
+import {editUser, getUser, logoutUser} from '../actions/auth.actions';
+import {getItemsList} from '../actions/item.actions';
+import {ErrorUtils} from '../utils/error.utils';
+import Loader from '../components/Loader';
 
 class Profile extends Component<{}> {
-    onSubmit = (values) => {
-        console.log(values);
-        // this.props.dispatch(editUser(values));
+    onSubmit = async (values) => {
+        try {
+            const response = await this.props.dispatch(editUser(values));
+            if (response.success) {
+                await this.refreshUserData();
+            } else {
+                throw response;
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
     };
+
+    async refreshUserData() {
+        try {
+            const response = await this.props.dispatch(getUser());
+            if (!response.success) {
+                throw response;
+            } else {
+                Toast.show({
+                    text: 'Items list successfully updated.',
+                    buttonText: 'Okay',
+                    type: 'success',
+                });
+            }
+        } catch (e) {
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    }
 
     logoutUser = () => {
         this.props.dispatch(logoutUser());
     };
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, editUser} = this.props;
         return (
             <Container>
+                {editUser.isLoading && <Loader/>}
                 <InnerPageHeader title={'Profile'}/>
                 <Content padder contentContainerStyle={{display: 'flex', flex: 1, justifyContent: 'center'}}>
                     <Card transparent>
@@ -83,6 +114,7 @@ class Profile extends Component<{}> {
 
 const mapStateToProps = (state) => ({
     getUser: state.userReducer.getUser,
+    editUser: state.userReducer.editUser,
     initialValues: {
         company: state.userReducer.getUser.userDetails.company,
         phone: state.userReducer.getUser.userDetails.phone,
