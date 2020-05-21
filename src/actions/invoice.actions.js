@@ -59,3 +59,41 @@ export const editInvoice = (payload) => {
         }
     };
 };
+
+export const sendInvoiceByEmail = (payload) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            const {authReducer: {authData: {token}}} = state;
+            dispatch({
+                type: 'SEND_INVOICE_EMAIL_LOADING',
+            });
+            const paymentSessionResponse = await fetchApi('/payment/new', 'POST', payload, 200, token);
+            if (paymentSessionResponse.success) {
+                console.log(paymentSessionResponse);
+                const emailResponse = await fetchApi('/invoice/send', 'POST',
+                    paymentSessionResponse.responseBody.value, 200, token);
+                if (emailResponse.success) {
+                    console.log(emailResponse);
+                    dispatch({
+                        type: 'SEND_INVOICE_EMAIL_SUCCESS',
+                        payload: emailResponse.responseBody,
+                    });
+                    return emailResponse;
+                } else {
+                    throw emailResponse;
+                }
+            } else {
+                throw paymentSessionResponse;
+            }
+        } catch (error) {
+            dispatch({
+                type: 'SEND_INVOICE_EMAIL_FAIL',
+                payload: error.responseBody,
+            });
+            console.log(error);
+            return error;
+        }
+    };
+};
+

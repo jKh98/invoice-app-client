@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.1.2:3333';
+const BASE_URL = 'http://192.168.1.7:3333';
 
 export const api = async (url, method, body = null, headers = {}) => {
     try {
@@ -68,7 +68,7 @@ export const fetchApi = async (url,
         try {
             errorBody = JSON.parse(errorText);
         } catch (e) {
-            errorBody = errorText;
+            errorBody = errorText.toString();
         }
         result.responseBody = errorBody;
         throw result;

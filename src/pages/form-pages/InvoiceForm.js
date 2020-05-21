@@ -20,11 +20,10 @@ import {Field, FieldArray, formValueSelector, reduxForm, change} from 'redux-for
 import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
 import {
-    validatePositiveTimeDifference,
-    required, number, formatCurrency, normalizeCurrency,
+    validatePositiveTimeDifference, required, number, formatCurrency, normalizeCurrency,
 } from '../../utils/redux.form.utils';
 import {ErrorUtils} from '../../utils/error.utils';
-import {editInvoice, getInvoicesList} from '../../actions/invoice.actions';
+import {editInvoice, getInvoicesList, sendInvoiceByEmail} from '../../actions/invoice.actions';
 import Loader from '../../components/Loader';
 import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
 import renderDatePicker from '../../components/reduxFormRenderers/RenderDatePicker';
@@ -35,21 +34,25 @@ class InvoiceForm extends Component<{}> {
     sendInvoiceData = async (values) => {
         try {
             const response = await this.props.dispatch(editInvoice(values));
-            if (!response.success) {
+            console.log(response)
+            if (!response || !response.success) {
                 throw response;
             } else {
                 await this.refreshInvoicesList();
+                return response;
             }
         } catch (e) {
+            console.log(e)
             const newError = new ErrorUtils(e);
             newError.showAlert();
         }
     };
 
-    async refreshInvoicesList() {
+    refreshInvoicesList = async () => {
         try {
             const response = await this.props.dispatch(getInvoicesList());
-            if (!response.success) {
+            console.log(response)
+            if (!response || !response.success) {
                 throw response;
             } else {
                 Toast.show({
@@ -57,12 +60,53 @@ class InvoiceForm extends Component<{}> {
                     buttonText: 'Okay',
                     type: 'success',
                 });
+                return response;
             }
         } catch (e) {
+            console.log(e)
             const newError = new ErrorUtils(e);
             newError.showAlert();
         }
-    }
+    };
+
+    sendInvoiceByEmail = async (values) => {
+        try {
+            let response = await this.sendInvoiceData(values);
+            console.log(response)
+            if (!response.success) {
+                throw response;
+            } else {
+                let paymentParams = {
+                    invoice: response.responseBody.value._id,
+                    status: false,
+                    paid_on: null,
+                    amount_paid: 0,
+                    amount_due: response.responseBody.value.total,
+                };
+                response = await this.props.dispatch(sendInvoiceByEmail(paymentParams));
+                console.log(response)
+                if (!response || !response.success) {
+                    throw response;
+                } else {
+                    Toast.show({
+                        text: 'Invoice was successfully send by email.',
+                        buttonText: 'Okay',
+                        type: 'success',
+                    });
+                    return response;
+                }
+            }
+        } catch (e) {
+            console.log(e);
+            const newError = new ErrorUtils(e);
+            newError.showAlert();
+        }
+    };
+
+    onSendInvoice = (values) => {
+        //Todo Lookup
+        this.sendInvoiceByEmail(values);
+    };
 
     onSubmit = (values) => {
         this.sendInvoiceData(values);
@@ -211,9 +255,7 @@ class InvoiceForm extends Component<{}> {
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
-                        onPress={() => {
-                            this.sendInvoice();
-                        }}>
+                        onPress={handleSubmit(this.onSendInvoice)}>
                         <Icon name="ios-send"/>
                     </Fab>
                 </Content>
@@ -231,10 +273,6 @@ class InvoiceForm extends Component<{}> {
     goBack() {
         Actions.pop();
         Actions.refresh();
-    }
-
-    sendInvoice() {
-        //Todo Lookup
     }
 
     calculateSubTotal = (values) => {

@@ -56,5 +56,33 @@ const editInvoice = (state = {}, action) => {
     }
 };
 
-export default combineReducers({editInvoice, getInvoices});
+const sendInvoiceEmail = (state = {}, action) => {
+    switch (action.type) {
+        case 'SEND_INVOICE_EMAIL_LOADING':
+            return {
+                isLoading: true,
+                isError: false,
+                isSuccess: false,
+                emailResponse: null,
+            };
+        case 'SEND_INVOICE_EMAIL_SUCCESS':
+            return {
+                isLoading: false,
+                isError: false,
+                isSuccess: true,
+                emailResponse: action.payload,
+            };
+        case 'SEND_INVOICE_EMAIL_FAIL':
+            return {
+                isLoading: false,
+                isError: true,
+                isSuccess: false,
+                emailResponse: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export default combineReducers({editInvoice, getInvoices,sendInvoiceEmail});
 
