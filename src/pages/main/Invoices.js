@@ -7,7 +7,7 @@ import {
     Tabs,
     Tab,
     Fab,
-    List,
+    List, View,
 } from 'native-base';
 import {connect} from 'react-redux';
 import ListView from '../../components/ListView';
@@ -29,32 +29,10 @@ class Invoices extends Component<{}> {
             <Container>
                 {getInvoices.isLoading && <Loader/>}
                 <PageHeader title={'Invoices'}/>
-                <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
-                    <Tabs>
-                        <Tab heading="ALL">
-                            {this.renderInvoicesList(getInvoices.invoicesList || [],
-                                getCustomers.customersList || [],
-                                currency)}
-                        </Tab>
-                        <Tab heading="PENDING">
-                            {
-                                this.renderInvoicesList(
-                                    (getInvoices.invoicesList || []).filter((invoice) => {
-                                            return (invoice.payment && !invoice.payment.status);
-                                        }, getCustomers.customersList || [],
-                                        currency),
-                                )}
-                        </Tab>
-                        <Tab heading="PAID">
-                            {
-                                this.renderInvoicesList(
-                                    (getInvoices.invoicesList || []).filter((invoice) => {
-                                            return (invoice.payment && invoice.payment.status);
-                                        }, getCustomers.customersList || [],
-                                        currency),
-                                )}
-                        </Tab>
-                    </Tabs>
+                <View style={{flex: 1}}>
+                    {this.renderInvoicesList(getInvoices.invoicesList || [],
+                        getCustomers.customersList || [],
+                        currency)}
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"
@@ -63,7 +41,7 @@ class Invoices extends Component<{}> {
                         }}>
                         <Icon name="add"/>
                     </Fab>
-                </Content>
+                </View>
             </Container>
         );
     };

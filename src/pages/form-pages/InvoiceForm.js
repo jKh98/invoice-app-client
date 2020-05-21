@@ -3,16 +3,13 @@ import {Actions} from 'react-native-router-flux';
 import {
     Container,
     Content,
-    Header,
-    Title,
-    Right,
     Left,
     Body,
     Card,
     CardItem,
     Icon,
     Button, Footer, FooterTab,
-    Text, Tabs, Tab, Fab, Toast, Badge,
+    Text, Fab, Toast,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import renderItemsTextInputArray from '../../components/reduxFormRenderers/RenderItemsInputArray';
@@ -106,7 +103,7 @@ class InvoiceForm extends Component<{}> {
     };
 
     render() {
-        const {handleSubmit, editInvoice, getItems, getCustomers, subtotalValue, status, paidOn, change, getUser: {userDetails}} = this.props;
+        const {handleSubmit, editInvoice, getItems, getCustomers, subtotalValue, change, getUser: {userDetails}} = this.props;
         const currency = getCurrency(userDetails.base_currency);
         return (
             <Container>
@@ -116,23 +113,11 @@ class InvoiceForm extends Component<{}> {
                     <Content padder>
                         <Card style={{paddingHorizontal: 10}}>
                             <CardItem cardBody>
-                                <Body>
-                                    <Field name={'number'}
-                                           keyboardType={'default'}
-                                           placeholder={'INV0000'}
-                                           validate={[required]}
-                                           component={renderTextInput}/>
-                                </Body>
-                                <Right>
-                                    {status &&
-                                    <Badge style={{backgroundColor: 'green'}}>
-                                        <Text style={{color: 'white'}}>Paid on {paidOn}</Text>
-                                    </Badge>}
-                                    {!status &&
-                                    <Badge style={{backgroundColor: 'red'}}>
-                                        <Text style={{color: 'white'}}>Not paid</Text>
-                                    </Badge>}
-                                </Right>
+                                <Field name={'number'}
+                                       keyboardType={'default'}
+                                       placeholder={'INV0000'}
+                                       validate={[required]}
+                                       component={renderTextInput}/>
                             </CardItem>
                             <CardItem cardBody>
                                 <Field
@@ -264,7 +249,6 @@ class InvoiceForm extends Component<{}> {
 const selector = formValueSelector('invoiceForm');
 
 const mapStateToProps = (state, props) => {
-    let status = false, paidOn = null;
     let initialValues, subtotalValue = selector(state, 'subtotal');
     if (props.invoice) {
         props.invoice.items.forEach((item) => {
@@ -281,10 +265,6 @@ const mapStateToProps = (state, props) => {
             discount: props.invoice.discount.toString(),
             total: props.invoice.total.toString(),
         };
-        if (props.invoice.payment) {
-            status = props.invoice.payment.status;
-            paidOn = props.invoice.payment.paid_on;
-        }
     } else {
         initialValues = {
             number: `INV${props.newNumber}`,
@@ -304,8 +284,6 @@ const mapStateToProps = (state, props) => {
         getCustomers: state.customerReducer.getCustomers,
         getItems: state.itemReducer.getItems,
         subtotalValue,
-        status,
-        paidOn,
     });
 };
 
