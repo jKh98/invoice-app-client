@@ -1,5 +1,8 @@
 import {Alert} from 'react-native';
 
+/**
+ * Constructs error alerts
+ */
 export class ErrorUtils {
     constructor(e, title = '') {
         this.errorTitle = title;
@@ -12,7 +15,6 @@ export class ErrorUtils {
             this.errorText = e.responseBody;
         }
     }
-
     showAlert() {
         Alert.alert(
             this.errorTitle,
