@@ -18,16 +18,16 @@ class Splash extends Component<{}> {
             await this.props.dispatch(getItemsList())]).
         then((responses) => {
             if (responses[0].success && responses[1].success && responses[2].success) {
-                // Actions.home();
                 Actions.replace('home')
-
             } else {
-                throw 'Something went wrong. Try again later.';
+                throw 'Something went wrong. Check connection or try again later.';
             }
         }).catch((e) => {
             const newError = new ErrorUtils(e);
             newError.showAlert();
-            BackHandler.exitApp();
+            setTimeout(()=>{
+                BackHandler.exitApp();
+            },4000);
         });
 
     }

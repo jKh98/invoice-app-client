@@ -34,7 +34,6 @@ class InvoiceForm extends Component<{}> {
     sendInvoiceData = async (values) => {
         try {
             const response = await this.props.dispatch(editInvoice(values));
-            console.log(response)
             if (!response || !response.success) {
                 throw response;
             } else {
@@ -42,7 +41,6 @@ class InvoiceForm extends Component<{}> {
                 return response;
             }
         } catch (e) {
-            console.log(e)
             const newError = new ErrorUtils(e);
             newError.showAlert();
         }
@@ -51,7 +49,6 @@ class InvoiceForm extends Component<{}> {
     refreshInvoicesList = async () => {
         try {
             const response = await this.props.dispatch(getInvoicesList());
-            console.log(response)
             if (!response || !response.success) {
                 throw response;
             } else {
@@ -63,7 +60,6 @@ class InvoiceForm extends Component<{}> {
                 return response;
             }
         } catch (e) {
-            console.log(e)
             const newError = new ErrorUtils(e);
             newError.showAlert();
         }
@@ -72,7 +68,6 @@ class InvoiceForm extends Component<{}> {
     sendInvoiceByEmail = async (values) => {
         try {
             let response = await this.sendInvoiceData(values);
-            console.log(response)
             if (!response.success) {
                 throw response;
             } else {
@@ -84,7 +79,6 @@ class InvoiceForm extends Component<{}> {
                     amount_due: response.responseBody.value.total,
                 };
                 response = await this.props.dispatch(sendInvoiceByEmail(paymentParams));
-                console.log(response)
                 if (!response || !response.success) {
                     throw response;
                 } else {
@@ -97,7 +91,6 @@ class InvoiceForm extends Component<{}> {
                 }
             }
         } catch (e) {
-            console.log(e);
             const newError = new ErrorUtils(e);
             newError.showAlert();
         }

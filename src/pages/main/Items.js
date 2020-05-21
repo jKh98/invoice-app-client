@@ -11,6 +11,7 @@ import Logo from '../../components/Logo';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
+import PageHeader from '../../components/PageHeader';
 
 class Items extends Component<{}> {
     render() {
@@ -19,17 +20,7 @@ class Items extends Component<{}> {
         return (
             <Container>
                 {getItems.isLoading && <Loader/>}
-                <Header>
-                    <Left>
-                        <Button transparent light>
-                            <Icon name='ios-menu'/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Items</Title>
-                    </Body>
-                    <Right/>
-                </Header>
+                <PageHeader title={'Items'}/>
                 <View style={{flex: 1}}>
                     {this.renderItemsList(getItems.itemsList || [], currency)}
                     <Fab

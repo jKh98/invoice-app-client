@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
+import PageHeader from '../../components/PageHeader';
 
 class Customers extends Component<{}> {
     render() {
@@ -13,19 +14,9 @@ class Customers extends Component<{}> {
         const currency = getCurrency(userDetails.base_currency);
         return (
             <Container>
-                <Header>
-                    <Left>
-                        <Button transparent light>
-                            <Icon name='ios-menu'/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Customers</Title>
-                    </Body>
-                    <Right/>
-                </Header>
+                <PageHeader title={'Customers'}/>
                 <View style={{flex: 1}}>
-                    {this.renderCustomersList(getCustomers.customersList || [],currency)}
+                    {this.renderCustomersList(getCustomers.customersList || [], currency)}
                     <Fab
                         style={{backgroundColor: '#5067FF'}}
                         position="bottomRight"

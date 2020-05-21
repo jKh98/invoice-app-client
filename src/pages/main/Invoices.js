@@ -23,6 +23,7 @@ import moment from 'moment';
 import {zeroPad} from '../../utils/general.utils';
 import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
+import PageHeader from '../../components/PageHeader';
 
 class Invoices extends Component<{}> {
 
@@ -32,21 +33,7 @@ class Invoices extends Component<{}> {
         return (
             <Container>
                 {getInvoices.isLoading && <Loader/>}
-                <Header>
-                    <Left>
-                        <Button transparent light>
-                            <Icon name='ios-menu'/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Invoices</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent light>
-                            <Icon name='ios-search'/>
-                        </Button>
-                    </Right>
-                </Header>
+                <PageHeader title={'Invoices'}/>
                 <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
                     <Tabs>
                         <Tab heading="ALL">

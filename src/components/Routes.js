@@ -6,7 +6,6 @@ import {
     Invoices,
     Customers,
     Items,
-    Settings,
     CustomerForm,
     ItemForm,
     InvoiceForm,
@@ -36,7 +35,6 @@ export default class Routes extends Component<{}> {
                                 <Scene key="invoices" component={Invoices} title="Invoices" hideNavBar initial/>
                                 <Scene key="customers" component={Customers} title="Customers" hideNavBar/>
                                 <Scene key="items" component={Items} title="Items" hideNavBar/>
-                                <Scene key="settings" component={Settings} title="Settings" hideNavBar/>
                             </Scene>
                             <Scene key="customerForm" component={CustomerForm} title="Customer" hideNavBar/>
                             <Scene key="itemForm" component={ItemForm} title="Item" hideNavBar/>
