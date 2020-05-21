@@ -4,6 +4,10 @@ import {StatusBar, StyleSheet, View} from 'react-native';
 import Routes from './components/Routes';
 import {connect} from 'react-redux';
 
+/**
+ * Main app component called by App.js
+ * Specifies status bar properties and includes routes component
+ */
 class Main extends Component<{}> {
     render() {
         const {authData: {isLoggedIn}} = this.props;
@@ -22,6 +26,12 @@ const styles = StyleSheet.create({
     },
 });
 
+/**
+ * maps props to authentication data needed by routes component
+ *
+ * @param state
+ * @returns {{authData: authData}}
+ */
 const mapStateToProps = (state) => ({
     authData: state.authReducer.authData,
 });
