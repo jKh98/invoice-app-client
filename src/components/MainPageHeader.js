@@ -39,7 +39,9 @@ class PageHeader extends Component<{}> {
         return (
             <Header>
                 <Left>
-                    <Button transparent light>
+                    <Button transparent light onPress={()=>{
+                        Actions.profile()
+                    }}>
                         <Icon name='ios-menu'/>
                     </Button>
                 </Left>
