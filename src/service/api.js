@@ -1,5 +1,19 @@
+/**
+ * @todo
+ * Change this url based on server ip address
+ * @type {string}
+ */
 const BASE_URL = 'http://192.168.1.2:3333';
 
+/**
+ * Basic API function that handles sending all application requests
+ *
+ * @param url
+ * @param method
+ * @param body
+ * @param headers
+ * @returns {Promise<unknown>}
+ */
 export const api = async (url, method, body = null, headers = {}) => {
     try {
         const endPoint = BASE_URL.concat(url);
@@ -28,6 +42,18 @@ export const api = async (url, method, body = null, headers = {}) => {
     }
 };
 
+/**
+ * Function that constructs api requests and calls api function
+ *
+ * @param url
+ * @param method
+ * @param body
+ * @param statusCode
+ * @param token
+ * @param loader
+ * @param promiseReturnType
+ * @returns {Promise<{responseBody: null, success: boolean, token: null}>}
+ */
 export const fetchApi = async (url,
                                method,
                                body,
