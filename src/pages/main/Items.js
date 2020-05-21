@@ -11,6 +11,9 @@ import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
 import PageHeader from '../../components/MainPageHeader';
 
+/**
+ * Component that renders the items list
+ */
 class Items extends Component<{}> {
     render() {
         const {getItems, getUser: {userDetails}} = this.props;
@@ -34,14 +37,31 @@ class Items extends Component<{}> {
         );
     };
 
+    /**
+     * called on pressing add button
+     * opens item form page with null to indicate adding a new item
+     */
     addNewItem() {
         Actions.itemForm({item: null});
     }
 
-    openItemPage(item) {
+    /**
+     * called on pressing add button
+     * opens item form page with an item object to indicate editing an existing item
+     *
+     * @param item
+     */
+    editItem(item) {
         Actions.itemForm({item: item});
     }
 
+    /**
+     * Dynamically maps item list to list component
+     *
+     * @param itemsList
+     * @param currency
+     * @returns {*}
+     */
     renderItemsList(itemsList, currency) {
         return (<List
             ListEmptyComponent={
@@ -58,7 +78,7 @@ class Items extends Component<{}> {
                         ListEmptyComponent={Logo}
                         handleClickEvent={
                             () => {
-                                this.openItemPage(item);
+                                this.editItem(item);
                             }
                         }/>
             }
@@ -67,6 +87,13 @@ class Items extends Component<{}> {
     }
 }
 
+/**
+ * map props to item reducer to get items list
+ * map props to user reducer to get base currency
+ *
+ * @param state
+ * @returns {{getItems: getItems, getUser: getUser}}
+ */
 const mapStateToProps = (state) => ({
     getItems: state.itemReducer.getItems,
     getUser: state.userReducer.getUser,

@@ -13,9 +13,17 @@ import renderSelectOption from '../../components/reduxFormRenderers/RenderSelect
 import {currencies} from '../../utils/currencies.utils';
 import InnerPageHeader from '../../components/InnerPageHeader';
 
-
+/**
+ * Sign up page componnt
+ */
 class SignUp extends Component<{}> {
 
+    /**
+     * dispatches action to register a new user
+     *
+     * @param values
+     * @returns {Promise<void>}
+     */
     registerNewUser = async (values) => {
         try {
             const response = await this.props.dispatch(registerNewUser(values));
@@ -28,10 +36,18 @@ class SignUp extends Component<{}> {
         }
     };
 
+    /**
+     * Goes back to login page
+     */
     goBack() {
         Actions.pop();
     }
 
+    /**
+     * Submits sign up form
+     *
+     * @param values
+     */
     onSubmit = (values) => {
         console.log(values);
         this.registerNewUser(values);
@@ -116,6 +132,12 @@ class SignUp extends Component<{}> {
     };
 }
 
+/**
+ * Adds registerUser reducer to props
+ *
+ * @param state
+ * @returns {{registerUser: registerUser}}
+ */
 const mapStateToProps = (state) => ({
     registerUser: state.authReducer.registerUser,
 });

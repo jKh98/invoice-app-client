@@ -10,7 +10,18 @@ import {editCustomer, getCustomersList} from '../../actions/customer.actions';
 import Loader from '../../components/Loader';
 import InnerPageHeader from '../../components/InnerPageHeader';
 
+/**
+ * Form component for adding a new customer or editing an existing one
+ */
 class CustomerForm extends Component<{}> {
+
+    /**
+     * Dispatches an action to edit or add customer
+     * alerts on error and refreshes list on success
+     *
+     * @param values
+     * @returns {Promise<void>}
+     */
     modifyCustomerData = async (values) => {
         try {
             const response = await this.props.dispatch(editCustomer(values));
@@ -25,6 +36,12 @@ class CustomerForm extends Component<{}> {
         }
     };
 
+    /**
+     * Called after modifying customer data by editing or adding.
+     * dispatches action to load customer list with changes
+     *
+     * @returns {Promise<void>}
+     */
     async refreshCustomersList() {
         try {
             const response = await this.props.dispatch(getCustomersList());
@@ -43,6 +60,11 @@ class CustomerForm extends Component<{}> {
         }
     }
 
+    /**
+     * Submits customer form values
+     *
+     * @param values
+     */
     onSubmit = (values) => {
         values.addresses = [values.address_1, values.address_2, values.address_3];
         this.modifyCustomerData(values);
@@ -131,6 +153,14 @@ class CustomerForm extends Component<{}> {
     };
 }
 
+/**
+ * Retrieves initial field values in case of editing
+ * Maps props to getCustomers and editCustomer reducers
+ *
+ * @param state
+ * @param props
+ * @returns {{initialValues: *, editCustomer: editCustomer, getCustomers: getCustomers}}
+ */
 const mapStateToProps = (state, props) => {
     let initialValues;
     if (props.customer) {

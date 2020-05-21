@@ -12,7 +12,18 @@ import Loader from '../../components/Loader';
 import {getCurrency} from '../../utils/currencies.utils';
 import InnerPageHeader from '../../components/InnerPageHeader';
 
+/**
+ * Form component for adding a new item or editing an existing one
+ */
 class ItemForm extends Component<{}> {
+
+    /**
+     * Dispatches an action to edit or add item
+     * alerts on error and refreshes list on success
+     *
+     * @param values
+     * @returns {Promise<void>}
+     */
     modifyItemData = async (values) => {
         try {
             const response = await this.props.dispatch(editItem(values));
@@ -27,6 +38,12 @@ class ItemForm extends Component<{}> {
         }
     };
 
+    /**
+     * Called after modifying item data by editing or adding.
+     * dispatches action to load items list with changes
+     *
+     * @returns {Promise<void>}
+     */
     async refreshItemsList() {
         try {
             const response = await this.props.dispatch(getItemsList());
@@ -45,6 +62,11 @@ class ItemForm extends Component<{}> {
         }
     }
 
+    /**
+     * Submits item form values
+     *
+     * @param values
+     */
     onSubmit = (values) => {
         this.modifyItemData(values);
     };
@@ -104,6 +126,14 @@ class ItemForm extends Component<{}> {
 
 }
 
+/**
+ * Retrieves initial field values in case of editing
+ * Maps props to getItems and editItem reducers
+ *
+ * @param state
+ * @param props
+ * @returns {{initialValues: *, getItems: getItems, editItem: editItem, getUser: getUser}}
+ */
 const mapStateToProps = (state, props) => {
     let initialValues;
     if (props.item) {

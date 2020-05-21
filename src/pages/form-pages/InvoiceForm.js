@@ -35,8 +35,18 @@ import renderDatePicker from '../../components/reduxFormRenderers/RenderDatePick
 import {getCurrency} from '../../utils/currencies.utils';
 import InnerPageHeader from '../../components/InnerPageHeader';
 
+/**
+ * Form component for adding editing, or sending an invoice.
+ */
 class InvoiceForm extends Component<{}> {
 
+    /**
+     * Dispatches an action to edit or add invoice
+     * alerts on error and refreshes list on success
+     * *
+     * @param values
+     * @returns {Promise<{success}|*>}
+     */
     sendInvoiceData = async (values) => {
         try {
             const response = await this.props.dispatch(editInvoice(values));
@@ -52,6 +62,12 @@ class InvoiceForm extends Component<{}> {
         }
     };
 
+    /**
+     * Called after modifying invoice data by editing or adding.
+     * dispatches action to load invoice list with changes
+     *
+     * @returns {Promise<void>}
+     */
     refreshInvoicesList = async () => {
         try {
             const response = await this.props.dispatch(getInvoicesList());
@@ -71,6 +87,12 @@ class InvoiceForm extends Component<{}> {
         }
     };
 
+    /**
+     * After saving the invoice this method  sets up and sends a payment session by emails
+     *
+     * @param values
+     * @returns {Promise<{success}|*>}
+     */
     sendInvoiceByEmail = async (values) => {
         try {
             let response = await this.sendInvoiceData(values);
@@ -238,11 +260,14 @@ class InvoiceForm extends Component<{}> {
         );
     };
 
-    goBack() {
-        Actions.pop();
-        Actions.refresh();
-    }
-
+    /**
+     * After submitting field values this method retrieves items data to compute subtotal.
+     * The method is called on submit because the fields' state or the item field array
+     * will always appear one step behind real state when called or retrieved by a selector.
+     * By submitting data, redux updates all fields with correct values.
+     *
+     * @param values
+     */
     calculateSubTotal = (values) => {
         if (values.items) {
             let allItemsSubtotal = values.items.reduce(function (a, b) {
@@ -254,8 +279,19 @@ class InvoiceForm extends Component<{}> {
     };
 }
 
+/**
+ * Selects redux-form fields to get their values
+ */
 const selector = formValueSelector('invoiceForm');
 
+/**
+ * Retrieves initial field values in case of editing
+ * maps props to different data reducers since most of the data is used by the invoice component
+ *
+ * @param state
+ * @param props
+ * @returns {{initialValues: *, editInvoice: editInvoice, getInvoices: getInvoices, getItems: getItems, getCustomers: getCustomers, getUser: getUser, subtotalValue: *}}
+ */
 const mapStateToProps = (state, props) => {
     let initialValues, subtotalValue = selector(state, 'subtotal');
     if (props.invoice) {

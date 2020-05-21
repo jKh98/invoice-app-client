@@ -12,7 +12,17 @@ import {editUser, getUser, logoutUser} from '../actions/auth.actions';
 import {ErrorUtils} from '../utils/error.utils';
 import Loader from '../components/Loader';
 
+/**
+ * Profile component to edit user data or logout
+ */
 class Profile extends Component<{}> {
+    /**
+     * dispatches action to edit user data
+     * refreshes user data on success and alerts on fail
+     *
+     * @param values
+     * @returns {Promise<void>}
+     */
     onSubmit = async (values) => {
         try {
             const response = await this.props.dispatch(editUser(values));
@@ -27,6 +37,12 @@ class Profile extends Component<{}> {
         }
     };
 
+    /**
+     * Called after modifying user data.
+     * dispatches action to load new user data
+     *
+     * @returns {Promise<void>}
+     */
     async refreshUserData() {
         try {
             const response = await this.props.dispatch(getUser());
@@ -45,6 +61,9 @@ class Profile extends Component<{}> {
         }
     }
 
+    /**
+     * Dispatches action to logout user
+     */
     logoutUser = () => {
         this.props.dispatch(logoutUser());
     };
@@ -111,6 +130,15 @@ class Profile extends Component<{}> {
     };
 }
 
+
+/**
+ * maps props to user reducer to get initial user data
+ * maps props to edit user reducer to show loader on edit user request
+ * sets up initial form values
+ *
+ * @param state
+ * @returns {{initialValues: {base_currency: *, address: string | (() => (AddressInfo | string)) | (() => (AddressInfo | string | null)) | (() => AddressInfo), phone: string, company: *}, getUser: getUser, editUser: editUser}}
+ */
 const mapStateToProps = (state) => ({
     getUser: state.userReducer.getUser,
     editUser: state.userReducer.editUser,

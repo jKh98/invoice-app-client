@@ -9,8 +9,17 @@ import {ErrorUtils} from '../utils/error.utils';
 import {getCustomersList} from '../actions/customer.actions';
 import {getItemsList} from '../actions/item.actions';
 
+/**
+ * Splash component to load all data before starting app session
+ */
 class Splash extends Component<{}> {
 
+    /**
+     * Loads all data in all or none fashion.
+     * On success app session starts and on fail app exits
+     *
+     * @returns {Promise<void>}
+     */
     async componentDidMount() {
         await Promise.all([
             await this.props.dispatch(getInvoicesList()),
@@ -46,7 +55,12 @@ class Splash extends Component<{}> {
     };
 }
 
-
+/**
+ * maps props to data reducers to get request statuses
+ *
+ * @param state
+ * @returns {{getInvoices: getInvoices, getItems: getItems, getCustomers: getCustomers, getUser: getUser}}
+ */
 const mapStateToProps = (state) => ({
     getInvoices: state.invoiceReducer.getInvoices,
     getCustomers: state.customerReducer.getCustomers,

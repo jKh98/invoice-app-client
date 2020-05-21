@@ -12,8 +12,16 @@ import {ErrorUtils} from '../../utils/error.utils';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {email, required} from '../../utils/redux.form.utils';
 
+/**
+ * Login page
+ */
 class Login extends Component<{}> {
-
+    /**
+     * Dispatches an action to login user and alerts on error
+     *
+     * @param values
+     * @returns {Promise<void>}
+     */
     loginUser = async (values) => {
         try {
             const response = await this.props.dispatch(loginUser(values));
@@ -26,11 +34,18 @@ class Login extends Component<{}> {
         }
     };
 
-
-    signUp() {
+    /**
+     * Opens registration page
+     */
+    openSignUp() {
         Actions.signup();
     }
 
+    /**
+     * Submits login form values
+     *
+     * @param values
+     */
     onSubmit = (values) => {
         this.loginUser(values);
     };
@@ -71,7 +86,7 @@ class Login extends Component<{}> {
                         </CardItem>
                         <CardItem>
                             <Text> Don't have an account yet?</Text>
-                            <Button transparent onPress={this.signUp}>
+                            <Button transparent onPress={this.openSignUp}>
                                 <Text>Sign Up</Text>
                             </Button>
                         </CardItem>
@@ -82,6 +97,12 @@ class Login extends Component<{}> {
     };
 }
 
+/**
+ * maps loginUser reducer to props
+ *
+ * @param state
+ * @returns {{loginUser: (Login.loginUser|loginUser)}}
+ */
 const mapStateToProps = (state) => ({
     loginUser: state.authReducer.loginUser,
 });

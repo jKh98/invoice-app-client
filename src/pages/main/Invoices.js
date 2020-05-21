@@ -11,6 +11,9 @@ import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
 import PageHeader from '../../components/MainPageHeader';
 
+/**
+ * Component that renders the invoices list
+ */
 class Invoices extends Component<{}> {
 
     render() {
@@ -38,15 +41,34 @@ class Invoices extends Component<{}> {
         );
     };
 
+    /**
+     * called on pressing add button
+     * opens invoice form page with null to indicate adding a new invoice
+     */
     addNewInvoice() {
         let newNumber = this.props.getInvoices ? this.props.getInvoices.invoicesList.length : 1;
         Actions.invoiceForm({invoice: null, newNumber: zeroPad(newNumber, 8)});
     }
 
-    openInvoicePage(invoice) {
+    /**
+     * called on pressing add button
+     * opens invoice form page with an invoice object to indicate editing an existing invoice
+     *
+     * @param invoice
+     */
+    editInvoice(invoice) {
         Actions.invoiceForm({invoice: invoice});
     }
 
+    /**
+     * Dynamically maps invoice list to list component
+     * Maps customer names to corresponding invoices
+     *
+     * @param invoicesList
+     * @param customersList
+     * @param currency
+     * @returns {*}
+     */
     renderInvoicesList(invoicesList, customersList, currency) {
         return (
             <List
@@ -64,7 +86,7 @@ class Invoices extends Component<{}> {
                             rightSub={moment(invoice.issued).format('DD/MM/YYYY')}
                             handleClickEvent={
                                 () => {
-                                    this.openInvoicePage(invoice);
+                                    this.editInvoice(invoice);
                                 }
                             }/>
                 }
@@ -74,10 +96,17 @@ class Invoices extends Component<{}> {
     }
 }
 
+/**
+ * map props to invoices reducer to get invoices list
+ * map props to customer reducer to get map customer names to invoices
+ * map props to user reducer to get base currency
+ *
+ * @param state
+ * @returns {{getInvoices: getInvoices, getItems: getItems, getCustomers: getCustomers, getUser: getUser}}
+ */
 const mapStateToProps = (state) => ({
     getInvoices: state.invoiceReducer.getInvoices,
     getCustomers: state.customerReducer.getCustomers,
-    getItems: state.itemReducer.getItems,
     getUser: state.userReducer.getUser,
 });
 

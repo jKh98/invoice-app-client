@@ -8,6 +8,9 @@ import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
 import PageHeader from '../../components/MainPageHeader';
 
+/**
+ * Component that renders the customers list
+ */
 class Customers extends Component<{}> {
     render() {
         const {getCustomers, getUser: {userDetails}} = this.props;
@@ -30,14 +33,31 @@ class Customers extends Component<{}> {
         );
     };
 
+    /**
+     * called on pressing add button
+     * opens customer form page with null to indicate adding a new customer
+     */
     addNewCustomer() {
         Actions.customerForm({customer: null});
     }
 
-    openCustomerPage(customer) {
+    /**
+     * called on pressing add button
+     * opens customer form page with a customer object to indicate editing an existing customer
+     *
+     * @param customer
+     */
+    editCustomer(customer) {
         Actions.customerForm({customer: customer});
     }
 
+    /**
+     * Dynamically maps customer list to list component
+     *
+     * @param customersList
+     * @param currency
+     * @returns {*}
+     */
     renderCustomersList(customersList, currency) {
         return (<List
             ListEmptyComponent={
@@ -53,7 +73,7 @@ class Customers extends Component<{}> {
                         right={formatCurrency(customer.total, currency)}
                         handleClickEvent={
                             () => {
-                                this.openCustomerPage(customer);
+                                this.editCustomer(customer);
                             }
                         }/>
             }
