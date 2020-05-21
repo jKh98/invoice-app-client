@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
 import {Router, Scene} from 'react-native-router-flux';
 import {
-    Login,
-    SignUp,
-    Invoices,
-    Customers,
-    Items,
     CustomerForm,
-    ItemForm,
+    Customers,
     InvoiceForm,
-    Splash,
+    Invoices,
+    ItemForm,
+    Items,
+    Login,
     Profile,
-
+    SignUp,
+    Splash,
 } from '../pages/index';
 import {Root} from 'native-base';
 import {connect} from 'react-redux';

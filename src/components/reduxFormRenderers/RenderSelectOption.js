@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker, Label, Item, Icon, Text} from 'native-base';
+import {Icon, Item, Label, Picker, Text} from 'native-base';
 
 /**
  * Renders a native-base Picker component with options retrieved from a specified array of [{_id,_name,...}].

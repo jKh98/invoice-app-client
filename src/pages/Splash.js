@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Content, CardItem, Card} from 'native-base';
+import {Card, CardItem, Container, Content} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import Logo from '../components/Logo';
 import {BackHandler} from 'react-native';

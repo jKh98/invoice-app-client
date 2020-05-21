@@ -1,13 +1,6 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
-import {
-    Container,
-    Content,
-    Card,
-    CardItem,
-    Button,
-    Text, Toast, FooterTab, Footer,
-} from 'native-base';
+import {Button, Card, CardItem, Container, Content, Footer, FooterTab, Text, Toast} from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';

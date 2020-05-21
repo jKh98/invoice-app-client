@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Content, CardItem, Card, Body, Button, Text, Toast} from 'native-base';
+import {Body, Button, Card, CardItem, Container, Content, Text, Toast} from 'native-base';
 import {Field, reduxForm} from 'redux-form';
 import renderTextInput from '../components/reduxFormRenderers/RenderTextInput';
 import {phone, required} from '../utils/redux.form.utils';
@@ -9,7 +9,6 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import InnerPageHeader from '../components/InnerPageHeader';
 import {editUser, getUser, logoutUser} from '../actions/auth.actions';
-import {getItemsList} from '../actions/item.actions';
 import {ErrorUtils} from '../utils/error.utils';
 import Loader from '../components/Loader';
 

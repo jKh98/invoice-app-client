@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Text, Footer, FooterTab, Icon, Header, Content} from 'native-base';
+import {Button, Footer, FooterTab, Icon, Text} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 
 class NavBar extends Component<{}> {

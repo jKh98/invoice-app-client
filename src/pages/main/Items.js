@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import {
-    View,
-} from 'react-native';
-import {Body, Container, Fab, Header, Icon, Left, List, Right, Title, Button} from 'native-base';
+import {View} from 'react-native';
+import {Container, Fab, Icon, List} from 'native-base';
 import ListView from '../../components/ListView';
 import {Actions} from 'react-native-router-flux';
 import Loader from '../../components/Loader';

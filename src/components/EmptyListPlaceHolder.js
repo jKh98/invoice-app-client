@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-import {
-    Image, StyleSheet,
-} from 'react-native';
-import {View, Text, Content, Card, CardItem, Container} from 'native-base';
-import Logo from './Logo';
+import {StyleSheet} from 'react-native';
+import {Container, Content, Text} from 'native-base';
 
 
 export default class EmptyListPlaceHolder extends Component<{}> {

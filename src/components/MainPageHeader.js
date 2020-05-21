@@ -1,10 +1,5 @@
 import React, {Component} from 'react';
-import {
-    BackHandler,
-    StyleSheet,
-    View,
-} from 'react-native';
-import {Body, Button, Header, Icon, Left, Right, Spinner, Title, Toast} from 'native-base';
+import {Body, Button, Header, Icon, Left, Right, Title, Toast} from 'native-base';
 import {getInvoicesList} from '../actions/invoice.actions';
 import {getCustomersList} from '../actions/customer.actions';
 import {getItemsList} from '../actions/item.actions';

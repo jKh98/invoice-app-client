@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ListItem, Text, Body, Right, Left} from 'native-base';
+import {Body, ListItem, Right, Text} from 'native-base';
 
 export default class ListView extends Component {
     render() {

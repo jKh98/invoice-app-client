@@ -1,4 +1,4 @@
-import {Input, Label, Icon, Item, Text} from 'native-base';
+import {Icon, Input, Item, Label, Text} from 'native-base';
 import React from 'react';
 
 /**

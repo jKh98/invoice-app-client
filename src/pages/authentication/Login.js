@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Content, Button, Body, Text, CardItem, Card, Header} from 'native-base';
+import {Body, Button, Card, CardItem, Container, Content, Text} from 'native-base';
 
 import {Actions} from 'react-native-router-flux';
 import Logo from '../../components/Logo';
@@ -10,7 +10,7 @@ import {loginUser} from '../../actions/auth.actions';
 import Loader from '../../components/Loader';
 import {ErrorUtils} from '../../utils/error.utils';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
-import {email, required, validateEmailField, validateRequiredField} from '../../utils/redux.form.utils';
+import {email, required} from '../../utils/redux.form.utils';
 
 class Login extends Component<{}> {
 

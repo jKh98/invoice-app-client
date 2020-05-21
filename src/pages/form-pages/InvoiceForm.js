@@ -1,23 +1,31 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
 import {
-    Container,
-    Content,
-    Left,
     Body,
+    Button,
     Card,
     CardItem,
+    Container,
+    Content,
+    Fab,
+    Footer,
+    FooterTab,
     Icon,
-    Button, Footer, FooterTab,
-    Text, Fab, Toast,
+    Left,
+    Text,
+    Toast,
 } from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
 import renderItemsTextInputArray from '../../components/reduxFormRenderers/RenderItemsInputArray';
-import {Field, FieldArray, formValueSelector, reduxForm, change} from 'redux-form';
+import {change, Field, FieldArray, formValueSelector, reduxForm} from 'redux-form';
 import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
 import {
-    validatePositiveTimeDifference, required, number, formatCurrency, normalizeCurrency,
+    formatCurrency,
+    normalizeCurrency,
+    number,
+    required,
+    validatePositiveTimeDifference,
 } from '../../utils/redux.form.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editInvoice, getInvoicesList, sendInvoiceByEmail} from '../../actions/invoice.actions';

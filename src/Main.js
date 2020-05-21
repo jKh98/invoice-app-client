@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
-import {
-    StyleSheet,
-    View,
-    StatusBar,
-} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 
 import Routes from './components/Routes';
 import {connect} from 'react-redux';

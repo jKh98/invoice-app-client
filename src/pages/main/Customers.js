@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Actions} from 'react-native-router-flux';
-import {Container, Header, Title, Right, Left, Body, Fab, Icon, List, View, Text, Button} from 'native-base';
+import {Container, Fab, Icon, List, View} from 'native-base';
 import ListView from '../../components/ListView';
 import {connect} from 'react-redux';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';

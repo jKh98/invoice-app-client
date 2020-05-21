@@ -1,9 +1,9 @@
-import {View, Body, Right, Left, Text, CardItem, Header, Button, Icon, Card, Item} from 'native-base';
+import {Body, Card, CardItem, Icon, Item, Left, Right, Text, View} from 'native-base';
 import React from 'react';
 import {Field} from 'redux-form';
 import renderTextInput from './RenderTextInput';
 import renderSelectOption from './RenderSelectOption';
-import {formatCurrency, normalizeCurrency, integer, number, required} from '../../utils/redux.form.utils';
+import {formatCurrency, integer, normalizeCurrency, number, required} from '../../utils/redux.form.utils';
 
 /**
  * Renders an array of field tuples for redux-form. Each tuple has an item selector and a quantity input field

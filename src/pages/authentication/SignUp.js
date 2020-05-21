@@ -6,12 +6,9 @@ import {Actions} from 'react-native-router-flux';
 import {registerNewUser} from '../../actions/auth.actions';
 import Loader from '../../components/Loader';
 import {ErrorUtils} from '../../utils/error.utils';
-import {Button, Container, Content, Body, Text, Header, CardItem, Card, Title, Icon, Left, Right} from 'native-base';
+import {Body, Button, Card, CardItem, Container, Content, Text} from 'native-base';
 import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput';
-import {
-    email, phone,
-    required,
-} from '../../utils/redux.form.utils';
+import {email, phone, required} from '../../utils/redux.form.utils';
 import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
 import {currencies} from '../../utils/currencies.utils';
 import InnerPageHeader from '../../components/InnerPageHeader';

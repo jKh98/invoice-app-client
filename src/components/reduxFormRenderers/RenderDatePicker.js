@@ -1,4 +1,4 @@
-import {DatePicker, Item, Label, Text, View} from 'native-base';
+import {DatePicker, Item, Label, Text} from 'native-base';
 import React from 'react';
 
 const renderDatePicker = (fields) => {
