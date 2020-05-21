@@ -11,11 +11,13 @@ import {getItemsList} from '../actions/item.actions';
 import {Actions} from 'react-native-router-flux';
 import {ErrorUtils} from '../utils/error.utils';
 import {connect} from 'react-redux';
+import {getUser} from '../actions/auth.actions';
 
 
-class PageHeader extends Component<{}> {
+class MainPageHeader extends Component<{}> {
     refreshData = async () => {
         await Promise.all([
+            await this.props.dispatch(getUser()),
             await this.props.dispatch(getInvoicesList()),
             await this.props.dispatch(getCustomersList()),
             await this.props.dispatch(getItemsList())])
@@ -39,8 +41,8 @@ class PageHeader extends Component<{}> {
         return (
             <Header>
                 <Left>
-                    <Button transparent light onPress={()=>{
-                        Actions.profile()
+                    <Button transparent light onPress={() => {
+                        Actions.profile();
                     }}>
                         <Icon name='ios-menu'/>
                     </Button>
@@ -64,4 +66,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch,
 });
 
-export default connect(null, mapDispatchToProps)(PageHeader);
+export default connect(null, mapDispatchToProps)(MainPageHeader);

@@ -14,6 +14,7 @@ import {
 } from '../../utils/redux.form.utils';
 import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
 import {currencies} from '../../utils/currencies.utils';
+import InnerPageHeader from '../../components/InnerPageHeader';
 
 
 class SignUp extends Component<{}> {
@@ -30,7 +31,6 @@ class SignUp extends Component<{}> {
         }
     };
 
-
     goBack() {
         Actions.pop();
     }
@@ -45,17 +45,7 @@ class SignUp extends Component<{}> {
         return (
             <Container style={{flex: 1, justifyContent: 'center'}}>
                 {registerUser.isLoading && <Loader/>}
-                <Header>
-                    <Left>
-                        <Button transparent onPress={this.goBack}>
-                            <Icon name={'ios-arrow-back'}/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Sign Up as Merchant</Title>
-                    </Body>
-                    <Right/>
-                </Header>
+                <InnerPageHeader title={'Sign Up as Merchant'}/>
                 <Content padder contentContainerStyle={{display: 'flex', flex: 1, justifyContent: 'center'}}>
                     <Card transparent>
                         <CardItem>

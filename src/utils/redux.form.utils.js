@@ -16,8 +16,8 @@ export const integer = value =>
     value && Number.isInteger(value) ? 'Should be an integer' : undefined;
 
 export const phone = value =>
-    value && !/^(0|[1-9][0-9]{9})$/i.test(value)
-        ? 'Invalid phone number, should be 10 digits'
+    value && !/^[a-zA-Z0-9]{8,16}$/i.test(value)
+        ? 'Invalid phone number'
         : undefined;
 
 export const formatCurrency = (input, currency) => {

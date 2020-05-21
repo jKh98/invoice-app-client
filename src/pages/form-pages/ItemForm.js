@@ -3,14 +3,8 @@ import {Actions} from 'react-native-router-flux';
 import {
     Container,
     Content,
-    Header,
-    Title,
-    Right,
-    Left,
-    Body,
     Card,
     CardItem,
-    Icon,
     Button,
     Text, Toast, FooterTab, Footer,
 } from 'native-base';
@@ -22,7 +16,8 @@ import {formatCurrency, normalizeCurrency, number, required} from '../../utils/r
 import {ErrorUtils} from '../../utils/error.utils';
 import {editItem, getItemsList} from '../../actions/item.actions';
 import Loader from '../../components/Loader';
-import {currencies, getCurrency} from '../../utils/currencies.utils';
+import {getCurrency} from '../../utils/currencies.utils';
+import InnerPageHeader from '../../components/InnerPageHeader';
 
 class ItemForm extends Component<{}> {
     modifyItemData = async (values) => {
@@ -67,17 +62,7 @@ class ItemForm extends Component<{}> {
         return (
             <Container>
                 {editItem.isLoading && <Loader/>}
-                <Header>
-                    <Left>
-                        <Button transparent onPress={this.goBack}>
-                            <Icon name={'ios-arrow-back'}/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>New Item</Title>
-                    </Body>
-                    <Right/>
-                </Header>
+                <InnerPageHeader title={'Item'}/>
                 <Content padder>
                     <Card style={{paddingHorizontal: 10}}>
                         <CardItem cardBody>

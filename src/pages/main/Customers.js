@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
-import PageHeader from '../../components/PageHeader';
+import PageHeader from '../../components/MainPageHeader';
 
 class Customers extends Component<{}> {
     render() {

@@ -1,5 +1,8 @@
-export const getCurrency = (id) =>(
-    currencies.find((c) => c._id === id).symbol_native)
+export const getCurrency = (id) => {
+    if (id) {
+        return currencies.find((c) => c._id === id).symbol_native;
+    }
+};
 
 
 export const currencies = [

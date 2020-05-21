@@ -23,13 +23,17 @@ import moment from 'moment';
 import {zeroPad} from '../../utils/general.utils';
 import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
-import PageHeader from '../../components/PageHeader';
+import PageHeader from '../../components/MainPageHeader';
 
 class Invoices extends Component<{}> {
 
     render() {
         const {getUser: {userDetails}, getInvoices, getCustomers} = this.props;
-        const currency = getCurrency(userDetails.base_currency);
+        let currency = '';
+        if (userDetails) {
+            currency = getCurrency(userDetails.base_currency);
+        }
+
         return (
             <Container>
                 {getInvoices.isLoading && <Loader/>}

@@ -10,6 +10,7 @@ const authData = (state = {}, action) => {
         case 'AUTH_USER_FAIL':
         case 'REGISTER_USER_FAIL':
         case 'LOGIN_USER_FAIL':
+        case 'USER_LOGGED_OUT_SUCCESS':
             return {
                 token: null,
                 isLoggedIn: false,

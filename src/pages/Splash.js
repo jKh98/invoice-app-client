@@ -15,19 +15,18 @@ class Splash extends Component<{}> {
         await Promise.all([
             await this.props.dispatch(getInvoicesList()),
             await this.props.dispatch(getCustomersList()),
-            await this.props.dispatch(getItemsList())]).
-        then((responses) => {
+            await this.props.dispatch(getItemsList())]).then((responses) => {
             if (responses[0].success && responses[1].success && responses[2].success) {
-                Actions.replace('home')
+                Actions.replace('home');
             } else {
                 throw 'Something went wrong. Check connection or try again later.';
             }
         }).catch((e) => {
             const newError = new ErrorUtils(e);
             newError.showAlert();
-            setTimeout(()=>{
+            setTimeout(() => {
                 BackHandler.exitApp();
-            },4000);
+            }, 4000);
         });
 
     }

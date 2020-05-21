@@ -7,6 +7,7 @@ import ItemForm from './form-pages/ItemForm';
 import CustomerForm from './form-pages/CustomerForm';
 import InvoiceForm from './form-pages/InvoiceForm';
 import Splash from './Splash';
+import Profile from './Profile';
 
 export {
     Login,
@@ -18,4 +19,5 @@ export {
     CustomerForm,
     InvoiceForm,
     Splash,
+    Profile
 };

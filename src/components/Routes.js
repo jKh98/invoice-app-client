@@ -10,6 +10,8 @@ import {
     ItemForm,
     InvoiceForm,
     Splash,
+    Profile,
+
 } from '../pages/index';
 import {Root} from 'native-base';
 import {connect} from 'react-redux';
@@ -39,7 +41,7 @@ export default class Routes extends Component<{}> {
                             <Scene key="customerForm" component={CustomerForm} title="Customer" hideNavBar/>
                             <Scene key="itemForm" component={ItemForm} title="Item" hideNavBar/>
                             <Scene key="invoiceForm" component={InvoiceForm} title="Invoice" hideNavBar/>
-
+                            <Scene key="profile" component={Profile} title="Profile" hideNavBar/>
                         </Scene>
                     </Scene>
                 </RouterWithRedux>

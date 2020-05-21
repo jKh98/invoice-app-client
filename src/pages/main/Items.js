@@ -11,7 +11,7 @@ import Logo from '../../components/Logo';
 import EmptyListPlaceHolder from '../../components/EmptyListPlaceHolder';
 import {getCurrency} from '../../utils/currencies.utils';
 import {formatCurrency} from '../../utils/redux.form.utils';
-import PageHeader from '../../components/PageHeader';
+import PageHeader from '../../components/MainPageHeader';
 
 class Items extends Component<{}> {
     render() {

@@ -28,6 +28,7 @@ import Loader from '../../components/Loader';
 import renderSelectOption from '../../components/reduxFormRenderers/RenderSelectOption';
 import renderDatePicker from '../../components/reduxFormRenderers/RenderDatePicker';
 import {getCurrency} from '../../utils/currencies.utils';
+import InnerPageHeader from '../../components/InnerPageHeader';
 
 class InvoiceForm extends Component<{}> {
 
@@ -111,17 +112,7 @@ class InvoiceForm extends Component<{}> {
         return (
             <Container>
                 {editInvoice.isLoading && <Loader/>}
-                <Header>
-                    <Left>
-                        <Button transparent onPress={this.goBack}>
-                            <Icon name={'ios-arrow-back'}/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Invoice</Title>
-                    </Body>
-                    <Right/>
-                </Header>
+                <InnerPageHeader title={'Invoice'}/>
                 <Content style={{flex: 1}} contentContainerStyle={{flex: 1}}>
                     <Tabs>
                         <Tab heading="EDIT" padder>

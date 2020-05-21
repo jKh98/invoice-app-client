@@ -3,14 +3,8 @@ import {Actions} from 'react-native-router-flux';
 import {
     Container,
     Content,
-    Header,
-    Title,
-    Right,
-    Left,
-    Body,
     Card,
     CardItem,
-    Icon,
     Button,
     Text,
     Toast, Footer, FooterTab,
@@ -19,10 +13,11 @@ import renderTextInput from '../../components/reduxFormRenderers/RenderTextInput
 import {Field, reduxForm} from 'redux-form';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {email, phone, required, validateEmailField, validateRequiredField} from '../../utils/redux.form.utils';
+import {email, phone, required} from '../../utils/redux.form.utils';
 import {ErrorUtils} from '../../utils/error.utils';
 import {editCustomer, getCustomersList} from '../../actions/customer.actions';
 import Loader from '../../components/Loader';
+import InnerPageHeader from '../../components/InnerPageHeader';
 
 class CustomerForm extends Component<{}> {
     modifyCustomerData = async (values) => {
@@ -68,17 +63,7 @@ class CustomerForm extends Component<{}> {
         return (
             <Container>
                 {editCustomer.isLoading && <Loader/>}
-                <Header>
-                    <Left>
-                        <Button transparent onPress={this.goBack}>
-                            <Icon name={'ios-arrow-back'}/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Customer</Title>
-                    </Body>
-                    <Right/>
-                </Header>
+                <InnerPageHeader title={'Customer'}/>
                 <Content padder>
                     <Card style={{paddingHorizontal: 10}}>
                         <CardItem cardBody listItemPadding>
@@ -153,11 +138,6 @@ class CustomerForm extends Component<{}> {
             </Container>
         );
     };
-
-    goBack() {
-        Actions.pop();
-        Actions.refresh();
-    }
 }
 
 const mapStateToProps = (state, props) => {
