@@ -16,6 +16,11 @@ import {Root} from 'native-base';
 import {connect} from 'react-redux';
 import NavBar from './NavBar';
 
+/**
+ * React-native-router-flux router component.
+ * Divides scenes into root category for authentication, and app category for app session
+ * Wrapped with native-base root to enable some native-base features such as Toast which needs context on Android devices
+ */
 export default class Routes extends Component<{}> {
 
     render() {

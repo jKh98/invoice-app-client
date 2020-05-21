@@ -8,8 +8,16 @@ import {ErrorUtils} from '../utils/error.utils';
 import {connect} from 'react-redux';
 import {getUser} from '../actions/auth.actions';
 
-
+/**
+ * Header component for main pages.
+ * Contains a button that opens profile page and a refresh button tat loads all data.
+ */
 class MainPageHeader extends Component<{}> {
+    /**
+     * Dispatches actions to load all application data
+     *
+     * @returns {Promise<void>}
+     */
     refreshData = async () => {
         await Promise.all([
             await this.props.dispatch(getUser()),

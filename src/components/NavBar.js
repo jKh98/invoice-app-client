@@ -2,7 +2,16 @@ import React, {Component} from 'react';
 import {Button, Footer, FooterTab, Icon, Text} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 
+/**
+ * Navigation bar component for main app landing page.
+ * Contains buttons for invoices , customers and items list pages
+ */
 class NavBar extends Component<{}> {
+    /**
+     * Constructs a local state for navigation
+     *
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -41,16 +50,6 @@ class NavBar extends Component<{}> {
                         <Icon active name="ios-barcode"/>
                         <Text>Items</Text>
                     </Button>
-                    {/*<Button vertical*/}
-                    {/*        active={this.state.scene === 4}*/}
-                    {/*        onPress={() => {*/}
-                    {/*            Actions.settings();*/}
-                    {/*            this.setState({scene: 4});*/}
-                    {/*        }}*/}
-                    {/*        textStyle={{color: "#fff"}}>*/}
-                    {/*    <Icon name="settings"/>*/}
-                    {/*    <Text active>Settings</Text>*/}
-                    {/*</Button>*/}
                 </FooterTab>
             </Footer>
         );

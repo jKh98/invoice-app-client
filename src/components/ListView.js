@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Body, ListItem, Right, Text} from 'native-base';
 
+/**
+ * Component that maps list parameters to a list item component dynamically
+ */
 export default class ListView extends Component {
     render() {
         return (

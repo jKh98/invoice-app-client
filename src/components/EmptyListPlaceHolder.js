@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import {Container, Content, Text} from 'native-base';
 
-
+/**
+ * Placeholder component for empty lists
+ * Should preview image and text
+ */
 export default class EmptyListPlaceHolder extends Component<{}> {
     render() {
         return (

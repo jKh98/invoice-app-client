@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Spinner} from 'native-base';
 
-
+/**
+ * Loader component shows when retrieving or sending data
+ */
 class Loader extends Component<{}> {
 
     render() {

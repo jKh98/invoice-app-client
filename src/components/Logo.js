@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {H1, View} from 'native-base';
 
-
+/**
+ * Logo component with brand name and brand icon for several use cases (Login, Splash ...)
+ */
 export default class Logo extends Component<{}> {
     render() {
         return (
