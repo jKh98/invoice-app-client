@@ -1,4 +1,4 @@
-# invoice-app-backend
+# invoice-app-client
 This is a React-Native front-end app for issuing invoices by merchants of small businesses.The app handles registration for merchants and supports adding items and customers.
 Once there are items and customers, merchants can choose to generate invoices to save or send as email.
 Emails include a pdf of the invoice with a payment url which opens a payment portal.
